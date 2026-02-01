@@ -44,7 +44,7 @@
         .blob {
             position: absolute; border-radius: 50%;
             filter: blur(80px); opacity: 0.8; mix-blend-mode: screen;
-            will-change: transform; /* Hint to browser for 60fps */
+            will-change: transform;
         }
 
         .blob-1 { top: -10%; left: -20%; width: 350px; height: 350px; animation: moveX 7s infinite alternate, cycle1 6s infinite linear; }
@@ -101,12 +101,11 @@
         .scroll-wrapper { min-height: 100px; margin-bottom: 20px; width: 100%; max-width: 400px; }
         .section-label { font-size: 12px; color: #777; font-weight: 800; text-transform: uppercase; margin: 10px 0 10px 15px; letter-spacing: 1px; }
 
-        /* Unified Animation Class */
         .scroll-item {
             opacity: 0;
             transform: translateY(80px) scale(0.9);
             transition: transform 0.6s var(--bounce), opacity 0.6s ease;
-            will-change: transform, opacity; /* GPU Optimization */
+            will-change: transform, opacity;
         }
 
         .scroll-active { opacity: 1; transform: translateY(0) scale(1); }
@@ -127,7 +126,6 @@
             background: linear-gradient(180deg, rgba(255,255,255,0.1) 0%, transparent 50%); pointer-events: none;
         }
 
-        /* Touch Glow */
         .glass-card:active { transform: scale(0.98) !important; background: rgba(60,60,60,0.8); border-color: #fff; }
 
         .row { display: flex; align-items: center; gap: 15px; padding-bottom: 12px; border-bottom: 1px solid rgba(255,255,255,0.08); }
@@ -136,8 +134,7 @@
         .info h3 { font-size: 16px; font-weight: 700; color: #fff; margin-bottom: 2px; }
         .info p { font-size: 13px; color: #bbb; }
 
-        /* --- 6. BUTTONS (UNIFIED BLOCK) --- */
-        /* Important: grid-2 itself is now the scroll-item, so they move together */
+        /* --- 6. BUTTONS --- */
         .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; width: 100%; max-width: 400px; margin-top: 5px; }
 
         .btn {
@@ -148,7 +145,7 @@
             border-radius: 22px; padding: 16px;
             display: flex; align-items: center; justify-content: center; gap: 8px;
             color: white; text-decoration: none; font-weight: 600; font-size: 14px;
-            transition: background 0.1s, transform 0.1s; /* Faster transition for touch */
+            transition: background 0.1s, transform 0.1s;
             position: relative; overflow: hidden;
         }
 
@@ -156,15 +153,40 @@
         
         .btn-insta:hover { color: #E1306C; } .btn-fb:hover { color: #1877F2; } .btn-tele:hover { color: #229ED9; } .btn-pin:hover { color: #E60023; }
 
+        /* --- 7. MUSIC PLAYER FAB --- */
+        .music-fab {
+            position: fixed; bottom: 25px; right: 25px;
+            width: 55px; height: 55px; border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.5), inset 0 0 10px rgba(255,255,255,0.1);
+            display: flex; justify-content: center; align-items: center;
+            z-index: 1000; cursor: pointer; color: white; font-size: 20px;
+            transition: 0.3s;
+        }
+
+        .music-fab:active { transform: scale(0.9); background: #fff; color: #000; }
+        .music-playing { animation: spin 4s linear infinite; border-color: #00ffcc; box-shadow: 0 0 30px #00ffcc; }
+
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
         @keyframes popIn { 0% { opacity: 0; transform: scale(0.5); } 100% { opacity: 1; transform: scale(1); } }
     </style>
 </head>
 <body>
 
+    <audio id="bg-music" loop>
+        <source src="song.mp3" type="audio/mpeg">
+    </audio>
+
     <div class="ambient-bg">
         <div class="blob blob-1"></div>
         <div class="blob blob-2"></div>
         <div class="blob blob-3"></div>
+    </div>
+
+    <div class="music-fab" onclick="toggleMusic()">
+        <i class="fa-solid fa-music" id="music-icon"></i>
     </div>
 
     <div class="header">
@@ -183,8 +205,7 @@
     </div>
 
     <div class="bio-box">
-        "উড়ো মেঘের কথার তার উঠোনে ঠাঁই,<br>
-        তাকে খুঁজতে গিয়ে নিজেকে হারায়"
+        "Less Perfection, More Authenticity"<br>
     </div>
 
     <div class="scroll-wrapper">
@@ -225,7 +246,29 @@
     </div>
 
     <script>
-        // 1. ANIMATION OBSERVER
+        // 1. MUSIC PLAYER LOGIC
+        const audio = document.getElementById('bg-music');
+        const fab = document.querySelector('.music-fab');
+        const icon = document.getElementById('music-icon');
+        let isPlaying = false;
+
+        function toggleMusic() {
+            if (!isPlaying) {
+                audio.play();
+                isPlaying = true;
+                fab.classList.add('music-playing');
+                icon.classList.remove('fa-music');
+                icon.classList.add('fa-pause');
+            } else {
+                audio.pause();
+                isPlaying = false;
+                fab.classList.remove('music-playing');
+                icon.classList.add('fa-music');
+                icon.classList.remove('fa-pause');
+            }
+        }
+
+        // 2. ANIMATION OBSERVER
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
@@ -238,10 +281,10 @@
 
         document.querySelectorAll('.scroll-item').forEach((el) => observer.observe(el));
 
-        // 2. 60FPS TURBO AUTO-SCROLL
+        // 3. 60FPS TURBO AUTO-SCROLL
         let scrollId;
         let isScrolling = false;
-        let speed = 1.5; // Increased Speed for 60FPS feel
+        let speed = 1.5; 
 
         function smoothScroll() {
             if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight - 2) {
