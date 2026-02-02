@@ -5,26 +5,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Gourab Adhikary | Bio</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
     <style>
-        /* --- Ultra-Clear Bouncy Glass Variables --- */
+        /* --- Ghost Liquid Glass Variables --- */
         :root {
-            /* 1. MORE TRANSPARENT: Opacity lowered to 0.06 (6%) for extremely clear glass */
-            --glass-bg: linear-gradient(135deg, rgba(60, 140, 255, 0.06), rgba(220, 100, 255, 0.06));
-            
-            /* Sharper Border to define the barely-there glass */
-            --glass-border: 1px solid rgba(255, 255, 255, 0.35);
-            
-            /* Crisp Glass Shadow: Sharp rim light to make it pop */
+            /* Opacity at 3% */
+            --glass-bg: linear-gradient(135deg, rgba(60, 140, 255, 0.03), rgba(220, 100, 255, 0.03));
+            --glass-border: 1px solid rgba(255, 255, 255, 0.3);
             --glass-shadow: 
-                0 20px 40px rgba(0, 0, 0, 0.2), /* Deep shadow */
-                inset 0 1px 2px rgba(255, 255, 255, 0.8), /* Sharp top glossy rim */
-                inset 0 0 10px rgba(255, 255, 255, 0.1); /* Subtle inner glow */
+                0 20px 40px rgba(0, 0, 0, 0.2), 
+                inset 0 1px 2px rgba(255, 255, 255, 0.6), 
+                inset 0 0 10px rgba(255, 255, 255, 0.1); 
 
             --text-primary: #ffffff; 
             --text-secondary: rgba(255, 255, 255, 0.85);
-            
-            /* Inner items bg lowered slightly for better contrast on ultra-clear glass */
-            --card-internal-bg: rgba(0, 0, 0, 0.12); 
+            --card-internal-bg: rgba(0, 0, 0, 0.1); 
+            --music-highlight: rgba(255, 255, 255, 0.2);
         }
 
         * {
@@ -35,7 +32,7 @@
         }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            font-family: 'Inter', sans-serif;
             background-color: #000000;
             background-image: url('https://cdn.discordapp.com/attachments/1345025532659503115/1467758726072238121/1000199447.jpg?ex=69818c55&is=69803ad5&hm=1047b9de688aa0a534be2061b6174f359ca9fee911d37fc148475d2d6e9d5e69&');
             background-repeat: no-repeat;
@@ -44,7 +41,7 @@
             background-size: cover;
             color: var(--text-primary);
             overflow-x: hidden;
-            padding-bottom: 50px;
+            padding-bottom: 80px;
         }
 
         .container {
@@ -53,191 +50,204 @@
             padding: 20px;
         }
 
-        /* --- The Main Glass Card & Bouncy Animation --- */
+        /* --- Main Glass Card & Physics Animation --- */
         .glass-card {
             background: var(--glass-bg);
-            /* Low blur (12px) for high clarity */
-            backdrop-filter: blur(12px) saturate(110%);
-            -webkit-backdrop-filter: blur(12px) saturate(110%);
+            backdrop-filter: blur(10px) saturate(110%);
+            -webkit-backdrop-filter: blur(10px) saturate(110%);
             border-radius: 32px;
             border: var(--glass-border);
             box-shadow: var(--glass-shadow);
             padding: 25px;
-            margin-bottom: 30px; /* Increased margin for better bouncy separation */
+            margin-bottom: 30px;
             position: relative;
             overflow: hidden;
             -webkit-mask-image: -webkit-radial-gradient(white, black); 
 
-            /* --- HIDDEN STATE (Before Bounce) --- */
             opacity: 0;
-            /* Deeper starting position and smaller scale for dramatic bounce */
-            transform: scale(0.85) translateY(80px) translateZ(0);
-            /* Super Bouncy Spring Transition */
+            transform: scale(0.8) translateY(100px);
             transition: all 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
-             /* Ensures hardware acceleration for smooth 60fps+ */
             will-change: transform, opacity;
         }
 
-        /* Glossy Sheen Overlay */
         .glass-card::after {
             content: '';
             position: absolute;
             inset: 0;
-            background: linear-gradient(
-                125deg, 
-                rgba(255,255,255,0.35) 0%, 
-                rgba(255,255,255,0.05) 35%, 
-                rgba(255,255,255,0.0) 70%
-            );
+            background: linear-gradient(125deg, rgba(255,255,255,0.3) 0%, rgba(255,255,255,0.05) 40%, rgba(255,255,255,0) 70%);
             pointer-events: none;
             z-index: 1;
         }
         
         .glass-card > * { position: relative; z-index: 2; }
 
-        /* --- VISIBLE STATE (After bounce triggered) --- */
         .glass-card.visible {
             opacity: 1;
-            transform: scale(1) translateY(0) translateZ(0);
+            transform: scale(1) translateY(0);
         }
 
-        /* --- Profile Header --- */
+        /* --- Profile --- */
         .profile-header { text-align: center; }
-        
         .profile-img {
             width: 125px;
             height: 125px;
             border-radius: 50%;
             object-fit: cover;
-            border: 3px solid rgba(255, 255, 255, 0.7);
+            border: 3px solid rgba(255, 255, 255, 0.6);
             box-shadow: 0 10px 25px rgba(0,0,0,0.3);
             margin-bottom: 15px;
         }
-
-        h1 {
-            font-size: 28px;
-            font-weight: 800;
-            margin-bottom: 5px;
-            text-shadow: 0 2px 15px rgba(0,0,0,0.5);
-        }
-
-        .tags {
-            font-size: 14px;
-            color: var(--text-secondary);
-            font-weight: 600;
-            margin-bottom: 20px;
-            text-shadow: 0 1px 10px rgba(0,0,0,0.5);
-        }
-
+        h1 { font-size: 28px; font-weight: 700; margin-bottom: 5px; text-shadow: 0 2px 15px rgba(0,0,0,0.5); letter-spacing: -0.5px; }
+        .tags { font-size: 14px; color: var(--text-secondary); font-weight: 500; margin-bottom: 20px; text-shadow: 0 1px 10px rgba(0,0,0,0.5); }
         .quote {
-            font-style: italic;
-            font-size: 16px;
-            color: var(--text-primary);
-            margin: 20px auto;
-            padding: 15px;
-            background: var(--card-internal-bg);
-            border-radius: 20px;
-            text-align: center;
-            font-weight: 500;
-            border: 1px solid rgba(255,255,255,0.2);
-            backdrop-filter: blur(5px); 
+            font-style: italic; font-size: 15px; color: var(--text-primary); margin: 20px auto; padding: 15px;
+            background: var(--card-internal-bg); border-radius: 20px; text-align: center; font-weight: 400;
+            border: 1px solid rgba(255,255,255,0.2); backdrop-filter: blur(5px);
         }
 
-        /* --- Info Rows --- */
+        /* --- Info & Grid --- */
         .info-row {
-            display: flex;
-            justify-content: space-between;
-            padding: 12px 0;
-            border-bottom: 1px solid rgba(255,255,255,0.15);
-            font-size: 15px;
+            display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid rgba(255,255,255,0.15); font-size: 14px;
         }
         .info-row:last-child { border-bottom: none; }
-        .label { font-weight: 600; color: rgba(255,255,255,0.7); }
-        .value { font-weight: 600; text-align: right; text-shadow: 0 2px 10px rgba(0,0,0,0.5); }
-
-        /* --- Grid Layouts --- */
-        .split-grid {
+        .label { font-weight: 500; color: rgba(255,255,255,0.7); }
+        .value { font-weight: 500; text-align: right; text-shadow: 0 2px 10px rgba(0,0,0,0.5); }
+        
+        /* --- NEW LAYOUT: Creativity Grid --- */
+        .section-title { font-size: 18px; margin-bottom: 15px; font-weight: 600; color: #fff; letter-spacing: -0.3px; }
+        
+        .creativity-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 15px;
+            gap: 12px;
+            margin-bottom: 25px;
         }
-        .grid-column h2 {
-            font-size: 18px;
-            margin-bottom: 12px;
-            color: #fff;
-            text-shadow: 0 2px 10px rgba(0,0,0,0.5);
-        }
-
-        /* --- List Items --- */
-        .list-item {
+        
+        .chip {
             background: var(--card-internal-bg);
-            margin: 8px 0;
-            padding: 10px 12px;
+            padding: 15px;
             border-radius: 18px;
-            text-align: left;
+            text-align: center;
             font-size: 13px;
-            font-weight: 600;
-            display: flex;
-            align-items: center;
+            font-weight: 500;
             border: 1px solid rgba(255,255,255,0.15);
-        }
-        .list-item i { margin-right: 8px; color: rgba(255,255,255,0.9); }
-
-        /* --- Social Grid --- */
-        .social-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 10px;
-            margin-top: 10px;
-        }
-
-        .social-btn {
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            background: rgba(255, 255, 255, 0.12);
-            color: var(--text-primary);
-            text-decoration: none;
-            padding: 15px 5px;
-            border-radius: 22px;
-            font-weight: 600;
-            font-size: 12px;
-            border: 1px solid rgba(255,255,255,0.25);
-            transition: all 0.2s ease;
-            position: relative;
-            overflow: hidden;
+            transition: transform 0.2s;
         }
+        .chip:active { transform: scale(0.95); background: rgba(255,255,255,0.1); }
+        .chip i { font-size: 20px; margin-bottom: 8px; color: rgba(255,255,255,0.9); }
 
-        .social-btn::after {
-            content: '';
-            position: absolute;
-            top:0; left:0; right:0; height: 50%;
-            background: linear-gradient(180deg, rgba(255,255,255,0.2) 0%, rgba(255,255,255,0) 100%);
-            pointer-events: none;
+        /* --- NEW LAYOUT: Education List --- */
+        .edu-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
         }
-
-        .social-btn i {
-            font-size: 22px;
-            margin-bottom: 6px;
-            color: #fff;
-            filter: drop-shadow(0 2px 5px rgba(0,0,0,0.3));
-        }
-
-        .social-btn:active {
-            background: rgba(255, 255, 255, 0.3);
-            transform: scale(0.96);
-            box-shadow: 0 0 25px rgba(255, 255, 255, 0.5);
-        }
-
-        h2 {
-            font-size: 20px;
-            margin-bottom: 15px;
+        
+        .edu-item {
+            background: var(--card-internal-bg);
+            padding: 15px;
+            border-radius: 18px;
             text-align: left;
-            font-weight: 700;
-            text-shadow: 0 2px 10px rgba(0,0,0,0.5);
+            border: 1px solid rgba(255,255,255,0.15);
+            display: flex;
+            align-items: center;
+        }
+        .edu-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 12px;
+            background: rgba(255,255,255,0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+            font-size: 16px;
+            color: #fff;
+        }
+        .edu-text {
+            font-size: 13px;
+            font-weight: 500;
+            line-height: 1.4;
         }
 
+        /* --- Music Player Styles --- */
+        .music-item {
+            background: rgba(255, 255, 255, 0.05);
+            margin: 10px 0;
+            padding: 12px 15px;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border: 1px solid rgba(255,255,255,0.1);
+            transition: background 0.3s ease;
+        }
+        .music-item.playing {
+            background: var(--music-highlight);
+            border-color: rgba(255,255,255,0.4);
+            box-shadow: 0 0 15px rgba(255,255,255,0.1);
+        }
+        .song-info {
+            display: flex;
+            align-items: center;
+            flex-grow: 1;
+        }
+        .play-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.15);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            margin-right: 15px;
+            border: 1px solid rgba(255,255,255,0.2);
+            transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        .play-btn:active { transform: scale(0.9); }
+        .play-btn i { font-size: 14px; color: white; margin-left: 2px; }
+        .playing .play-btn i { margin-left: 0; }
+        
+        .song-details { text-align: left; }
+        .song-title { font-size: 14px; font-weight: 600; display: block; }
+        .song-artist { font-size: 11px; opacity: 0.7; font-weight: 400; }
+        
+        .equalizer {
+            display: flex; gap: 2px; height: 12px; align-items: flex-end; opacity: 0; transition: opacity 0.3s;
+        }
+        .bar { width: 3px; background: white; border-radius: 2px; animation: bounce 0s infinite; }
+        .playing .equalizer { opacity: 1; }
+        .playing .bar { animation-duration: 0.5s; }
+        .bar:nth-child(1) { animation-delay: 0.1s; }
+        .bar:nth-child(2) { animation-delay: 0.3s; }
+        .bar:nth-child(3) { animation-delay: 0.0s; }
+        
+        @keyframes bounce {
+            0%, 100% { height: 3px; }
+            50% { height: 12px; }
+        }
+
+        /* --- Social Grid --- */
+        .social-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 10px; }
+        .social-btn {
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            background: rgba(255, 255, 255, 0.12); color: var(--text-primary); text-decoration: none;
+            padding: 15px 5px; border-radius: 22px; font-weight: 500; font-size: 12px;
+            border: 1px solid rgba(255,255,255,0.25); transition: all 0.2s ease; position: relative; overflow: hidden;
+        }
+        .social-btn::after {
+            content: ''; position: absolute; top:0; left:0; right:0; height: 50%;
+            background: linear-gradient(180deg, rgba(255,255,255,0.2) 0%, rgba(255,255,255,0) 100%); pointer-events: none;
+        }
+        .social-btn i { font-size: 22px; margin-bottom: 6px; color: #fff; filter: drop-shadow(0 2px 5px rgba(0,0,0,0.3)); }
+        .social-btn:active { background: rgba(255, 255, 255, 0.3); transform: scale(0.96); box-shadow: 0 0 25px rgba(255, 255, 255, 0.5); }
+
+        h2 { font-size: 19px; margin-bottom: 15px; text-align: left; font-weight: 600; text-shadow: 0 2px 10px rgba(0,0,0,0.5); letter-spacing: -0.3px; }
     </style>
 </head>
 <body>
@@ -248,43 +258,61 @@
             <img src="https://cdn.discordapp.com/attachments/1345025532659503115/1467758711081799804/10001682842.jpg?ex=69818c52&is=69803ad2&hm=dacedadde4fca62b78b45d705565a2c1e0330a73143b49e9ec8b777a6a5bcb92&" alt="Profile" class="profile-img">
             <h1>Gourab Adhikary</h1>
             <p class="tags">Artist • Extrovert • Melophile</p>
+            <div class="quote">"Don't wish for it, Work for it."</div>
+        </div>
+
+        <div class="glass-card">
+            <div class="info-row"><span class="label"><i class="fas fa-cake-candles"></i> Birthday</span><span class="value">09/08/2005</span></div>
+            <div class="info-row"><span class="label"><i class="fas fa-ruler-vertical"></i> Height</span><span class="value">5.8 ft</span></div>
+            <div class="info-row"><span class="label"><i class="fas fa-map-marker-alt"></i> Location</span><span class="value">Krishnanagar, 741507</span></div>
+        </div>
+
+        <div class="glass-card">
+            <h2>Top Tracks</h2>
             
-            <div class="quote">
-                "Don't wish for it, Work for it."
-            </div>
-        </div>
-
-        <div class="glass-card">
-            <div class="info-row">
-                <span class="label"><i class="fas fa-cake-candles"></i> Birthday</span>
-                <span class="value">09/08/2005</span>
-            </div>
-            <div class="info-row">
-                <span class="label"><i class="fas fa-ruler-vertical"></i> Height</span>
-                <span class="value">5.8 ft</span>
-            </div>
-            <div class="info-row">
-                <span class="label"><i class="fas fa-map-marker-alt"></i> Location</span>
-                <span class="value">Krishnanagar, 741507</span>
-            </div>
-        </div>
-
-        <div class="glass-card">
-            <div class="split-grid">
-                <div class="grid-column">
-                    <h2>Creativity</h2>
-                    <div class="list-item"><i class="fas fa-palette"></i> Gfx Artist</div>
-                    <div class="list-item"><i class="fas fa-desktop"></i> Digital Art</div>
-                    <div class="list-item"><i class="fas fa-video"></i> Content</div>
-                    <div class="list-item"><i class="fas fa-pen-nib"></i> Writing</div>
+            <div class="music-item" id="track1">
+                <audio id="audio1" src="song1.mp3"></audio>
+                <div class="song-info">
+                    <div class="play-btn" onclick="togglePlay(1)"><i class="fas fa-play"></i></div>
+                    <div class="song-details"><span class="song-title">Amake Nao</span><span class="song-artist">Debayan Banerjee</span></div>
                 </div>
-                <div class="grid-column">
-                    <h2>Education</h2>
-                    <div class="list-item"><i class="fas fa-school"></i> HS: MRBHS</div>
-                    <div class="list-item"><i class="fas fa-university"></i> BA: SLM</div>
-                    <div class="list-item"><i class="fas fa-bolt"></i> ITI</div>
-                    <div class="list-item"><i class="fas fa-laptop-code"></i> MDT</div>
+                <div class="equalizer"><div class="bar"></div><div class="bar"></div><div class="bar"></div></div>
+            </div>
+
+            <div class="music-item" id="track2">
+                <audio id="audio2" src="song2.mp3"></audio>
+                <div class="song-info">
+                    <div class="play-btn" onclick="togglePlay(2)"><i class="fas fa-play"></i></div>
+                    <div class="song-details"><span class="song-title">Finding Her</span><span class="song-artist">Kushagra</span></div>
                 </div>
+                <div class="equalizer"><div class="bar"></div><div class="bar"></div><div class="bar"></div></div>
+            </div>
+
+            <div class="music-item" id="track3">
+                <audio id="audio3" src="song3.mp3"></audio>
+                <div class="song-info">
+                    <div class="play-btn" onclick="togglePlay(3)"><i class="fas fa-play"></i></div>
+                    <div class="song-details"><span class="song-title">Hote Paare Na</span><span class="song-artist">Original Soundtrack</span></div>
+                </div>
+                <div class="equalizer"><div class="bar"></div><div class="bar"></div><div class="bar"></div></div>
+            </div>
+            
+            <div class="music-item" id="track4">
+                <audio id="audio4" src="song4.mp3"></audio>
+                <div class="song-info">
+                    <div class="play-btn" onclick="togglePlay(4)"><i class="fas fa-play"></i></div>
+                    <div class="song-details"><span class="song-title">Rimjhim E Dhara Te</span><span class="song-artist">Shaan, Jeet Gannguli</span></div>
+                </div>
+                <div class="equalizer"><div class="bar"></div><div class="bar"></div><div class="bar"></div></div>
+            </div>
+
+             <div class="music-item" id="track5">
+                <audio id="audio5" src="song5.mp3"></audio>
+                <div class="song-info">
+                    <div class="play-btn" onclick="togglePlay(5)"><i class="fas fa-play"></i></div>
+                    <div class="song-details"><span class="song-title">Mere Naam Tu</span><span class="song-artist">Abhay Jodhpurkar</span></div>
+                </div>
+                <div class="equalizer"><div class="bar"></div><div class="bar"></div><div class="bar"></div></div>
             </div>
         </div>
 
@@ -292,77 +320,123 @@
             <h2>Favorites</h2>
             <div class="info-row"><span class="label">Singers</span><span class="value">Sonu, Arijit, Shreya</span></div>
             <div class="info-row"><span class="label">Color</span><span class="value">Black & White</span></div>
-            <div class="info-row"><span class="label">Actors</span><span class="value">Dev, Varun</span></div>
+            <div class="info-row"><span class="label">Actors</span><span class="value">Dev Adhikari, Varun Dhawan</span></div>
             <div class="info-row"><span class="label">Player</span><span class="value">MS Dhoni</span></div>
             <div class="info-row"><span class="label">Hobby</span><span class="value">New Art</span></div>
         </div>
 
         <div class="glass-card">
+            <div class="section-title">Creativity</div>
+            <div class="creativity-grid">
+                <div class="chip"><i class="fas fa-palette"></i>Gfx Artist</div>
+                <div class="chip"><i class="fas fa-desktop"></i>Digital Art</div>
+                <div class="chip"><i class="fas fa-video"></i>Content</div>
+                <div class="chip"><i class="fas fa-pen-nib"></i>Writing</div>
+            </div>
+
+            <div class="section-title">Education</div>
+            <div class="edu-list">
+                <div class="edu-item">
+                    <div class="edu-icon"><i class="fas fa-school"></i></div>
+                    <div class="edu-text">HS: MRBHS</div>
+                </div>
+                <div class="edu-item">
+                    <div class="edu-icon"><i class="fas fa-university"></i></div>
+                    <div class="edu-text">BA: SRLM</div>
+                </div>
+                <div class="edu-item">
+                    <div class="edu-icon"><i class="fas fa-bolt"></i></div>
+                    <div class="edu-text">ITI Certified</div>
+                </div>
+                <div class="edu-item">
+                    <div class="edu-icon"><i class="fas fa-laptop-code"></i></div>
+                    <div class="edu-text">MDT (NBCE)</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="glass-card">
             <h2>Connect</h2>
             <div class="social-grid">
-                <a href="https://www.instagram.com/gourab_adhikary_?igsh=MWtodnlxY2Rwd3d6YQ==" class="social-btn">
-                    <i class="fab fa-instagram"></i>
-                    Instagram
-                </a>
-                <a href="https://www.facebook.com/share/16j5Yo2LnZ/" class="social-btn">
-                    <i class="fab fa-facebook-f"></i>
-                    Facebook
-                </a>
-                <a href="mailto:linkgourab@gmail.com" class="social-btn">
-                    <i class="fas fa-envelope"></i>
-                    Email
-                </a>
-                <a href="https://pin.it/5LefalJSQ" class="social-btn">
-                    <i class="fab fa-pinterest-p"></i>
-                    Pinterest
-                </a>
-                <a href="https://t.me/pixelated_sky" class="social-btn">
-                    <i class="fab fa-telegram-plane"></i>
-                    Telegram
-                </a>
-                <a href="https://open.spotify.com/user/31ytmu3ev7fgrvf7sd5rts6ta3qi" class="social-btn">
-                    <i class="fab fa-spotify"></i>
-                    Spotify
-                </a>
+                <a href="https://www.instagram.com/gourab_adhikary_?igsh=MWtodnlxY2Rwd3d6YQ==" class="social-btn"><i class="fab fa-instagram"></i>Instagram</a>
+                <a href="https://www.facebook.com/share/16j5Yo2LnZ/" class="social-btn"><i class="fab fa-facebook-f"></i>Facebook</a>
+                <a href="mailto:linkgourab@gmail.com" class="social-btn"><i class="fas fa-envelope"></i>Email</a>
+                <a href="https://pin.it/5LefalJSQ" class="social-btn"><i class="fab fa-pinterest-p"></i>Pinterest</a>
+                <a href="https://t.me/pixelated_sky" class="social-btn"><i class="fab fa-telegram-plane"></i>Telegram</a>
+                <a href="https://open.spotify.com/user/31ytmu3ev7fgrvf7sd5rts6ta3qi" class="social-btn"><i class="fab fa-spotify"></i>Spotify</a>
             </div>
         </div>
 
     </div>
 
     <script>
-        /* --- Enhanced Bouncy Scroll Logic --- */
-        // Trigger animation when 15% of the element is visible
-        const observerOptions = { 
-            threshold: 0.15,
-            rootMargin: "0px 0px -50px 0px" // Adjust trigger point slightly
-        };
-
+        /* --- Bouncy Scroll Logic --- */
+        const observerOptions = { threshold: 0.15, rootMargin: "0px 0px -50px 0px" };
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
-                // If entering the viewport (scrolling down or up into view)
                 if (entry.isIntersecting) {
                     entry.target.classList.add('visible');
-                } 
-                // If leaving the viewport (scrolling past it)
-                else {
-                    // Remove the class so it animates out and is ready to bounce in again
-                    entry.target.classList.remove('visible');
+                } else {
+                    entry.target.classList.remove('visible'); 
                 }
             });
         }, observerOptions);
-
-        // Start observing all glass cards
         document.querySelectorAll('.glass-card').forEach((el) => { observer.observe(el); });
 
-        // Initial Auto-Scroll (optional - remove if you don't want it)
+        /* --- Music Player Logic --- */
+        let currentAudio = null;
+
+        function togglePlay(id) {
+            const audio = document.getElementById(`audio${id}`);
+            const btnIcon = document.querySelector(`#track${id} .play-btn i`);
+            const container = document.getElementById(`track${id}`);
+
+            if (currentAudio === audio && !audio.paused) {
+                audio.pause();
+                btnIcon.classList.remove('fa-pause');
+                btnIcon.classList.add('fa-play');
+                container.classList.remove('playing');
+                currentAudio = null;
+                return;
+            }
+
+            if (currentAudio) {
+                currentAudio.pause();
+                currentAudio.currentTime = 0; 
+                const prevBtn = document.querySelector(`#track${currentAudio.id.replace('audio','')} .play-btn i`);
+                const prevContainer = document.getElementById(`track${currentAudio.id.replace('audio','')}`);
+                prevBtn.classList.remove('fa-pause');
+                prevBtn.classList.add('fa-play');
+                prevContainer.classList.remove('playing');
+            }
+
+            audio.play();
+            btnIcon.classList.remove('fa-play');
+            btnIcon.classList.add('fa-pause');
+            container.classList.add('playing');
+            currentAudio = audio;
+        }
+
+        /* --- Full Auto Scroll with 0.7s Pause --- */
         window.addEventListener('load', () => {
+            // Wait 1 second before starting to ensure page is loaded
             setTimeout(() => {
-                const scrollAmount = document.body.scrollHeight / 5;
-                window.scrollBy({ top: scrollAmount, left: 0, behavior: 'smooth' });
+                // 1. Scroll to the bottom
+                window.scrollTo({
+                    top: document.body.scrollHeight,
+                    behavior: 'smooth'
+                });
+
+                // 2. Wait 1.7 seconds (1s for scroll duration + 0.7s pause)
+                // Assuming smooth scroll takes roughly 1s
                 setTimeout(() => {
-                    window.scrollTo({ top: 0, behavior: 'smooth' });
-                }, 1200);
-            }, 500);
+                    // 3. Scroll back to top
+                    window.scrollTo({
+                        top: 0,
+                        behavior: 'smooth'
+                    });
+                }, 1700); 
+            }, 1000);
         });
     </script>
 
