@@ -10,7 +10,6 @@
     <style>
         /* --- Ghost Liquid Glass Variables --- */
         :root {
-            /* Opacity at 3% */
             --glass-bg: linear-gradient(135deg, rgba(60, 140, 255, 0.03), rgba(220, 100, 255, 0.03));
             --glass-border: 1px solid rgba(255, 255, 255, 0.3);
             --glass-shadow: 
@@ -22,6 +21,7 @@
             --text-secondary: rgba(255, 255, 255, 0.85);
             --card-internal-bg: rgba(0, 0, 0, 0.1); 
             --music-highlight: rgba(255, 255, 255, 0.2);
+            --heart-color: #ff2e63;
         }
 
         * {
@@ -41,7 +41,7 @@
             background-size: cover;
             color: var(--text-primary);
             overflow-x: hidden;
-            padding-bottom: 80px;
+            padding-bottom: 100px;
         }
 
         .container {
@@ -50,7 +50,7 @@
             padding: 20px;
         }
 
-        /* --- Main Glass Card & Physics Animation --- */
+        /* --- Main Glass Card --- */
         .glass-card {
             background: var(--glass-bg);
             backdrop-filter: blur(10px) saturate(110%);
@@ -63,174 +63,144 @@
             position: relative;
             overflow: hidden;
             -webkit-mask-image: -webkit-radial-gradient(white, black); 
-
             opacity: 0;
             transform: scale(0.8) translateY(100px);
             transition: all 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
             will-change: transform, opacity;
         }
-
         .glass-card::after {
-            content: '';
-            position: absolute;
-            inset: 0;
+            content: ''; position: absolute; inset: 0;
             background: linear-gradient(125deg, rgba(255,255,255,0.3) 0%, rgba(255,255,255,0.05) 40%, rgba(255,255,255,0) 70%);
-            pointer-events: none;
-            z-index: 1;
+            pointer-events: none; z-index: 1;
         }
-        
         .glass-card > * { position: relative; z-index: 2; }
+        .glass-card.visible { opacity: 1; transform: scale(1) translateY(0); }
 
-        .glass-card.visible {
-            opacity: 1;
-            transform: scale(1) translateY(0);
+        /* --- iOS Status Bar (Clock & Weather) --- */
+        .status-bar {
+            display: flex; justify-content: space-between; align-items: center;
+            width: 100%; margin-bottom: 15px; padding: 0 5px; opacity: 0.9;
         }
+        .status-left { display: flex; align-items: center; gap: 8px; }
+        .status-time { font-size: 14px; font-weight: 600; letter-spacing: 0.5px; }
+        .status-right { display: flex; align-items: center; gap: 8px; }
+        .status-weather { font-size: 12px; font-weight: 600; display: flex; align-items: center; gap: 4px; }
+        .status-date { font-size: 12px; font-weight: 500; text-transform: uppercase; color: rgba(255,255,255,0.7); }
 
         /* --- Profile --- */
-        .profile-header { text-align: center; }
+        .profile-header { text-align: center; padding-top: 15px; }
         .profile-img {
-            width: 125px;
-            height: 125px;
-            border-radius: 50%;
-            object-fit: cover;
-            border: 3px solid rgba(255, 255, 255, 0.6);
-            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
-            margin-bottom: 15px;
+            width: 125px; height: 125px; border-radius: 50%; object-fit: cover;
+            border: 3px solid rgba(255, 255, 255, 0.6); box-shadow: 0 10px 25px rgba(0,0,0,0.3); margin-bottom: 15px;
         }
         h1 { font-size: 28px; font-weight: 700; margin-bottom: 5px; text-shadow: 0 2px 15px rgba(0,0,0,0.5); letter-spacing: -0.5px; }
-        .tags { font-size: 14px; color: var(--text-secondary); font-weight: 500; margin-bottom: 20px; text-shadow: 0 1px 10px rgba(0,0,0,0.5); }
+        .tags { font-size: 14px; color: var(--text-secondary); font-weight: 500; margin-bottom: 15px; text-shadow: 0 1px 10px rgba(0,0,0,0.5); }
+        
+        .internal-capsule {
+            display: inline-flex; align-items: center; justify-content: center;
+            background: rgba(255, 255, 255, 0.1); padding: 6px 16px; border-radius: 50px;
+            gap: 8px; border: 1px solid rgba(255, 255, 255, 0.15); margin-bottom: 15px;
+        }
+        .capsule-icon { font-size: 12px; color: rgba(255,255,255,0.8); }
+        .capsule-text { font-size: 12px; font-weight: 600; letter-spacing: 0.5px; }
+
         .quote {
-            font-style: italic; font-size: 15px; color: var(--text-primary); margin: 20px auto; padding: 15px;
+            font-style: italic; font-size: 15px; color: var(--text-primary); margin: 10px auto 0; padding: 15px;
             background: var(--card-internal-bg); border-radius: 20px; text-align: center; font-weight: 400;
             border: 1px solid rgba(255,255,255,0.2); backdrop-filter: blur(5px);
         }
 
-        /* --- Info & Grid --- */
-        .info-row {
-            display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid rgba(255,255,255,0.15); font-size: 14px;
+        /* --- Personal Info Grid (With Flip Card) --- */
+        .personal-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; text-align: center; }
+        .personal-item {
+            background: var(--card-internal-bg); padding: 12px 5px; border-radius: 18px; border: 1px solid rgba(255,255,255,0.1);
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            height: 90px; /* Fixed height for flip consistency */
+            position: relative;
         }
+        .personal-icon { font-size: 18px; margin-bottom: 6px; color: rgba(255,255,255,0.9); }
+        .personal-label { font-size: 10px; color: rgba(255,255,255,0.6); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 2px; }
+        .personal-value { font-size: 13px; font-weight: 600; }
+
+        /* FLIP ANIMATION STYLES */
+        .flip-container {
+            perspective: 1000px;
+            width: 100%; height: 100%;
+            border-radius: 18px;
+        }
+        .flip-inner {
+            position: relative; width: 100%; height: 100%; text-align: center;
+            transition: transform 0.8s; transform-style: preserve-3d;
+            display: flex; align-items: center; justify-content: center;
+        }
+        .flip-container.flipped .flip-inner { transform: rotateY(180deg); }
+        
+        .flip-front, .flip-back {
+            position: absolute; width: 100%; height: 100%;
+            -webkit-backface-visibility: hidden; backface-visibility: hidden;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            border-radius: 18px;
+        }
+        .flip-back { transform: rotateY(180deg); background: rgba(255,255,255,0.05); }
+        .countdown-text { font-size: 11px; font-weight: 700; color: #ff9f1c; }
+
+        /* --- Info Rows --- */
+        .info-row { display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid rgba(255,255,255,0.15); font-size: 14px; }
         .info-row:last-child { border-bottom: none; }
         .label { font-weight: 500; color: rgba(255,255,255,0.7); }
         .value { font-weight: 500; text-align: right; text-shadow: 0 2px 10px rgba(0,0,0,0.5); }
         
-        /* --- NEW LAYOUT: Creativity Grid --- */
+        /* --- Creativity Grid --- */
         .section-title { font-size: 18px; margin-bottom: 15px; font-weight: 600; color: #fff; letter-spacing: -0.3px; }
-        
-        .creativity-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 12px;
-            margin-bottom: 25px;
-        }
-        
+        .creativity-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 25px; }
         .chip {
-            background: var(--card-internal-bg);
-            padding: 15px;
-            border-radius: 18px;
-            text-align: center;
-            font-size: 13px;
-            font-weight: 500;
-            border: 1px solid rgba(255,255,255,0.15);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            transition: transform 0.2s;
+            background: var(--card-internal-bg); padding: 15px; border-radius: 18px; text-align: center; font-size: 13px;
+            font-weight: 500; border: 1px solid rgba(255,255,255,0.15); display: flex; flex-direction: column; align-items: center; justify-content: center; transition: transform 0.2s;
         }
         .chip:active { transform: scale(0.95); background: rgba(255,255,255,0.1); }
         .chip i { font-size: 20px; margin-bottom: 8px; color: rgba(255,255,255,0.9); }
 
-        /* --- NEW LAYOUT: Education List --- */
-        .edu-list {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
-        
+        /* --- Education List --- */
+        .edu-list { display: flex; flex-direction: column; gap: 10px; }
         .edu-item {
-            background: var(--card-internal-bg);
-            padding: 15px;
-            border-radius: 18px;
-            text-align: left;
-            border: 1px solid rgba(255,255,255,0.15);
-            display: flex;
-            align-items: center;
+            background: var(--card-internal-bg); padding: 15px; border-radius: 18px; text-align: left;
+            border: 1px solid rgba(255,255,255,0.15); display: flex; align-items: center;
         }
         .edu-icon {
-            width: 40px;
-            height: 40px;
-            border-radius: 12px;
-            background: rgba(255,255,255,0.1);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-right: 15px;
-            font-size: 16px;
-            color: #fff;
+            width: 40px; height: 40px; border-radius: 12px; background: rgba(255,255,255,0.1);
+            display: flex; align-items: center; justify-content: center; margin-right: 15px; font-size: 16px; color: #fff;
         }
-        .edu-text {
-            font-size: 13px;
-            font-weight: 500;
-            line-height: 1.4;
-        }
+        .edu-text { font-size: 13px; font-weight: 500; line-height: 1.4; }
 
         /* --- Music Player Styles --- */
         .music-item {
-            background: rgba(255, 255, 255, 0.05);
-            margin: 10px 0;
-            padding: 12px 15px;
-            border-radius: 20px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            border: 1px solid rgba(255,255,255,0.1);
-            transition: background 0.3s ease;
+            background: rgba(255, 255, 255, 0.05); margin: 10px 0; padding: 12px 15px; border-radius: 20px;
+            display: flex; align-items: center; justify-content: space-between;
+            border: 1px solid rgba(255,255,255,0.1); transition: background 0.3s ease;
         }
         .music-item.playing {
-            background: var(--music-highlight);
-            border-color: rgba(255,255,255,0.4);
-            box-shadow: 0 0 15px rgba(255,255,255,0.1);
+            background: var(--music-highlight); border-color: rgba(255,255,255,0.4); box-shadow: 0 0 15px rgba(255,255,255,0.1);
         }
-        .song-info {
-            display: flex;
-            align-items: center;
-            flex-grow: 1;
-        }
+        .song-info { display: flex; align-items: center; flex-grow: 1; }
         .play-btn {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            background: rgba(255,255,255,0.15);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            margin-right: 15px;
-            border: 1px solid rgba(255,255,255,0.2);
-            transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+            width: 40px; height: 40px; border-radius: 50%; background: rgba(255,255,255,0.15);
+            display: flex; align-items: center; justify-content: center; cursor: pointer; margin-right: 15px;
+            border: 1px solid rgba(255,255,255,0.2); transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
         }
         .play-btn:active { transform: scale(0.9); }
         .play-btn i { font-size: 14px; color: white; margin-left: 2px; }
         .playing .play-btn i { margin-left: 0; }
-        
         .song-details { text-align: left; }
         .song-title { font-size: 14px; font-weight: 600; display: block; }
         .song-artist { font-size: 11px; opacity: 0.7; font-weight: 400; }
-        
-        .equalizer {
-            display: flex; gap: 2px; height: 12px; align-items: flex-end; opacity: 0; transition: opacity 0.3s;
-        }
+        .equalizer { display: flex; gap: 2px; height: 12px; align-items: flex-end; opacity: 0; transition: opacity 0.3s; }
         .bar { width: 3px; background: white; border-radius: 2px; animation: bounce 0s infinite; }
         .playing .equalizer { opacity: 1; }
         .playing .bar { animation-duration: 0.5s; }
         .bar:nth-child(1) { animation-delay: 0.1s; }
         .bar:nth-child(2) { animation-delay: 0.3s; }
         .bar:nth-child(3) { animation-delay: 0.0s; }
-        
-        @keyframes bounce {
-            0%, 100% { height: 3px; }
-            50% { height: 12px; }
-        }
+        @keyframes bounce { 0%, 100% { height: 3px; } 50% { height: 12px; } }
 
         /* --- Social Grid --- */
         .social-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 10px; }
@@ -238,7 +208,7 @@
             display: flex; flex-direction: column; align-items: center; justify-content: center;
             background: rgba(255, 255, 255, 0.12); color: var(--text-primary); text-decoration: none;
             padding: 15px 5px; border-radius: 22px; font-weight: 500; font-size: 12px;
-            border: 1px solid rgba(255,255,255,0.25); transition: all 0.2s ease; position: relative; overflow: hidden;
+            border: 1px solid rgba(255,255,255,0.25); transition: all 0.2s ease; position: relative; overflow: hidden; cursor: pointer;
         }
         .social-btn::after {
             content: ''; position: absolute; top:0; left:0; right:0; height: 50%;
@@ -248,23 +218,129 @@
         .social-btn:active { background: rgba(255, 255, 255, 0.3); transform: scale(0.96); box-shadow: 0 0 25px rgba(255, 255, 255, 0.5); }
 
         h2 { font-size: 19px; margin-bottom: 15px; text-align: left; font-weight: 600; text-shadow: 0 2px 10px rgba(0,0,0,0.5); letter-spacing: -0.3px; }
+
+        /* --- Like Button & Animation --- */
+        .like-container {
+            position: fixed; bottom: 25px; right: 25px; width: 60px; height: 60px;
+            background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.4); border-radius: 50%;
+            display: flex; align-items: center; justify-content: center; cursor: pointer;
+            z-index: 1000; box-shadow: 0 10px 30px rgba(0,0,0,0.3); transition: all 0.3s ease;
+        }
+        .like-container i { color: white; font-size: 24px; transition: all 0.3s; }
+        .like-container.liked { border-color: var(--heart-color); background: rgba(255, 46, 99, 0.15); box-shadow: 0 0 30px rgba(255, 46, 99, 0.5); }
+        .like-container.liked i { color: var(--heart-color); }
+
+        #thumbsUpPopup {
+            position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%) scale(0);
+            font-size: 100px; z-index: 2000; opacity: 0; pointer-events: none;
+            background: -webkit-linear-gradient(45deg, #00c6ff, #0072ff); -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            filter: drop-shadow(0 10px 20px rgba(0,114,255,0.4));
+        }
+        @keyframes fbLikePop {
+            0% { transform: translate(-50%, -50%) scale(0) rotate(-30deg); opacity: 0; }
+            50% { transform: translate(-50%, -50%) scale(1.2) rotate(0deg); opacity: 1; }
+            70% { transform: translate(-50%, -50%) scale(0.9) rotate(0deg); opacity: 1; }
+            100% { transform: translate(-50%, -50%) scale(1.5) rotate(-10deg); opacity: 0; }
+        }
+
+        /* --- QR Code Modal --- */
+        .qr-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.5); backdrop-filter: blur(8px);
+            z-index: 3000; display: none; align-items: center; justify-content: center;
+            opacity: 0; transition: opacity 0.3s;
+        }
+        .qr-overlay.active { display: flex; opacity: 1; }
+        .qr-card {
+            text-align: center; padding: 25px; width: 280px; margin: 0 auto;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.02));
+            backdrop-filter: blur(30px); -webkit-backdrop-filter: blur(30px);
+            border: 1px solid rgba(255, 255, 255, 0.25); border-radius: 30px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.4); transform: scale(0.8); transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        .qr-overlay.active .qr-card { transform: scale(1); }
+        .qr-img { width: 180px; height: 180px; border-radius: 15px; margin: 15px auto; display: block; border: 3px solid rgba(255,255,255,0.2); background: #ffffff; padding: 10px; }
+        .qr-title { font-size: 18px; font-weight: 700; color: white; margin-bottom: 5px; }
+        .qr-subtitle { font-size: 12px; color: rgba(255,255,255,0.7); margin-bottom: 15px; }
+        .qr-close-btn {
+            margin-top: 5px; padding: 10px 30px; background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 25px; font-size: 13px; font-weight: 600; cursor: pointer; color: white; transition: all 0.2s;
+        }
+        .qr-close-btn:active { background: rgba(255,255,255,0.3); transform: scale(0.95); }
+
     </style>
 </head>
 <body>
 
+    <div id="thumbsUpPopup"><i class="fas fa-thumbs-up"></i></div>
+
+    <div id="qrModal" class="qr-overlay" onclick="closeQR()">
+        <div class="qr-card" onclick="event.stopPropagation()">
+            <div class="qr-title">Scan to Share</div>
+            <div class="qr-subtitle">Share Gourab's Profile</div>
+            <img id="qrImage" src="" alt="QR Code" class="qr-img">
+            <br>
+            <button class="qr-close-btn" onclick="closeQR()">Close</button>
+        </div>
+    </div>
+
     <div class="container">
         
         <div class="glass-card profile-header">
+            <div class="status-bar">
+                <div class="status-left">
+                    <span class="status-time" id="clock-time">00:00</span>
+                </div>
+                <div class="status-right">
+                    <div class="status-weather" id="weather-info">
+                        <span>--°</span> <i class="fas fa-cloud"></i>
+                    </div>
+                    <span class="status-date" id="clock-date">DATE</span>
+                </div>
+            </div>
+
             <img src="https://cdn.discordapp.com/attachments/1345025532659503115/1467758711081799804/10001682842.jpg?ex=69818c52&is=69803ad2&hm=dacedadde4fca62b78b45d705565a2c1e0330a73143b49e9ec8b777a6a5bcb92&" alt="Profile" class="profile-img">
             <h1>Gourab Adhikary</h1>
             <p class="tags">Artist • Extrovert • Melophile</p>
+            
+            <div class="internal-capsule">
+                <i class="fas fa-eye capsule-icon"></i>
+                <span class="capsule-text" id="visit-count">10,000</span>
+            </div>
+
             <div class="quote">"Don't wish for it, Work for it."</div>
         </div>
 
         <div class="glass-card">
-            <div class="info-row"><span class="label"><i class="fas fa-cake-candles"></i> Birthday</span><span class="value">09/08/2005</span></div>
-            <div class="info-row"><span class="label"><i class="fas fa-ruler-vertical"></i> Height</span><span class="value">5.8 ft</span></div>
-            <div class="info-row"><span class="label"><i class="fas fa-map-marker-alt"></i> Location</span><span class="value">Krishnanagar, 741507</span></div>
+            <div class="personal-grid">
+                
+                <div class="personal-item flip-container" id="bday-card">
+                    <div class="flip-inner">
+                        <div class="flip-front">
+                            <span class="personal-label">Birthday</span>
+                            <i class="fas fa-cake-candles personal-icon"></i>
+                            <span class="personal-value">09/08</span>
+                        </div>
+                        <div class="flip-back">
+                            <span class="personal-label">Countdown</span>
+                            <i class="fas fa-hourglass-half personal-icon" style="color: #ff9f1c;"></i>
+                            <span class="personal-value countdown-text" id="bday-countdown">-- Days</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="personal-item">
+                    <span class="personal-label">Height</span>
+                    <i class="fas fa-ruler-vertical personal-icon"></i>
+                    <span class="personal-value">5.8 ft</span>
+                </div>
+                <div class="personal-item">
+                    <span class="personal-label">Location</span>
+                    <i class="fas fa-map-marker-alt personal-icon"></i>
+                    <span class="personal-value">Nadia</span>
+                </div>
+            </div>
         </div>
 
         <div class="glass-card">
@@ -364,80 +440,151 @@
                 <a href="https://pin.it/5LefalJSQ" class="social-btn"><i class="fab fa-pinterest-p"></i>Pinterest</a>
                 <a href="https://t.me/pixelated_sky" class="social-btn"><i class="fab fa-telegram-plane"></i>Telegram</a>
                 <a href="https://open.spotify.com/user/31ytmu3ev7fgrvf7sd5rts6ta3qi" class="social-btn"><i class="fab fa-spotify"></i>Spotify</a>
+                <div class="social-btn" onclick="openQR()" style="grid-column: span 3;">
+                    <i class="fas fa-qrcode"></i> Share Profile
+                </div>
             </div>
         </div>
 
     </div>
 
+    <div class="like-container" onclick="triggerLikeEffect()">
+        <i class="fas fa-heart"></i>
+    </div>
+
     <script>
-        /* --- Bouncy Scroll Logic --- */
-        const observerOptions = { threshold: 0.15, rootMargin: "0px 0px -50px 0px" };
+        /* --- Pop Sound --- */
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        function playPop() {
+            if (audioCtx.state === 'suspended') audioCtx.resume();
+            const osc = audioCtx.createOscillator();
+            const gainNode = audioCtx.createGain();
+            osc.connect(gainNode);
+            gainNode.connect(audioCtx.destination);
+            osc.type = 'sine';
+            osc.frequency.setValueAtTime(800, audioCtx.currentTime);
+            osc.frequency.exponentialRampToValueAtTime(300, audioCtx.currentTime + 0.1);
+            gainNode.gain.setValueAtTime(0.3, audioCtx.currentTime);
+            gainNode.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.1);
+            osc.start(); osc.stop(audioCtx.currentTime + 0.1);
+        }
+        document.addEventListener('DOMContentLoaded', () => {
+            const buttons = document.querySelectorAll('.social-btn, .play-btn, .like-container, .qr-close-btn');
+            buttons.forEach(btn => { btn.addEventListener('click', playPop); });
+        });
+
+        /* --- Scroll --- */
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('visible');
-                } else {
-                    entry.target.classList.remove('visible'); 
-                }
+                if (entry.isIntersecting) entry.target.classList.add('visible');
+                else entry.target.classList.remove('visible'); 
             });
-        }, observerOptions);
+        }, { threshold: 0.15, rootMargin: "0px 0px -50px 0px" });
         document.querySelectorAll('.glass-card').forEach((el) => { observer.observe(el); });
 
-        /* --- Music Player Logic --- */
+        /* --- Music --- */
         let currentAudio = null;
-
         function togglePlay(id) {
+            playPop();
             const audio = document.getElementById(`audio${id}`);
             const btnIcon = document.querySelector(`#track${id} .play-btn i`);
             const container = document.getElementById(`track${id}`);
-
             if (currentAudio === audio && !audio.paused) {
-                audio.pause();
-                btnIcon.classList.remove('fa-pause');
-                btnIcon.classList.add('fa-play');
-                container.classList.remove('playing');
-                currentAudio = null;
-                return;
+                audio.pause(); btnIcon.classList.remove('fa-pause'); btnIcon.classList.add('fa-play'); container.classList.remove('playing'); currentAudio = null; return;
             }
-
             if (currentAudio) {
-                currentAudio.pause();
-                currentAudio.currentTime = 0; 
+                currentAudio.pause(); currentAudio.currentTime = 0; 
                 const prevBtn = document.querySelector(`#track${currentAudio.id.replace('audio','')} .play-btn i`);
                 const prevContainer = document.getElementById(`track${currentAudio.id.replace('audio','')}`);
-                prevBtn.classList.remove('fa-pause');
-                prevBtn.classList.add('fa-play');
-                prevContainer.classList.remove('playing');
+                prevBtn.classList.remove('fa-pause'); prevBtn.classList.add('fa-play'); prevContainer.classList.remove('playing');
             }
-
-            audio.play();
-            btnIcon.classList.remove('fa-play');
-            btnIcon.classList.add('fa-pause');
-            container.classList.add('playing');
-            currentAudio = audio;
+            audio.play(); btnIcon.classList.remove('fa-play'); btnIcon.classList.add('fa-pause'); container.classList.add('playing'); currentAudio = audio;
         }
 
-        /* --- Full Auto Scroll with 0.7s Pause --- */
-        window.addEventListener('load', () => {
-            // Wait 1 second before starting to ensure page is loaded
-            setTimeout(() => {
-                // 1. Scroll to the bottom
-                window.scrollTo({
-                    top: document.body.scrollHeight,
-                    behavior: 'smooth'
-                });
+        /* --- Visitor --- */
+        fetch('https://api.counterapi.dev/v1/gourab-bio/views/up')
+            .then(r => r.json()).then(d => { document.getElementById('visit-count').innerText = (10000 + d.count).toLocaleString(); })
+            .catch(() => { document.getElementById('visit-count').innerText = "10,008"; });
 
-                // 2. Wait 1.7 seconds (1s for scroll duration + 0.7s pause)
-                // Assuming smooth scroll takes roughly 1s
-                setTimeout(() => {
-                    // 3. Scroll back to top
-                    window.scrollTo({
-                        top: 0,
-                        behavior: 'smooth'
-                    });
-                }, 1700); 
+        /* --- Auto Scroll --- */
+        window.addEventListener('load', () => {
+            setTimeout(() => { window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+                setTimeout(() => { window.scrollTo({ top: 0, behavior: 'smooth' }); }, 1700); 
             }, 1000);
         });
+
+        /* --- Clock --- */
+        function updateClock() {
+            const now = new Date();
+            const timeString = now.toLocaleTimeString('en-US', { hour12: false, hour: '2-digit', minute: '2-digit' });
+            const dateString = now.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' });
+            document.getElementById('clock-time').innerText = timeString;
+            document.getElementById('clock-date').innerText = dateString;
+        }
+        setInterval(updateClock, 1000); updateClock(); 
+
+        /* --- Like Effect --- */
+        function triggerLikeEffect() {
+            const btn = document.querySelector('.like-container');
+            const popup = document.getElementById('thumbsUpPopup');
+            btn.classList.add('liked');
+            popup.style.animation = 'none'; popup.offsetHeight; popup.style.animation = 'fbLikePop 0.8s ease-out forwards';
+        }
+
+        /* --- QR Code --- */
+        function openQR() {
+            playPop();
+            const modal = document.getElementById('qrModal');
+            const qrImg = document.getElementById('qrImage');
+            qrImg.src = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(window.location.href)}`;
+            modal.style.display = 'flex'; setTimeout(() => modal.classList.add('active'), 10);
+        }
+        function closeQR() {
+            playPop();
+            const modal = document.getElementById('qrModal');
+            modal.classList.remove('active'); setTimeout(() => modal.style.display = 'none', 300);
+        }
+
+        /* --- NEW: Weather Logic (Lat/Long for Majhdia/Krishnanagar) --- */
+        async function fetchWeather() {
+            try {
+                // Majhdia approx lat/long: 23.4, 88.5
+                const res = await fetch('https://api.open-meteo.com/v1/forecast?latitude=23.4&longitude=88.5&current_weather=true');
+                const data = await res.json();
+                const temp = Math.round(data.current_weather.temperature);
+                
+                // Update DOM
+                const weatherInfo = document.getElementById('weather-info');
+                weatherInfo.innerHTML = `${temp}° <i class="fas fa-cloud"></i>`;
+            } catch (e) {
+                console.error("Weather failed");
+            }
+        }
+        fetchWeather(); // Fetch once on load
+
+        /* --- NEW: Birthday Flip Animation --- */
+        function updateBirthday() {
+            const now = new Date();
+            const currentYear = now.getFullYear();
+            let bday = new Date(currentYear, 7, 9); // Month is 0-indexed: 7 = August, 9 = 9th
+            
+            // If birthday passed this year, calc for next year
+            if (now > bday) {
+                bday.setFullYear(currentYear + 1);
+            }
+            
+            const diffTime = Math.abs(bday - now);
+            const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)); 
+            
+            document.getElementById('bday-countdown').innerText = `${diffDays} Days Left`;
+        }
+        updateBirthday();
+
+        // Flip every 4 seconds
+        setInterval(() => {
+            document.getElementById('bday-card').classList.toggle('flipped');
+        }, 4000);
+
     </script>
 
 </body>
