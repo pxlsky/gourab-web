@@ -8,15 +8,10 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     
     <style>
-        /* --- Ghost Liquid Glass Variables --- */
         :root {
             --glass-bg: linear-gradient(135deg, rgba(60, 140, 255, 0.03), rgba(220, 100, 255, 0.03));
             --glass-border: 1px solid rgba(255, 255, 255, 0.3);
-            --glass-shadow: 
-                0 20px 40px rgba(0, 0, 0, 0.2), 
-                inset 0 1px 2px rgba(255, 255, 255, 0.6), 
-                inset 0 0 10px rgba(255, 255, 255, 0.1); 
-
+            --glass-shadow: 0 20px 40px rgba(0, 0, 0, 0.2), inset 0 1px 2px rgba(255, 255, 255, 0.6), inset 0 0 10px rgba(255, 255, 255, 0.1); 
             --text-primary: #ffffff; 
             --text-secondary: rgba(255, 255, 255, 0.85);
             --card-internal-bg: rgba(0, 0, 0, 0.1); 
@@ -24,209 +19,154 @@
             --heart-color: #ff2e63;
         }
 
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            -webkit-tap-highlight-color: transparent;
-        }
+        * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
 
         body {
             font-family: 'Inter', sans-serif;
             background-color: #000000;
             background-image: url('https://cdn.discordapp.com/attachments/1345025532659503115/1467758726072238121/1000199447.jpg?ex=69818c55&is=69803ad5&hm=1047b9de688aa0a534be2061b6174f359ca9fee911d37fc148475d2d6e9d5e69&');
-            background-repeat: no-repeat;
-            background-position: center center;
-            background-attachment: fixed;
-            background-size: cover;
-            color: var(--text-primary);
-            overflow-x: hidden;
-            padding-bottom: 100px;
+            background-repeat: no-repeat; background-position: center center; background-attachment: fixed; background-size: cover;
+            color: var(--text-primary); overflow-x: hidden; padding-bottom: 100px;
+            text-rendering: optimizeLegibility; -webkit-font-smoothing: antialiased;
         }
 
-        .container {
-            max-width: 500px;
-            margin: 0 auto;
-            padding: 20px;
-        }
+        .container { max-width: 500px; margin: 0 auto; padding: 20px; }
 
-        /* --- Main Glass Card --- */
+        /* --- 1. SUPER ELASTIC SPRING PHYSICS --- */
         .glass-card {
             background: var(--glass-bg);
-            backdrop-filter: blur(10px) saturate(110%);
-            -webkit-backdrop-filter: blur(10px) saturate(110%);
-            border-radius: 32px;
-            border: var(--glass-border);
-            box-shadow: var(--glass-shadow);
-            padding: 25px;
-            margin-bottom: 30px;
-            position: relative;
-            overflow: hidden;
-            -webkit-mask-image: -webkit-radial-gradient(white, black); 
-            opacity: 0;
-            transform: scale(0.8) translateY(100px);
-            transition: all 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+            backdrop-filter: blur(10px) saturate(110%); -webkit-backdrop-filter: blur(10px) saturate(110%);
+            border-radius: 32px; border: var(--glass-border); box-shadow: var(--glass-shadow);
+            padding: 25px; margin-bottom: 30px; position: relative; overflow: hidden;
+            
+            /* Initial: Shrunk and Lower */
+            transform: translate3d(0, 80px, 0) scale(0.85);
+            opacity: 0; 
+            
+            /* The Magic Curve: Goes past the target (1.0) to (1.05) then snaps back */
+            /* cubic-bezier(x1, y1, x2, y2) -> The values > 1 create the bounce */
+            transition: opacity 0.6s ease, transform 0.7s cubic-bezier(0.34, 1.56, 0.64, 1);
             will-change: transform, opacity;
         }
-        .glass-card::after {
-            content: ''; position: absolute; inset: 0;
-            background: linear-gradient(125deg, rgba(255,255,255,0.3) 0%, rgba(255,255,255,0.05) 40%, rgba(255,255,255,0) 70%);
-            pointer-events: none; z-index: 1;
-        }
-        .glass-card > * { position: relative; z-index: 2; }
-        .glass-card.visible { opacity: 1; transform: scale(1) translateY(0); }
+        
+        .glass-card.visible { opacity: 1; transform: translate3d(0, 0, 0) scale(1); }
 
-        /* --- iOS Status Bar --- */
-        .status-bar {
-            display: flex; justify-content: space-between; align-items: center;
-            width: 100%; margin-bottom: 15px; padding: 0 5px; opacity: 0.9;
-        }
-        .status-left { display: flex; align-items: center; gap: 8px; }
-        .status-time { font-size: 14px; font-weight: 600; letter-spacing: 0.5px; }
-        .status-right { display: flex; align-items: center; gap: 8px; }
-        .status-weather { font-size: 12px; font-weight: 600; display: flex; align-items: center; gap: 4px; }
-        .status-date { font-size: 12px; font-weight: 500; text-transform: uppercase; color: rgba(255,255,255,0.7); }
-
-        /* --- Profile --- */
+        /* Profile Header */
+        .status-bar { display: flex; justify-content: space-between; align-items: center; width: 100%; margin-bottom: 15px; opacity: 0.9; }
         .profile-header { text-align: center; padding-top: 15px; }
-        .profile-img {
-            width: 125px; height: 125px; border-radius: 50%; object-fit: cover;
+        
+        /* Floating Animation for Profile Pic */
+        @keyframes float { 0% { transform: translateY(0px); } 50% { transform: translateY(-8px); } 100% { transform: translateY(0px); } }
+        .profile-img { 
+            width: 130px; height: 130px; border-radius: 50%; object-fit: cover; 
             border: 3px solid rgba(255, 255, 255, 0.6); box-shadow: 0 10px 25px rgba(0,0,0,0.3); margin-bottom: 15px;
-        }
-        h1 { 
-            font-size: 28px; font-weight: 700; margin-bottom: 5px; 
-            text-shadow: 0 2px 15px rgba(0,0,0,0.5); letter-spacing: -0.5px;
-            display: flex; align-items: center; justify-content: center; gap: 8px;
+            animation: float 4s ease-in-out infinite; /* Breathing effect */
         }
         
-        .verified-badge {
-            color: #4dabf7; font-size: 20px; cursor: pointer;
-            filter: drop-shadow(0 0 8px rgba(77, 171, 247, 0.5)); transition: transform 0.5s ease;
-        }
+        h1 { font-size: 28px; font-weight: 700; margin-bottom: 5px; text-shadow: 0 2px 15px rgba(0,0,0,0.5); display: flex; align-items: center; justify-content: center; gap: 8px; }
+        .verified-badge { color: #4dabf7; font-size: 22px; cursor: pointer; filter: drop-shadow(0 0 8px rgba(77, 171, 247, 0.5)); transition: transform 0.5s ease; }
         .verified-badge.spin { transform: rotate(360deg) scale(1.2); }
+        .tags { font-size: 14px; color: var(--text-secondary); font-weight: 500; margin-bottom: 15px; }
 
-        .tags { font-size: 14px; color: var(--text-secondary); font-weight: 500; margin-bottom: 15px; text-shadow: 0 1px 10px rgba(0,0,0,0.5); }
-        
-        .internal-capsule {
-            display: inline-flex; align-items: center; justify-content: center;
-            background: rgba(255, 255, 255, 0.1); padding: 6px 16px; border-radius: 50px;
-            gap: 8px; border: 1px solid rgba(255, 255, 255, 0.15); margin-bottom: 15px;
+        /* LIVE STATUS CARD */
+        .live-status-box {
+            background: rgba(0, 0, 0, 0.3); border-radius: 20px; padding: 12px; margin-bottom: 5px;
+            display: flex; align-items: center; gap: 12px; border: 1px solid rgba(255,255,255,0.1);
         }
-        .capsule-icon { font-size: 12px; color: rgba(255,255,255,0.8); }
-        .capsule-text { font-size: 12px; font-weight: 600; letter-spacing: 0.5px; }
+        #status-dot { width: 12px; height: 12px; border-radius: 50%; background: #9ca3af; box-shadow: 0 0 10px rgba(156,163,175,0.4); }
+        .activity-text { display: flex; flex-direction: column; text-align: left; overflow: hidden; }
+        #activity-name { font-size: 13px; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        #activity-detail { font-size: 11px; opacity: 0.7; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 
-        .quote {
-            font-style: italic; font-size: 15px; color: var(--text-primary); margin: 10px auto 0; padding: 15px;
-            background: var(--card-internal-bg); border-radius: 20px; text-align: center; font-weight: 400;
-            border: 1px solid rgba(255,255,255,0.2); backdrop-filter: blur(5px);
-        }
-
-        /* --- Personal Info Grid --- */
+        /* Personal Grid */
         .personal-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; text-align: center; }
-        .personal-item {
-            background: var(--card-internal-bg); padding: 12px 5px; border-radius: 18px; border: 1px solid rgba(255,255,255,0.1);
-            display: flex; flex-direction: column; align-items: center; justify-content: center;
-            height: 90px; position: relative;
-        }
-        .personal-icon { font-size: 18px; margin-bottom: 6px; color: rgba(255,255,255,0.9); }
-        .personal-label { font-size: 10px; color: rgba(255,255,255,0.6); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 2px; }
+        .personal-item { background: var(--card-internal-bg); padding: 12px 5px; border-radius: 18px; border: 1px solid rgba(255,255,255,0.1); display: flex; flex-direction: column; align-items: center; justify-content: center; height: 95px; transition: transform 0.2s; }
+        .personal-item:active { transform: scale(0.95); } /* Tactile Tap */
+        .personal-icon { font-size: 20px; margin-bottom: 6px; color: rgba(255,255,255,0.9); }
+        .personal-label { font-size: 10px; opacity: 0.6; text-transform: uppercase; }
         .personal-value { font-size: 13px; font-weight: 600; }
-
-        /* Flip Animation */
+        
         .flip-container { perspective: 1000px; width: 100%; height: 100%; border-radius: 18px; }
         .flip-inner { position: relative; width: 100%; height: 100%; text-align: center; transition: transform 0.8s; transform-style: preserve-3d; display: flex; align-items: center; justify-content: center; }
         .flip-container.flipped .flip-inner { transform: rotateY(180deg); }
-        .flip-front, .flip-back { position: absolute; width: 100%; height: 100%; backface-visibility: hidden; -webkit-backface-visibility: hidden; display: flex; flex-direction: column; align-items: center; justify-content: center; border-radius: 18px; }
+        .flip-front, .flip-back { position: absolute; width: 100%; height: 100%; backface-visibility: hidden; display: flex; flex-direction: column; align-items: center; justify-content: center; border-radius: 18px; }
         .flip-back { transform: rotateY(180deg); background: rgba(255,255,255,0.05); }
-        .countdown-text { font-size: 11px; font-weight: 700; color: #ff9f1c; }
 
-        /* --- Info Rows --- */
+        /* Details */
         .info-row { display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid rgba(255,255,255,0.15); font-size: 14px; }
         .info-row:last-child { border-bottom: none; }
-        .label { font-weight: 500; color: rgba(255,255,255,0.7); }
-        .value { font-weight: 500; text-align: right; text-shadow: 0 2px 10px rgba(0,0,0,0.5); }
-        
-        /* --- Creativity Grid --- */
-        .section-title { font-size: 18px; margin-bottom: 15px; font-weight: 600; color: #fff; letter-spacing: -0.3px; }
         .creativity-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 25px; }
-        .chip {
-            background: var(--card-internal-bg); padding: 15px; border-radius: 18px; text-align: center; font-size: 13px;
-            font-weight: 500; border: 1px solid rgba(255,255,255,0.15); display: flex; flex-direction: column; align-items: center; justify-content: center; transition: transform 0.2s;
-        }
-        .chip:active { transform: scale(0.95); background: rgba(255,255,255,0.1); }
-        .chip i { font-size: 20px; margin-bottom: 8px; color: rgba(255,255,255,0.9); }
-
-        /* --- Education List --- */
+        .chip { background: var(--card-internal-bg); padding: 15px; border-radius: 18px; text-align: center; font-size: 13px; font-weight: 500; border: 1px solid rgba(255,255,255,0.15); display: flex; flex-direction: column; align-items: center; justify-content: center; transition: transform 0.2s; }
+        .chip:active { transform: scale(0.95); }
+        .chip i { font-size: 22px; margin-bottom: 8px; }
         .edu-list { display: flex; flex-direction: column; gap: 10px; }
-        .edu-item {
-            background: var(--card-internal-bg); padding: 15px; border-radius: 18px; text-align: left;
-            border: 1px solid rgba(255,255,255,0.15); display: flex; align-items: center;
-        }
-        .edu-icon {
-            width: 40px; height: 40px; border-radius: 12px; background: rgba(255,255,255,0.1);
-            display: flex; align-items: center; justify-content: center; margin-right: 15px; font-size: 16px; color: #fff;
-        }
-        .edu-text { font-size: 13px; font-weight: 500; line-height: 1.4; }
+        .edu-item { background: var(--card-internal-bg); padding: 15px; border-radius: 18px; display: flex; align-items: center; border: 1px solid rgba(255,255,255,0.15); }
+        .edu-icon { width: 40px; height: 40px; border-radius: 12px; background: rgba(255,255,255,0.1); display: flex; align-items: center; justify-content: center; margin-right: 15px; font-size: 18px; }
 
-        /* --- Music Player Styles --- */
-        .music-item {
-            background: rgba(255, 255, 255, 0.05); margin: 10px 0; padding: 12px 15px; border-radius: 20px;
-            display: flex; align-items: center; justify-content: space-between;
-            border: 1px solid rgba(255,255,255,0.1); transition: background 0.3s ease;
-        }
-        .music-item.playing {
-            background: var(--music-highlight); border-color: rgba(255,255,255,0.4); box-shadow: 0 0 15px rgba(255,255,255,0.1);
-        }
-        .song-info { display: flex; align-items: center; flex-grow: 1; }
-        .play-btn {
-            width: 40px; height: 40px; border-radius: 50%; background: rgba(255,255,255,0.15);
-            display: flex; align-items: center; justify-content: center; cursor: pointer; margin-right: 15px;
-            border: 1px solid rgba(255,255,255,0.2); transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
-        }
-        .play-btn:active { transform: scale(0.9); }
-        .play-btn i { font-size: 14px; color: white; margin-left: 2px; }
-        .playing .play-btn i { margin-left: 0; }
-        .song-details { text-align: left; }
-        .song-title { font-size: 14px; font-weight: 600; display: block; }
-        .song-artist { font-size: 11px; opacity: 0.7; font-weight: 400; }
+        /* Music Player */
+        .music-item { background: rgba(255, 255, 255, 0.05); margin: 10px 0; padding: 12px 15px; border-radius: 20px; display: flex; align-items: center; justify-content: space-between; border: 1px solid rgba(255,255,255,0.1); transition: background 0.3s ease; }
+        .music-item.playing { background: var(--music-highlight); border-color: rgba(255,255,255,0.4); box-shadow: 0 0 15px rgba(255,255,255,0.1); }
+        .play-btn { width: 40px; height: 40px; border-radius: 50%; background: rgba(255,255,255,0.15); display: flex; align-items: center; justify-content: center; cursor: pointer; margin-right: 15px; border: 1px solid rgba(255,255,255,0.2); transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1); }
+        .play-btn:active { transform: scale(0.85); } /* Deeper click */
         .equalizer { display: flex; gap: 2px; height: 12px; align-items: flex-end; opacity: 0; transition: opacity 0.3s; }
-        .bar { width: 3px; background: white; border-radius: 2px; animation: bounce 0s infinite; }
         .playing .equalizer { opacity: 1; }
+        .bar { width: 3px; background: white; border-radius: 2px; animation: bounce 0s infinite; }
         .playing .bar { animation-duration: 0.5s; }
-        .bar:nth-child(1) { animation-delay: 0.1s; }
-        .bar:nth-child(2) { animation-delay: 0.3s; }
-        .bar:nth-child(3) { animation-delay: 0.0s; }
+        .bar:nth-child(1) { animation-delay: 0.1s; } .bar:nth-child(2) { animation-delay: 0.3s; }
         @keyframes bounce { 0%, 100% { height: 3px; } 50% { height: 12px; } }
 
-        /* --- Social Grid --- */
+        /* Social Buttons */
         .social-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 10px; }
         .social-btn {
             display: flex; flex-direction: column; align-items: center; justify-content: center;
             background: rgba(255, 255, 255, 0.12); color: var(--text-primary); text-decoration: none;
-            padding: 15px 5px; border-radius: 22px; font-weight: 500; font-size: 12px;
+            padding: 18px 5px; 
+            border-radius: 24px; font-weight: 500; font-size: 13px;
             border: 1px solid rgba(255,255,255,0.25); transition: all 0.2s ease; position: relative; overflow: hidden; cursor: pointer;
+            backface-visibility: hidden;
         }
-        .social-btn::after {
-            content: ''; position: absolute; top:0; left:0; right:0; height: 50%;
-            background: linear-gradient(180deg, rgba(255,255,255,0.2) 0%, rgba(255,255,255,0) 100%); pointer-events: none;
-        }
-        .social-btn i { font-size: 22px; margin-bottom: 6px; color: #fff; filter: drop-shadow(0 2px 5px rgba(0,0,0,0.3)); }
-        .social-btn:active { background: rgba(255, 255, 255, 0.3); transform: scale(0.96); box-shadow: 0 0 25px rgba(255, 255, 255, 0.5); }
+        .social-btn::after { content: ''; position: absolute; top:0; left:0; right:0; height: 50%; background: linear-gradient(180deg, rgba(255,255,255,0.2) 0%, rgba(255,255,255,0) 100%); pointer-events: none; }
+        .social-btn i { font-size: 26px; margin-bottom: 8px; color: #fff; filter: drop-shadow(0 2px 5px rgba(0,0,0,0.3)); }
+        .social-btn:active { transform: scale(0.9); background: rgba(255,255,255,0.3); }
 
-        h2 { font-size: 19px; margin-bottom: 15px; text-align: left; font-weight: 600; text-shadow: 0 2px 10px rgba(0,0,0,0.5); letter-spacing: -0.3px; }
-
-        /* --- Like Button --- */
-        .like-container {
-            position: fixed; bottom: 25px; right: 25px; width: 60px; height: 60px;
-            background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(15px);
-            border: 1px solid rgba(255, 255, 255, 0.4); border-radius: 50%;
-            display: flex; align-items: center; justify-content: center; cursor: pointer;
-            z-index: 1000; box-shadow: 0 10px 30px rgba(0,0,0,0.3); transition: all 0.3s ease;
+        /* --- 2. FLIP MORPH ANIMATIONS --- */
+        @keyframes btnToCard {
+            0% { transform: perspective(600px) rotateY(0deg) scale(1); opacity: 1; }
+            100% { transform: perspective(600px) rotateY(90deg) scale(0.8); opacity: 0; }
         }
-        .like-container i { color: white; font-size: 24px; transition: all 0.3s; }
+        @keyframes cardFromBtn {
+            0% { transform: perspective(600px) rotateY(-90deg) scale(0.8); opacity: 0; }
+            100% { transform: perspective(600px) rotateY(0deg) scale(1); opacity: 1; }
+        }
+        @keyframes cardToBtn {
+            0% { transform: perspective(600px) rotateY(0deg) scale(1); opacity: 1; }
+            100% { transform: perspective(600px) rotateY(90deg) scale(0.8); opacity: 0; }
+        }
+        @keyframes btnFromCard {
+            0% { transform: perspective(600px) rotateY(-90deg) scale(0.8); opacity: 0; }
+            100% { transform: perspective(600px) rotateY(0deg) scale(1); opacity: 1; }
+        }
+
+        .morph-out-fwd { animation: btnToCard 0.4s forwards ease-in; pointer-events: none; }
+        .morph-in-fwd { animation: cardFromBtn 0.5s forwards cubic-bezier(0.175, 0.885, 0.32, 1.275) 0.1s; display: block !important; }
+        .morph-out-rev { animation: cardToBtn 0.4s forwards ease-in; pointer-events: none; }
+        .morph-in-rev { animation: btnFromCard 0.5s forwards cubic-bezier(0.175, 0.885, 0.32, 1.275) 0.1s; }
+
+        /* --- 3. SQUISHY JELLY LIKE BUTTON --- */
+        @keyframes jelly {
+            0% { transform: scale(1); }
+            25% { transform: scale(0.8, 1.2); } /* Squish Vertical */
+            50% { transform: scale(1.2, 0.8); } /* Squish Horizontal */
+            75% { transform: scale(0.9, 1.1); }
+            100% { transform: scale(1); }
+        }
+
+        .like-container { position: fixed; bottom: 25px; right: 25px; width: 60px; height: 60px; background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(15px); border: 1px solid rgba(255, 255, 255, 0.4); border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 1000; box-shadow: 0 10px 30px rgba(0,0,0,0.3); transition: background 0.3s ease; }
         .like-container.liked { border-color: var(--heart-color); background: rgba(255, 46, 99, 0.15); box-shadow: 0 0 30px rgba(255, 46, 99, 0.5); }
         .like-container.liked i { color: var(--heart-color); }
-
+        .like-container.jelly { animation: jelly 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94); } /* Jelly Physics */
+        
+        /* FB Animation */
         #thumbsUpPopup {
             position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%) scale(0);
             font-size: 100px; z-index: 2000; opacity: 0; pointer-events: none;
@@ -240,54 +180,24 @@
             100% { transform: translate(-50%, -50%) scale(1.5) rotate(-10deg); opacity: 0; }
         }
 
-        /* --- QR Code Modal --- */
-        .qr-overlay {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.5); backdrop-filter: blur(8px);
-            z-index: 3000; display: none; align-items: center; justify-content: center;
-            opacity: 0; transition: opacity 0.3s;
-        }
-        .qr-overlay.active { display: flex; opacity: 1; }
-        .qr-card {
-            text-align: center; padding: 25px; width: 280px; margin: 0 auto;
-            background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.02));
-            backdrop-filter: blur(30px); -webkit-backdrop-filter: blur(30px);
-            border: 1px solid rgba(255, 255, 255, 0.25); border-radius: 30px;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.4); transform: scale(0.8); transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-        }
-        .qr-overlay.active .qr-card { transform: scale(1); }
-        .qr-img { width: 180px; height: 180px; border-radius: 15px; margin: 15px auto; display: block; border: 3px solid rgba(255,255,255,0.2); background: #ffffff; padding: 10px; }
-        .qr-title { font-size: 18px; font-weight: 700; color: white; margin-bottom: 5px; }
-        .qr-subtitle { font-size: 12px; color: rgba(255,255,255,0.7); margin-bottom: 10px; }
-        
-        .copy-link-container {
-            display: flex; align-items: center; justify-content: space-between;
-            background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.1);
-            padding: 10px 15px; border-radius: 12px; margin-top: 5px; cursor: pointer;
-            transition: background 0.2s;
-        }
-        .copy-link-container:active { background: rgba(255,255,255,0.1); }
-        .copy-text { font-size: 12px; color: rgba(255,255,255,0.7); max-width: 180px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; font-family: 'Inter', sans-serif; }
-        
-        .qr-close-btn {
-            margin-top: 15px; padding: 10px 30px; background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.2);
-            border-radius: 25px; font-size: 13px; font-weight: 600; cursor: pointer; color: white; transition: all 0.2s;
-        }
-        .qr-close-btn:active { background: rgba(255,255,255,0.3); transform: scale(0.95); }
-
-        /* --- Dynamic Toast Notification --- */
-        #dynamic-toast {
-            position: fixed; top: -60px; left: 50%; transform: translateX(-50%);
-            background: rgba(255, 255, 255, 0.95); color: #000;
-            padding: 12px 25px; border-radius: 50px;
-            font-size: 13px; font-weight: 600;
-            display: flex; align-items: center; gap: 8px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-            z-index: 9999; transition: top 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
-        }
+        /* Toast & QR Overlay */
+        #dynamic-toast { position: fixed; top: -60px; left: 50%; transform: translateX(-50%); background: rgba(255, 255, 255, 0.95); color: #000; padding: 12px 25px; border-radius: 50px; font-size: 13px; font-weight: 600; display: flex; align-items: center; gap: 8px; box-shadow: 0 10px 30px rgba(0,0,0,0.3); z-index: 9999; transition: top 0.4s cubic-bezier(0.34, 1.56, 0.64, 1); }
         #dynamic-toast.show { top: 20px; }
-        .toast-icon { font-size: 16px; color: #4ade80; } 
+        
+        .qr-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); backdrop-filter: blur(8px); z-index: 3000; display: none; align-items: center; justify-content: center; opacity: 0; transition: opacity 0.3s; }
+        .qr-overlay.active { display: flex; opacity: 1; }
+        
+        .qr-card { 
+            text-align: center; padding: 25px; width: 280px; 
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.02)); 
+            backdrop-filter: blur(30px); border: 1px solid rgba(255, 255, 255, 0.25); 
+            border-radius: 30px; 
+            opacity: 0;
+        }
 
+        .qr-img { width: 180px; height: 180px; border-radius: 15px; margin: 15px auto; display: block; border: 3px solid rgba(255,255,255,0.2); background: #ffffff; padding: 10px; }
+        .copy-link-container { display: flex; align-items: center; justify-content: space-between; background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.1); padding: 10px 15px; border-radius: 12px; margin-top: 5px; cursor: pointer; }
+        .qr-close-btn { margin-top: 15px; padding: 10px 30px; background: rgba(255,255,255,0.15); border-radius: 25px; cursor: pointer; color: white; border: 1px solid rgba(255,255,255,0.2); }
     </style>
 </head>
 <body>
@@ -295,21 +205,19 @@
     <div id="thumbsUpPopup"><i class="fas fa-thumbs-up"></i></div>
 
     <div id="dynamic-toast">
-        <i class="fas fa-check-circle toast-icon" id="toast-icon"></i>
+        <i class="fas fa-check-circle" style="color:#4ade80; font-size:16px;"></i>
         <span id="toast-msg">Action Successful</span>
     </div>
 
     <div id="qrModal" class="qr-overlay" onclick="closeQR()">
-        <div class="qr-card" onclick="event.stopPropagation()">
-            <div class="qr-title">Scan to Share</div>
-            <div class="qr-subtitle">Share Gourab's Profile</div>
-            <img id="qrImage" src="" alt="QR Code" class="qr-img">
-            
+        <div id="activeQrCard" class="qr-card" onclick="event.stopPropagation()">
+            <div style="font-size:18px; font-weight:700; margin-bottom:5px;">Scan to Share</div>
+            <div style="font-size:12px; opacity:0.7; margin-bottom:10px;">Share Gourab's Profile</div>
+            <img id="qrImage" src="" class="qr-img">
             <div class="copy-link-container" onclick="copyLink()">
-                <span class="copy-text" id="share-url">Loading...</span>
-                <i class="fas fa-copy" style="color: rgba(255,255,255,0.8); font-size: 14px;"></i>
+                <span style="font-size:12px; opacity:0.7; max-width:180px; overflow:hidden; white-space:nowrap;" id="share-url">Loading...</span>
+                <i class="fas fa-copy"></i>
             </div>
-
             <button class="qr-close-btn" onclick="closeQR()">Close</button>
         </div>
     </div>
@@ -318,112 +226,51 @@
         
         <div class="glass-card profile-header">
             <div class="status-bar">
-                <div class="status-left">
-                    <span class="status-time" id="clock-time">00:00</span>
-                </div>
-                <div class="status-right">
-                    <div class="status-weather" id="weather-info">
-                        <span>--°</span> <i class="fas fa-cloud"></i>
-                    </div>
-                    <span class="status-date" id="clock-date">DATE</span>
-                </div>
+                <span id="clock-time">00:00</span>
+                <span id="weather-info">--° <i class="fas fa-cloud"></i></span>
             </div>
 
-            <img src="https://cdn.discordapp.com/attachments/1345025532659503115/1467758711081799804/10001682842.jpg?ex=69818c52&is=69803ad2&hm=dacedadde4fca62b78b45d705565a2c1e0330a73143b49e9ec8b777a6a5bcb92&" alt="Profile" class="profile-img">
-            <h1>
-                Gourab Adhikary 
-                <i class="fas fa-check-circle verified-badge" onclick="verifyClick()"></i>
-            </h1>
+            <img src="https://cdn.discordapp.com/attachments/1345025532659503115/1467758711081799804/10001682842.jpg?ex=69818c52&is=69803ad2&hm=dacedadde4fca62b78b45d705565a2c1e0330a73143b49e9ec8b777a6a5bcb92&" class="profile-img">
+            <h1>Gourab Adhikary <i class="fas fa-check-circle verified-badge" onclick="verifyClick()"></i></h1>
             <p class="tags">Artist • Extrovert • Melophile</p>
             
-            <div class="internal-capsule">
-                <i class="fas fa-eye capsule-icon"></i>
-                <span class="capsule-text" id="visit-count">10,000</span>
+            <div class="internal-capsule" style="background: rgba(255,255,255,0.1); padding: 6px 16px; border-radius: 50px; display: inline-flex; gap: 8px; font-size:12px; margin-bottom:15px; border: 1px solid rgba(255,255,255,0.15);">
+                <i class="fas fa-eye"></i> <span id="visit-count">10,000</span>
             </div>
 
-            <div class="quote">"Don't wish for it, Work for it."</div>
+            <div class="live-status-box">
+                <div id="status-dot"></div>
+                <div class="activity-text">
+                    <span id="activity-name">Syncing...</span>
+                    <span id="activity-detail">Connecting to Discord</span>
+                </div>
+            </div>
         </div>
 
         <div class="glass-card">
             <div class="personal-grid">
                 <div class="personal-item flip-container" id="bday-card">
                     <div class="flip-inner">
-                        <div class="flip-front">
-                            <span class="personal-label">Birthday</span>
-                            <i class="fas fa-cake-candles personal-icon"></i>
-                            <span class="personal-value">09/08</span>
-                        </div>
-                        <div class="flip-back">
-                            <span class="personal-label">Countdown</span>
-                            <i class="fas fa-hourglass-half personal-icon" style="color: #ff9f1c;"></i>
-                            <span class="personal-value countdown-text" id="bday-countdown">-- Days</span>
-                        </div>
+                        <div class="flip-front"><span class="personal-label">Birthday</span><i class="fas fa-cake-candles personal-icon"></i><span class="personal-value">09/08</span></div>
+                        <div class="flip-back"><span class="personal-label">Countdown</span><i class="fas fa-hourglass-half personal-icon" style="color:#ff9f1c;"></i><span class="personal-value" id="bday-countdown" style="color:#ff9f1c">-- Days</span></div>
                     </div>
                 </div>
-                <div class="personal-item">
-                    <span class="personal-label">Height</span>
-                    <i class="fas fa-ruler-vertical personal-icon"></i>
-                    <span class="personal-value">5.8 ft</span>
-                </div>
-                <div class="personal-item">
-                    <span class="personal-label">Location</span>
-                    <i class="fas fa-map-marker-alt personal-icon"></i>
-                    <span class="personal-value">Nadia</span>
-                </div>
+                <div class="personal-item"><span class="personal-label">Height</span><i class="fas fa-ruler-vertical personal-icon"></i><span class="personal-value">5.8 ft</span></div>
+                <div class="personal-item"><span class="personal-label">Location</span><i class="fas fa-map-marker-alt personal-icon"></i><span class="personal-value">Nadia</span></div>
             </div>
         </div>
 
         <div class="glass-card">
-            <h2>Top Tracks</h2>
-            
-            <div class="music-item" id="track1">
-                <audio id="audio1" src="song1.mp3"></audio>
-                <div class="song-info">
-                    <div class="play-btn" onclick="togglePlay(1)"><i class="fas fa-play"></i></div>
-                    <div class="song-details"><span class="song-title">Amake Nao</span><span class="song-artist">Debayan Banerjee</span></div>
-                </div>
-                <div class="equalizer"><div class="bar"></div><div class="bar"></div><div class="bar"></div></div>
-            </div>
-
-            <div class="music-item" id="track2">
-                <audio id="audio2" src="song2.mp3"></audio>
-                <div class="song-info">
-                    <div class="play-btn" onclick="togglePlay(2)"><i class="fas fa-play"></i></div>
-                    <div class="song-details"><span class="song-title">Finding Her</span><span class="song-artist">Kushagra</span></div>
-                </div>
-                <div class="equalizer"><div class="bar"></div><div class="bar"></div><div class="bar"></div></div>
-            </div>
-
-            <div class="music-item" id="track3">
-                <audio id="audio3" src="song3.mp3"></audio>
-                <div class="song-info">
-                    <div class="play-btn" onclick="togglePlay(3)"><i class="fas fa-play"></i></div>
-                    <div class="song-details"><span class="song-title">Hote Paare Na</span><span class="song-artist">Original Soundtrack</span></div>
-                </div>
-                <div class="equalizer"><div class="bar"></div><div class="bar"></div><div class="bar"></div></div>
-            </div>
-            
-            <div class="music-item" id="track4">
-                <audio id="audio4" src="song4.mp3"></audio>
-                <div class="song-info">
-                    <div class="play-btn" onclick="togglePlay(4)"><i class="fas fa-play"></i></div>
-                    <div class="song-details"><span class="song-title">Rimjhim E Dhara Te</span><span class="song-artist">Shaan, Jeet Gannguli</span></div>
-                </div>
-                <div class="equalizer"><div class="bar"></div><div class="bar"></div><div class="bar"></div></div>
-            </div>
-
-             <div class="music-item" id="track5">
-                <audio id="audio5" src="song5.mp3"></audio>
-                <div class="song-info">
-                    <div class="play-btn" onclick="togglePlay(5)"><i class="fas fa-play"></i></div>
-                    <div class="song-details"><span class="song-title">Mere Naam Tu</span><span class="song-artist">Abhay Jodhpurkar</span></div>
-                </div>
-                <div class="equalizer"><div class="bar"></div><div class="bar"></div><div class="bar"></div></div>
-            </div>
+            <h2 style="font-size:19px; font-weight:600; margin-bottom:15px;">Top Tracks</h2>
+            <div class="music-item" id="track1"><audio id="audio1" src="song1.mp3"></audio><div class="play-btn" onclick="togglePlay(1)"><i class="fas fa-play"></i></div><div style="flex-grow:1"><span style="display:block; font-weight:600; font-size:14px;">Amake Nao</span><span style="font-size:11px; opacity:0.7;">Debayan Banerjee</span></div><div class="equalizer"><div class="bar"></div><div class="bar"></div><div class="bar"></div></div></div>
+            <div class="music-item" id="track2"><audio id="audio2" src="song2.mp3"></audio><div class="play-btn" onclick="togglePlay(2)"><i class="fas fa-play"></i></div><div style="flex-grow:1"><span style="display:block; font-weight:600; font-size:14px;">Finding Her</span><span style="font-size:11px; opacity:0.7;">Kushagra</span></div><div class="equalizer"><div class="bar"></div><div class="bar"></div><div class="bar"></div></div></div>
+            <div class="music-item" id="track3"><audio id="audio3" src="song3.mp3"></audio><div class="play-btn" onclick="togglePlay(3)"><i class="fas fa-play"></i></div><div style="flex-grow:1"><span style="display:block; font-weight:600; font-size:14px;">Hote Paare Na</span><span style="font-size:11px; opacity:0.7;">Original Soundtrack</span></div><div class="equalizer"><div class="bar"></div><div class="bar"></div><div class="bar"></div></div></div>
+            <div class="music-item" id="track4"><audio id="audio4" src="song4.mp3"></audio><div class="play-btn" onclick="togglePlay(4)"><i class="fas fa-play"></i></div><div style="flex-grow:1"><span style="display:block; font-weight:600; font-size:14px;">Rimjhim E Dhara Te</span><span style="font-size:11px; opacity:0.7;">Shaan, Jeet Gannguli</span></div><div class="equalizer"><div class="bar"></div><div class="bar"></div><div class="bar"></div></div></div>
+            <div class="music-item" id="track5"><audio id="audio5" src="song5.mp3"></audio><div class="play-btn" onclick="togglePlay(5)"><i class="fas fa-play"></i></div><div style="flex-grow:1"><span style="display:block; font-weight:600; font-size:14px;">Mere Naam Tu</span><span style="font-size:11px; opacity:0.7;">Abhay Jodhpurkar</span></div><div class="equalizer"><div class="bar"></div><div class="bar"></div><div class="bar"></div></div></div>
         </div>
 
         <div class="glass-card">
-            <h2>Favorites</h2>
+            <h2 style="font-size:19px; font-weight:600; margin-bottom:15px;">Favorites</h2>
             <div class="info-row"><span class="label">Singers</span><span class="value">Sonu, Arijit, Shreya</span></div>
             <div class="info-row"><span class="label">Color</span><span class="value">Black & White</span></div>
             <div class="info-row"><span class="label">Actors</span><span class="value">Dev Adhikari, Varun Dhawan</span></div>
@@ -432,7 +279,7 @@
         </div>
 
         <div class="glass-card">
-            <div class="section-title">Creativity</div>
+            <h2 style="font-size:19px; font-weight:600; margin-bottom:15px;">Creativity</h2>
             <div class="creativity-grid">
                 <div class="chip"><i class="fas fa-palette"></i>Gfx Artist</div>
                 <div class="chip"><i class="fas fa-desktop"></i>Digital Art</div>
@@ -440,37 +287,26 @@
                 <div class="chip"><i class="fas fa-pen-nib"></i>Writing</div>
             </div>
 
-            <div class="section-title">Education</div>
+            <h2 style="font-size:19px; font-weight:600; margin-bottom:15px;">Education</h2>
             <div class="edu-list">
-                <div class="edu-item">
-                    <div class="edu-icon"><i class="fas fa-school"></i></div>
-                    <div class="edu-text">HS: MRBHS</div>
-                </div>
-                <div class="edu-item">
-                    <div class="edu-icon"><i class="fas fa-university"></i></div>
-                    <div class="edu-text">BA: SRLM</div>
-                </div>
-                <div class="edu-item">
-                    <div class="edu-icon"><i class="fas fa-bolt"></i></div>
-                    <div class="edu-text">ITI Certified</div>
-                </div>
-                <div class="edu-item">
-                    <div class="edu-icon"><i class="fas fa-laptop-code"></i></div>
-                    <div class="edu-text">MDT (NBCE)</div>
-                </div>
+                <div class="edu-item"><div class="edu-icon"><i class="fas fa-school"></i></div><span class="edu-text">HS: MRBHS</span></div>
+                <div class="edu-item"><div class="edu-icon"><i class="fas fa-university"></i></div><span class="edu-text">BA: SRLM</span></div>
+                <div class="edu-item"><div class="edu-icon"><i class="fas fa-bolt"></i></div><span class="edu-text">ITI Certified</span></div>
+                <div class="edu-item"><div class="edu-icon"><i class="fas fa-laptop-code"></i></div><span class="edu-text">MDT (NBCE)</span></div>
             </div>
         </div>
 
         <div class="glass-card">
-            <h2>Connect</h2>
+            <h2 style="font-size:19px; font-weight:600; margin-bottom:15px;">Connect</h2>
             <div class="social-grid">
-                <a href="https://www.instagram.com/gourab_adhikary_?igsh=MWtodnlxY2Rwd3d6YQ==" class="social-btn"><i class="fab fa-instagram"></i>Instagram</a>
+                <a href="https://www.instagram.com/gourab_adhikary_" class="social-btn"><i class="fab fa-instagram"></i>Instagram</a>
                 <a href="https://www.facebook.com/share/16j5Yo2LnZ/" class="social-btn"><i class="fab fa-facebook-f"></i>Facebook</a>
                 <a href="mailto:linkgourab@gmail.com" class="social-btn"><i class="fas fa-envelope"></i>Email</a>
                 <a href="https://pin.it/5LefalJSQ" class="social-btn"><i class="fab fa-pinterest-p"></i>Pinterest</a>
                 <a href="https://t.me/pixelated_sky" class="social-btn"><i class="fab fa-telegram-plane"></i>Telegram</a>
                 <a href="https://open.spotify.com/user/31ytmu3ev7fgrvf7sd5rts6ta3qi" class="social-btn"><i class="fab fa-spotify"></i>Spotify</a>
-                <div class="social-btn" onclick="openQR()" style="grid-column: span 3;">
+                
+                <div id="shareBtn" class="social-btn" onclick="morphShareButton()" style="grid-column: span 3; background: rgba(255,255,255,0.15);">
                     <i class="fas fa-qrcode"></i> Share Profile
                 </div>
             </div>
@@ -481,67 +317,143 @@
     <div class="like-container" onclick="triggerLikeEffect()"><i class="fas fa-heart"></i></div>
 
     <script>
-        /* --- UNIFIED SOUND ENGINE: "MAGICAL BLOOP" FOR EVERYTHING --- */
+        // --- UNIFIED SOUND ENGINE ---
         const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-        
         function playSound() {
             if (audioCtx.state === 'suspended') audioCtx.resume();
             const osc = audioCtx.createOscillator();
-            const gainNode = audioCtx.createGain();
-            osc.connect(gainNode);
-            gainNode.connect(audioCtx.destination);
-            
-            // Magical "Bloop-Up" Settings
-            const t = audioCtx.currentTime;
-            
-            // Sine wave for that smooth bloop feel
+            const gain = audioCtx.createGain();
+            osc.connect(gain); gain.connect(audioCtx.destination);
             osc.type = 'sine';
-            
-            // Frequency sweep: Low to High (400Hz -> 800Hz)
-            osc.frequency.setValueAtTime(400, t);
-            osc.frequency.exponentialRampToValueAtTime(800, t + 0.1);
-            
-            // Volume Envelope: Fade in slightly then fade out
-            gainNode.gain.setValueAtTime(0.3, t);
-            gainNode.gain.exponentialRampToValueAtTime(0.01, t + 0.15);
-            
-            // Play sound
-            osc.start();
-            osc.stop(t + 0.2);
+            osc.frequency.setValueAtTime(400, audioCtx.currentTime);
+            osc.frequency.exponentialRampToValueAtTime(800, audioCtx.currentTime + 0.1);
+            gain.gain.setValueAtTime(0.3, audioCtx.currentTime);
+            gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.15);
+            osc.start(); osc.stop(audioCtx.currentTime + 0.2);
         }
 
-        // Attach the sound to EVERY interactive element
         document.addEventListener('DOMContentLoaded', () => {
-            const allButtons = document.querySelectorAll(
-                '.social-btn, .play-btn, .like-container, .qr-close-btn, .copy-link-container, .verified-badge'
-            );
-            allButtons.forEach(btn => {
-                btn.addEventListener('click', playSound);
-            });
+            const btns = document.querySelectorAll('.social-btn, .play-btn, .like-container, .qr-close-btn, .copy-link-container, .verified-badge');
+            btns.forEach(btn => btn.addEventListener('click', playSound));
         });
 
-        /* --- Toast System --- */
-        function showToast(message, iconClass = "fa-check-circle", color = "#4ade80") {
-            const toast = document.getElementById('dynamic-toast');
-            const icon = document.getElementById('toast-icon');
-            const msg = document.getElementById('toast-msg');
-            icon.className = `fas ${iconClass} toast-icon`;
-            icon.style.color = color;
-            msg.innerText = message;
-            toast.classList.add('show');
-            setTimeout(() => toast.classList.remove('show'), 2500);
-        }
-
-        /* --- Scroll --- */
+        // --- SUPER BOUNCY SCROLL ANIMATION ---
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
-                if (entry.isIntersecting) entry.target.classList.add('visible');
-                else entry.target.classList.remove('visible'); 
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                } else {
+                    entry.target.classList.remove('visible');
+                }
             });
-        }, { threshold: 0.15, rootMargin: "0px 0px -50px 0px" });
-        document.querySelectorAll('.glass-card').forEach((el) => { observer.observe(el); });
+        }, { 
+            threshold: 0.1, 
+            rootMargin: "0px 0px -20px 0px" 
+        });
+        document.querySelectorAll('.glass-card').forEach(el => observer.observe(el));
 
-        /* --- Music --- */
+        // --- BI-DIRECTIONAL MORPH LOGIC ---
+        function morphShareButton() {
+            playSound();
+            const btn = document.getElementById('shareBtn');
+            const card = document.getElementById('activeQrCard');
+            const modal = document.getElementById('qrModal');
+
+            const url = window.location.href;
+            document.getElementById('qrImage').src = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(url)}`;
+            document.getElementById('share-url').innerText = url;
+
+            btn.classList.remove('morph-in-rev');
+            btn.classList.add('morph-out-fwd');
+
+            setTimeout(() => {
+                modal.classList.add('active');
+                card.classList.remove('morph-out-rev');
+                card.classList.add('morph-in-fwd');
+            }, 300);
+        }
+
+        function closeQR() {
+            playSound();
+            const modal = document.getElementById('qrModal');
+            const card = document.getElementById('activeQrCard');
+            const btn = document.getElementById('shareBtn');
+            
+            card.classList.remove('morph-in-fwd');
+            card.classList.add('morph-out-rev');
+            
+            setTimeout(() => {
+                modal.classList.remove('active');
+                btn.classList.remove('morph-out-fwd');
+                btn.classList.add('morph-in-rev');
+            }, 300);
+        }
+
+        function copyLink() { playSound(); navigator.clipboard.writeText(window.location.href); showToast("Link Copied!"); }
+
+        // --- FAST SNAPPY SCROLL ---
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+                
+                // Wait 0.7s at bottom (1000 + transition roughly) then back
+                setTimeout(() => {
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                }, 1700); 
+            }, 1000);
+        });
+
+        // --- LANYARD LIVE DATA ---
+        async function updateStatus() {
+            const USER_ID = '1363474188161122472';
+            try {
+                const r = await fetch(`https://api.lanyard.rest/v1/users/${USER_ID}`);
+                const { data } = await r.json();
+                const dot = document.getElementById('status-dot');
+                const name = document.getElementById('activity-name');
+                const detail = document.getElementById('activity-detail');
+
+                const colors = { online: '#22c55e', idle: '#facc15', dnd: '#ef4444', offline: '#9ca3af' };
+                dot.style.backgroundColor = colors[data.discord_status] || '#9ca3af';
+
+                if (data.listening_to_spotify) {
+                    name.innerHTML = `<i class="fab fa-spotify" style="color:#1DB954"></i> Listening to Spotify`;
+                    detail.innerText = `${data.spotify.song} - ${data.spotify.artist}`;
+                } else if (data.activities.length > 0) {
+                    const act = data.activities.find(a => a.type === 0) || data.activities[0];
+                    name.innerText = `Doing: ${act.name}`;
+                    detail.innerText = act.details || "Active Now";
+                } else {
+                    name.innerText = data.discord_status === 'offline' ? "Offline" : "Online";
+                    detail.innerText = "No activity";
+                }
+            } catch (e) { console.log("Lanyard Error"); }
+        }
+        setInterval(updateStatus, 5000); updateStatus();
+
+        // --- Toast System ---
+        function showToast(message) {
+            const toast = document.getElementById('dynamic-toast');
+            document.getElementById('toast-msg').innerText = message;
+            toast.classList.add('show'); setTimeout(() => toast.classList.remove('show'), 2000);
+        }
+
+        // --- JELLY LIKE ANIMATION ---
+        function triggerLikeEffect() {
+            playSound();
+            const btn = document.querySelector('.like-container');
+            const popup = document.getElementById('thumbsUpPopup');
+            
+            // Add Jelly
+            btn.classList.add('liked', 'jelly');
+            // Remove Jelly after animation ends
+            setTimeout(() => btn.classList.remove('jelly'), 600);
+
+            // Pop
+            popup.style.animation = 'none'; popup.offsetHeight; popup.style.animation = 'fbLikePop 0.8s ease-out forwards';
+        }
+
+        // --- Music Player ---
         let currentAudio = null;
         function togglePlay(id) {
             playSound();
@@ -560,94 +472,29 @@
             audio.play(); btnIcon.classList.remove('fa-play'); btnIcon.classList.add('fa-pause'); container.classList.add('playing'); currentAudio = audio;
         }
 
-        /* --- Visitor --- */
-        fetch('https://api.counterapi.dev/v1/gourab-bio/views/up')
-            .then(r => r.json()).then(d => { document.getElementById('visit-count').innerText = (10000 + d.count).toLocaleString(); })
-            .catch(() => { document.getElementById('visit-count').innerText = "10,008"; });
-
-        /* --- Auto Scroll --- */
-        window.addEventListener('load', () => {
-            setTimeout(() => { window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
-                setTimeout(() => { window.scrollTo({ top: 0, behavior: 'smooth' }); }, 1700); 
-            }, 1000);
-        });
-
-        /* --- Clock --- */
-        function updateClock() {
-            const now = new Date();
-            const timeString = now.toLocaleTimeString('en-US', { hour12: false, hour: '2-digit', minute: '2-digit' });
-            const dateString = now.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' });
-            document.getElementById('clock-time').innerText = timeString;
-            document.getElementById('clock-date').innerText = dateString;
-        }
-        setInterval(updateClock, 1000); updateClock(); 
-
-        /* --- Like Effect --- */
-        function triggerLikeEffect() {
-            playSound();
-            const btn = document.querySelector('.like-container');
-            const popup = document.getElementById('thumbsUpPopup');
-            btn.classList.add('liked');
-            popup.style.animation = 'none'; popup.offsetHeight; popup.style.animation = 'fbLikePop 0.8s ease-out forwards';
-        }
-
-        /* --- QR Code & Copy Link --- */
-        function openQR() {
-            playSound();
-            const modal = document.getElementById('qrModal');
-            const qrImg = document.getElementById('qrImage');
-            const currentURL = window.location.href;
-            
-            qrImg.src = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(currentURL)}`;
-            document.getElementById('share-url').innerText = currentURL;
-            
-            modal.style.display = 'flex'; setTimeout(() => modal.classList.add('active'), 10);
-        }
-
-        function closeQR() {
-            playSound();
-            const modal = document.getElementById('qrModal');
-            modal.classList.remove('active'); setTimeout(() => modal.style.display = 'none', 300);
-        }
-
-        function copyLink() {
-            playSound();
-            navigator.clipboard.writeText(window.location.href);
-            showToast("Link Copied!", "fa-link");
-        }
-
-        /* --- Verified Badge Click --- */
-        function verifyClick() {
-            playSound();
-            const badge = document.querySelector('.verified-badge');
-            badge.classList.add('spin');
-            setTimeout(() => badge.classList.remove('spin'), 600);
-            showToast("Verified Artist", "fa-check-circle", "#4dabf7");
-        }
-
-        /* --- Weather --- */
+        // --- Weather & Clock ---
         async function fetchWeather() {
             try {
                 const res = await fetch('https://api.open-meteo.com/v1/forecast?latitude=23.4&longitude=88.5&current_weather=true');
                 const data = await res.json();
                 document.getElementById('weather-info').innerHTML = `${Math.round(data.current_weather.temperature)}° <i class="fas fa-cloud"></i>`;
-            } catch (e) { console.error("Weather failed"); }
+            } catch (e) {}
         }
         fetchWeather();
+        setInterval(() => { document.getElementById('clock-time').innerText = new Date().toLocaleTimeString([], {hour:'2-digit', minute:'2-digit', hour12:false}); }, 1000);
 
-        /* --- Birthday Flip --- */
+        // --- Other Interactions ---
+        function verifyClick() { playSound(); showToast("Verified Artist"); const b = document.querySelector('.verified-badge'); b.classList.add('spin'); setTimeout(()=>b.classList.remove('spin'), 600); }
+        
+        // --- Birthday & Visitor ---
         function updateBirthday() {
-            const now = new Date();
-            const currentYear = now.getFullYear();
-            let bday = new Date(currentYear, 7, 9); 
-            if (now > bday) bday.setFullYear(currentYear + 1);
-            const diffDays = Math.ceil(Math.abs(bday - now) / (1000 * 60 * 60 * 24)); 
-            document.getElementById('bday-countdown').innerText = `${diffDays} Days Left`;
+            const now = new Date(); let bday = new Date(now.getFullYear(), 7, 9);
+            if (now > bday) bday.setFullYear(now.getFullYear() + 1);
+            document.getElementById('bday-countdown').innerText = `${Math.ceil((bday - now) / (1000 * 60 * 60 * 24))} Days Left`;
         }
-        updateBirthday();
-        setInterval(() => { document.getElementById('bday-card').classList.toggle('flipped'); }, 4000);
+        updateBirthday(); setInterval(() => document.getElementById('bday-card').classList.toggle('flipped'), 4000);
 
+        fetch('https://api.counterapi.dev/v1/gourab-bio/views/up').then(r=>r.json()).then(d=>{document.getElementById('visit-count').innerText=(10000+d.count).toLocaleString()});
     </script>
-
 </body>
 </html>
