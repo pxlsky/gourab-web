@@ -27,25 +27,29 @@
             background-image: url('https://cdn.discordapp.com/attachments/1345025532659503115/1467758726072238121/1000199447.jpg?ex=69818c55&is=69803ad5&hm=1047b9de688aa0a534be2061b6174f359ca9fee911d37fc148475d2d6e9d5e69&');
             background-repeat: no-repeat; background-position: center center; background-attachment: fixed; background-size: cover;
             color: var(--text-primary); overflow-x: hidden; padding-bottom: 100px;
-            text-rendering: optimizeLegibility; -webkit-font-smoothing: antialiased;
+            /* Performance */
+            text-rendering: optimizeLegibility; -webkit-font-smoothing: antialiased; will-change: scroll-position;
         }
 
         .container { max-width: 500px; margin: 0 auto; padding: 20px; }
 
-        /* --- 1. SUPER ELASTIC SPRING PHYSICS --- */
+        /* --- 1. REFINED SPRING PHYSICS --- */
         .glass-card {
             background: var(--glass-bg);
             backdrop-filter: blur(10px) saturate(110%); -webkit-backdrop-filter: blur(10px) saturate(110%);
             border-radius: 32px; border: var(--glass-border); box-shadow: var(--glass-shadow);
             padding: 25px; margin-bottom: 30px; position: relative; overflow: hidden;
             
-            /* Initial: Shrunk and Lower */
-            transform: translate3d(0, 80px, 0) scale(0.85);
+            /* Start slightly down (60px) and scale (0.95) - Less aggressive than before */
+            transform: translate3d(0, 60px, 0) scale(0.95);
             opacity: 0; 
             
-            /* The Magic Curve: Goes past the target (1.0) to (1.05) then snaps back */
-            /* cubic-bezier(x1, y1, x2, y2) -> The values > 1 create the bounce */
-            transition: opacity 0.6s ease, transform 0.7s cubic-bezier(0.34, 1.56, 0.64, 1);
+            /* Duration: 0.6s 
+               Bezier: 1.35 Magnitude. 
+               This goes slightly past 100% (to 1.1) and settles back to 1.0.
+               It feels like a high-quality metal spring.
+            */
+            transition: opacity 0.6s ease, transform 0.6s cubic-bezier(0.34, 1.35, 0.64, 1);
             will-change: transform, opacity;
         }
         
@@ -54,15 +58,7 @@
         /* Profile Header */
         .status-bar { display: flex; justify-content: space-between; align-items: center; width: 100%; margin-bottom: 15px; opacity: 0.9; }
         .profile-header { text-align: center; padding-top: 15px; }
-        
-        /* Floating Animation for Profile Pic */
-        @keyframes float { 0% { transform: translateY(0px); } 50% { transform: translateY(-8px); } 100% { transform: translateY(0px); } }
-        .profile-img { 
-            width: 130px; height: 130px; border-radius: 50%; object-fit: cover; 
-            border: 3px solid rgba(255, 255, 255, 0.6); box-shadow: 0 10px 25px rgba(0,0,0,0.3); margin-bottom: 15px;
-            animation: float 4s ease-in-out infinite; /* Breathing effect */
-        }
-        
+        .profile-img { width: 130px; height: 130px; border-radius: 50%; object-fit: cover; border: 3px solid rgba(255, 255, 255, 0.6); box-shadow: 0 10px 25px rgba(0,0,0,0.3); margin-bottom: 15px; }
         h1 { font-size: 28px; font-weight: 700; margin-bottom: 5px; text-shadow: 0 2px 15px rgba(0,0,0,0.5); display: flex; align-items: center; justify-content: center; gap: 8px; }
         .verified-badge { color: #4dabf7; font-size: 22px; cursor: pointer; filter: drop-shadow(0 0 8px rgba(77, 171, 247, 0.5)); transition: transform 0.5s ease; }
         .verified-badge.spin { transform: rotate(360deg) scale(1.2); }
@@ -80,8 +76,7 @@
 
         /* Personal Grid */
         .personal-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; text-align: center; }
-        .personal-item { background: var(--card-internal-bg); padding: 12px 5px; border-radius: 18px; border: 1px solid rgba(255,255,255,0.1); display: flex; flex-direction: column; align-items: center; justify-content: center; height: 95px; transition: transform 0.2s; }
-        .personal-item:active { transform: scale(0.95); } /* Tactile Tap */
+        .personal-item { background: var(--card-internal-bg); padding: 12px 5px; border-radius: 18px; border: 1px solid rgba(255,255,255,0.1); display: flex; flex-direction: column; align-items: center; justify-content: center; height: 95px; }
         .personal-icon { font-size: 20px; margin-bottom: 6px; color: rgba(255,255,255,0.9); }
         .personal-label { font-size: 10px; opacity: 0.6; text-transform: uppercase; }
         .personal-value { font-size: 13px; font-weight: 600; }
@@ -96,8 +91,7 @@
         .info-row { display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid rgba(255,255,255,0.15); font-size: 14px; }
         .info-row:last-child { border-bottom: none; }
         .creativity-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 25px; }
-        .chip { background: var(--card-internal-bg); padding: 15px; border-radius: 18px; text-align: center; font-size: 13px; font-weight: 500; border: 1px solid rgba(255,255,255,0.15); display: flex; flex-direction: column; align-items: center; justify-content: center; transition: transform 0.2s; }
-        .chip:active { transform: scale(0.95); }
+        .chip { background: var(--card-internal-bg); padding: 15px; border-radius: 18px; text-align: center; font-size: 13px; font-weight: 500; border: 1px solid rgba(255,255,255,0.15); display: flex; flex-direction: column; align-items: center; justify-content: center; }
         .chip i { font-size: 22px; margin-bottom: 8px; }
         .edu-list { display: flex; flex-direction: column; gap: 10px; }
         .edu-item { background: var(--card-internal-bg); padding: 15px; border-radius: 18px; display: flex; align-items: center; border: 1px solid rgba(255,255,255,0.15); }
@@ -107,7 +101,7 @@
         .music-item { background: rgba(255, 255, 255, 0.05); margin: 10px 0; padding: 12px 15px; border-radius: 20px; display: flex; align-items: center; justify-content: space-between; border: 1px solid rgba(255,255,255,0.1); transition: background 0.3s ease; }
         .music-item.playing { background: var(--music-highlight); border-color: rgba(255,255,255,0.4); box-shadow: 0 0 15px rgba(255,255,255,0.1); }
         .play-btn { width: 40px; height: 40px; border-radius: 50%; background: rgba(255,255,255,0.15); display: flex; align-items: center; justify-content: center; cursor: pointer; margin-right: 15px; border: 1px solid rgba(255,255,255,0.2); transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1); }
-        .play-btn:active { transform: scale(0.85); } /* Deeper click */
+        .play-btn:active { transform: scale(0.9); }
         .equalizer { display: flex; gap: 2px; height: 12px; align-items: flex-end; opacity: 0; transition: opacity 0.3s; }
         .playing .equalizer { opacity: 1; }
         .bar { width: 3px; background: white; border-radius: 2px; animation: bounce 0s infinite; }
@@ -123,78 +117,57 @@
             padding: 18px 5px; 
             border-radius: 24px; font-weight: 500; font-size: 13px;
             border: 1px solid rgba(255,255,255,0.25); transition: all 0.2s ease; position: relative; overflow: hidden; cursor: pointer;
-            backface-visibility: hidden;
+            transform-style: preserve-3d;
         }
         .social-btn::after { content: ''; position: absolute; top:0; left:0; right:0; height: 50%; background: linear-gradient(180deg, rgba(255,255,255,0.2) 0%, rgba(255,255,255,0) 100%); pointer-events: none; }
         .social-btn i { font-size: 26px; margin-bottom: 8px; color: #fff; filter: drop-shadow(0 2px 5px rgba(0,0,0,0.3)); }
-        .social-btn:active { transform: scale(0.9); background: rgba(255,255,255,0.3); }
+        .social-btn:active { transform: scale(0.96); background: rgba(255,255,255,0.3); }
 
-        /* --- 2. FLIP MORPH ANIMATIONS --- */
-        @keyframes btnToCard {
+        /* --- 2. FIXED SHARE FLIP ANIMATION --- */
+        .morph-out-fwd { animation: btnFlipOut 0.4s forwards ease-in; pointer-events: none; }
+        @keyframes btnFlipOut {
             0% { transform: perspective(600px) rotateY(0deg) scale(1); opacity: 1; }
             100% { transform: perspective(600px) rotateY(90deg) scale(0.8); opacity: 0; }
         }
-        @keyframes cardFromBtn {
-            0% { transform: perspective(600px) rotateY(-90deg) scale(0.8); opacity: 0; }
-            100% { transform: perspective(600px) rotateY(0deg) scale(1); opacity: 1; }
-        }
-        @keyframes cardToBtn {
-            0% { transform: perspective(600px) rotateY(0deg) scale(1); opacity: 1; }
-            100% { transform: perspective(600px) rotateY(90deg) scale(0.8); opacity: 0; }
-        }
-        @keyframes btnFromCard {
+
+        .morph-in-fwd { animation: cardFlipIn 0.5s forwards cubic-bezier(0.175, 0.885, 0.32, 1.275); animation-delay: 0.1s; }
+        @keyframes cardFlipIn {
             0% { transform: perspective(600px) rotateY(-90deg) scale(0.8); opacity: 0; }
             100% { transform: perspective(600px) rotateY(0deg) scale(1); opacity: 1; }
         }
 
-        .morph-out-fwd { animation: btnToCard 0.4s forwards ease-in; pointer-events: none; }
-        .morph-in-fwd { animation: cardFromBtn 0.5s forwards cubic-bezier(0.175, 0.885, 0.32, 1.275) 0.1s; display: block !important; }
-        .morph-out-rev { animation: cardToBtn 0.4s forwards ease-in; pointer-events: none; }
-        .morph-in-rev { animation: btnFromCard 0.5s forwards cubic-bezier(0.175, 0.885, 0.32, 1.275) 0.1s; }
-
-        /* --- 3. SQUISHY JELLY LIKE BUTTON --- */
-        @keyframes jelly {
-            0% { transform: scale(1); }
-            25% { transform: scale(0.8, 1.2); } /* Squish Vertical */
-            50% { transform: scale(1.2, 0.8); } /* Squish Horizontal */
-            75% { transform: scale(0.9, 1.1); }
-            100% { transform: scale(1); }
+        .morph-out-rev { animation: cardFlipOut 0.4s forwards ease-in; pointer-events: none; }
+        @keyframes cardFlipOut {
+            0% { transform: perspective(600px) rotateY(0deg) scale(1); opacity: 1; }
+            100% { transform: perspective(600px) rotateY(90deg) scale(0.8); opacity: 0; }
         }
 
+        .morph-in-rev { animation: btnFlipIn 0.5s forwards cubic-bezier(0.175, 0.885, 0.32, 1.275); animation-delay: 0.1s; }
+        @keyframes btnFlipIn {
+            0% { transform: perspective(600px) rotateY(-90deg) scale(0.8); opacity: 0; }
+            100% { transform: perspective(600px) rotateY(0deg) scale(1); opacity: 1; }
+        }
+
+        /* Like Button - Fixed */
         .like-container { position: fixed; bottom: 25px; right: 25px; width: 60px; height: 60px; background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(15px); border: 1px solid rgba(255, 255, 255, 0.4); border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 1000; box-shadow: 0 10px 30px rgba(0,0,0,0.3); transition: background 0.3s ease; }
         .like-container.liked { border-color: var(--heart-color); background: rgba(255, 46, 99, 0.15); box-shadow: 0 0 30px rgba(255, 46, 99, 0.5); }
         .like-container.liked i { color: var(--heart-color); }
-        .like-container.jelly { animation: jelly 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94); } /* Jelly Physics */
-        
-        /* FB Animation */
-        #thumbsUpPopup {
-            position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%) scale(0);
-            font-size: 100px; z-index: 2000; opacity: 0; pointer-events: none;
-            background: -webkit-linear-gradient(45deg, #00c6ff, #0072ff); -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-            filter: drop-shadow(0 10px 20px rgba(0,114,255,0.4));
+        /* Jelly */
+        @keyframes jelly {
+            0% { transform: scale(1); } 25% { transform: scale(0.85, 1.15); } 50% { transform: scale(1.15, 0.85); } 75% { transform: scale(0.95, 1.05); } 100% { transform: scale(1); }
         }
-        @keyframes fbLikePop {
-            0% { transform: translate(-50%, -50%) scale(0) rotate(-30deg); opacity: 0; }
-            50% { transform: translate(-50%, -50%) scale(1.2) rotate(0deg); opacity: 1; }
-            70% { transform: translate(-50%, -50%) scale(0.9) rotate(0deg); opacity: 1; }
-            100% { transform: translate(-50%, -50%) scale(1.5) rotate(-10deg); opacity: 0; }
-        }
+        .like-container.jelly { animation: jelly 0.5s; }
 
-        /* Toast & QR Overlay */
+        /* FB Pop */
+        #thumbsUpPopup { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%) scale(0); font-size: 100px; z-index: 2000; opacity: 0; pointer-events: none; background: -webkit-linear-gradient(45deg, #00c6ff, #0072ff); -webkit-background-clip: text; -webkit-text-fill-color: transparent; filter: drop-shadow(0 10px 20px rgba(0,114,255,0.4)); }
+        @keyframes fbLikePop { 0% { transform: translate(-50%, -50%) scale(0) rotate(-30deg); opacity: 0; } 50% { transform: translate(-50%, -50%) scale(1.2) rotate(0deg); opacity: 1; } 70% { transform: translate(-50%, -50%) scale(0.9) rotate(0deg); opacity: 1; } 100% { transform: translate(-50%, -50%) scale(1.5) rotate(-10deg); opacity: 0; } }
+
+        /* Toast & QR */
         #dynamic-toast { position: fixed; top: -60px; left: 50%; transform: translateX(-50%); background: rgba(255, 255, 255, 0.95); color: #000; padding: 12px 25px; border-radius: 50px; font-size: 13px; font-weight: 600; display: flex; align-items: center; gap: 8px; box-shadow: 0 10px 30px rgba(0,0,0,0.3); z-index: 9999; transition: top 0.4s cubic-bezier(0.34, 1.56, 0.64, 1); }
         #dynamic-toast.show { top: 20px; }
-        
         .qr-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); backdrop-filter: blur(8px); z-index: 3000; display: none; align-items: center; justify-content: center; opacity: 0; transition: opacity 0.3s; }
         .qr-overlay.active { display: flex; opacity: 1; }
-        
-        .qr-card { 
-            text-align: center; padding: 25px; width: 280px; 
-            background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.02)); 
-            backdrop-filter: blur(30px); border: 1px solid rgba(255, 255, 255, 0.25); 
-            border-radius: 30px; 
-            opacity: 0;
-        }
-
+        .qr-card { text-align: center; padding: 25px; width: 280px; background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.02)); backdrop-filter: blur(30px); border: 1px solid rgba(255, 255, 255, 0.25); border-radius: 30px; opacity: 0; transform: scale(0.8); }
         .qr-img { width: 180px; height: 180px; border-radius: 15px; margin: 15px auto; display: block; border: 3px solid rgba(255,255,255,0.2); background: #ffffff; padding: 10px; }
         .copy-link-container { display: flex; align-items: center; justify-content: space-between; background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.1); padding: 10px 15px; border-radius: 12px; margin-top: 5px; cursor: pointer; }
         .qr-close-btn { margin-top: 15px; padding: 10px 30px; background: rgba(255,255,255,0.15); border-radius: 25px; cursor: pointer; color: white; border: 1px solid rgba(255,255,255,0.2); }
@@ -317,7 +290,7 @@
     <div class="like-container" onclick="triggerLikeEffect()"><i class="fas fa-heart"></i></div>
 
     <script>
-        // --- UNIFIED SOUND ENGINE ---
+        // --- SOUND ENGINE ---
         const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
         function playSound() {
             if (audioCtx.state === 'suspended') audioCtx.resume();
@@ -337,37 +310,26 @@
             btns.forEach(btn => btn.addEventListener('click', playSound));
         });
 
-        // --- SUPER BOUNCY SCROLL ANIMATION ---
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('visible');
-                } else {
-                    entry.target.classList.remove('visible');
-                }
-            });
-        }, { 
-            threshold: 0.1, 
-            rootMargin: "0px 0px -20px 0px" 
-        });
-        document.querySelectorAll('.glass-card').forEach(el => observer.observe(el));
-
-        // --- BI-DIRECTIONAL MORPH LOGIC ---
+        // --- FLIP SHARE ANIMATION (FIXED) ---
         function morphShareButton() {
             playSound();
             const btn = document.getElementById('shareBtn');
             const card = document.getElementById('activeQrCard');
             const modal = document.getElementById('qrModal');
 
+            // Generate QR Data
             const url = window.location.href;
             document.getElementById('qrImage').src = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(url)}`;
             document.getElementById('share-url').innerText = url;
 
+            // Flip Button Out
             btn.classList.remove('morph-in-rev');
             btn.classList.add('morph-out-fwd');
 
+            // Show Card after delay
             setTimeout(() => {
                 modal.classList.add('active');
+                card.style.display = 'block'; // Ensure it's rendered
                 card.classList.remove('morph-out-rev');
                 card.classList.add('morph-in-fwd');
             }, 300);
@@ -379,9 +341,11 @@
             const card = document.getElementById('activeQrCard');
             const btn = document.getElementById('shareBtn');
             
+            // Flip Card Out
             card.classList.remove('morph-in-fwd');
             card.classList.add('morph-out-rev');
             
+            // Bring Button Back
             setTimeout(() => {
                 modal.classList.remove('active');
                 btn.classList.remove('morph-out-fwd');
@@ -391,19 +355,48 @@
 
         function copyLink() { playSound(); navigator.clipboard.writeText(window.location.href); showToast("Link Copied!"); }
 
-        // --- FAST SNAPPY SCROLL ---
-        window.addEventListener('load', () => {
-            setTimeout(() => {
-                window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
-                
-                // Wait 0.7s at bottom (1000 + transition roughly) then back
-                setTimeout(() => {
-                    window.scrollTo({ top: 0, behavior: 'smooth' });
-                }, 1700); 
-            }, 1000);
-        });
+        // --- 120FPS AUTO SCROLL (EQUAL SPEED) ---
+        function startFastScroll() {
+            const duration = 1500; // 1.5s Fast
+            const stayDuration = 700; // 0.7s Stay
+            const startY = 0;
+            const endY = document.body.scrollHeight - window.innerHeight;
+            let startTime = null;
+            let direction = 1;
 
-        // --- LANYARD LIVE DATA ---
+            setTimeout(() => requestAnimationFrame(scrollStep), 1000);
+
+            function scrollStep(timestamp) {
+                if (!startTime) startTime = timestamp;
+                const elapsed = timestamp - startTime;
+                
+                if (direction === 1) { // DOWN
+                    if (elapsed < duration) {
+                        const t = elapsed / duration;
+                        const ease = -(Math.cos(Math.PI * t) - 1) / 2;
+                        window.scrollTo(0, startY + (endY * ease));
+                        requestAnimationFrame(scrollStep);
+                    } else if (elapsed < duration + stayDuration) {
+                        window.scrollTo(0, endY);
+                        requestAnimationFrame(scrollStep);
+                    } else {
+                        startTime = null; direction = -1; requestAnimationFrame(scrollStep);
+                    }
+                } else { // UP (SAME SPEED)
+                    if (elapsed < duration) {
+                        const t = elapsed / duration;
+                        const ease = -(Math.cos(Math.PI * t) - 1) / 2;
+                        window.scrollTo(0, endY - (endY * ease));
+                        requestAnimationFrame(scrollStep);
+                    } else {
+                        window.scrollTo(0, 0);
+                    }
+                }
+            }
+        }
+        window.addEventListener('load', startFastScroll);
+
+        // --- STICKY MUSIC (MEMORY MODE) ---
         async function updateStatus() {
             const USER_ID = '1363474188161122472';
             try {
@@ -419,37 +412,34 @@
                 if (data.listening_to_spotify) {
                     name.innerHTML = `<i class="fab fa-spotify" style="color:#1DB954"></i> Listening to Spotify`;
                     detail.innerText = `${data.spotify.song} - ${data.spotify.artist}`;
-                } else if (data.activities.length > 0) {
-                    const act = data.activities.find(a => a.type === 0) || data.activities[0];
-                    name.innerText = `Doing: ${act.name}`;
-                    detail.innerText = act.details || "Active Now";
+                    localStorage.setItem('last_song', data.spotify.song);
+                    localStorage.setItem('last_artist', data.spotify.artist);
                 } else {
-                    name.innerText = data.discord_status === 'offline' ? "Offline" : "Online";
-                    detail.innerText = "No activity";
+                    const lastSong = localStorage.getItem('last_song');
+                    const lastArtist = localStorage.getItem('last_artist');
+                    if (lastSong) {
+                        name.innerHTML = `<i class="fab fa-spotify" style="color:#1DB954; opacity:0.7"></i> Recently Played`;
+                        detail.innerText = `${lastSong} - ${lastArtist}`;
+                    } else if (data.activities.length > 0) {
+                        const act = data.activities[0];
+                        name.innerText = `Doing: ${act.name}`;
+                        detail.innerText = act.details || "Active Now";
+                    } else {
+                        name.innerText = data.discord_status === 'offline' ? "Offline" : "Online";
+                        detail.innerText = "No activity";
+                    }
                 }
             } catch (e) { console.log("Lanyard Error"); }
         }
         setInterval(updateStatus, 5000); updateStatus();
-
-        // --- Toast System ---
-        function showToast(message) {
-            const toast = document.getElementById('dynamic-toast');
-            document.getElementById('toast-msg').innerText = message;
-            toast.classList.add('show'); setTimeout(() => toast.classList.remove('show'), 2000);
-        }
 
         // --- JELLY LIKE ANIMATION ---
         function triggerLikeEffect() {
             playSound();
             const btn = document.querySelector('.like-container');
             const popup = document.getElementById('thumbsUpPopup');
-            
-            // Add Jelly
             btn.classList.add('liked', 'jelly');
-            // Remove Jelly after animation ends
             setTimeout(() => btn.classList.remove('jelly'), 600);
-
-            // Pop
             popup.style.animation = 'none'; popup.offsetHeight; popup.style.animation = 'fbLikePop 0.8s ease-out forwards';
         }
 
@@ -472,27 +462,30 @@
             audio.play(); btnIcon.classList.remove('fa-play'); btnIcon.classList.add('fa-pause'); container.classList.add('playing'); currentAudio = audio;
         }
 
-        // --- Weather & Clock ---
-        async function fetchWeather() {
-            try {
-                const res = await fetch('https://api.open-meteo.com/v1/forecast?latitude=23.4&longitude=88.5&current_weather=true');
-                const data = await res.json();
-                document.getElementById('weather-info').innerHTML = `${Math.round(data.current_weather.temperature)}° <i class="fas fa-cloud"></i>`;
-            } catch (e) {}
+        // --- Utility ---
+        function showToast(message) {
+            const toast = document.getElementById('dynamic-toast');
+            document.getElementById('toast-msg').innerText = message;
+            toast.classList.add('show'); setTimeout(() => toast.classList.remove('show'), 2000);
         }
-        fetchWeather();
-        setInterval(() => { document.getElementById('clock-time').innerText = new Date().toLocaleTimeString([], {hour:'2-digit', minute:'2-digit', hour12:false}); }, 1000);
-
-        // --- Other Interactions ---
         function verifyClick() { playSound(); showToast("Verified Artist"); const b = document.querySelector('.verified-badge'); b.classList.add('spin'); setTimeout(()=>b.classList.remove('spin'), 600); }
-        
-        // --- Birthday & Visitor ---
         function updateBirthday() {
             const now = new Date(); let bday = new Date(now.getFullYear(), 7, 9);
             if (now > bday) bday.setFullYear(now.getFullYear() + 1);
             document.getElementById('bday-countdown').innerText = `${Math.ceil((bday - now) / (1000 * 60 * 60 * 24))} Days Left`;
         }
         updateBirthday(); setInterval(() => document.getElementById('bday-card').classList.toggle('flipped'), 4000);
+        async function fetchWeather() { try { const res = await fetch('https://api.open-meteo.com/v1/forecast?latitude=23.4&longitude=88.5&current_weather=true'); const data = await res.json(); document.getElementById('weather-info').innerHTML = `${Math.round(data.current_weather.temperature)}° <i class="fas fa-cloud"></i>`; } catch (e) {} } fetchWeather();
+        setInterval(() => { document.getElementById('clock-time').innerText = new Date().toLocaleTimeString([], {hour:'2-digit', minute:'2-digit', hour12:false}); }, 1000);
+        
+        // --- Elastic Scroll Observer ---
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) { entry.target.classList.add('visible'); }
+                else { entry.target.classList.remove('visible'); }
+            });
+        }, { threshold: 0.1, rootMargin: "0px 0px -20px 0px" });
+        document.querySelectorAll('.glass-card').forEach(el => observer.observe(el));
 
         fetch('https://api.counterapi.dev/v1/gourab-bio/views/up').then(r=>r.json()).then(d=>{document.getElementById('visit-count').innerText=(10000+d.count).toLocaleString()});
     </script>
