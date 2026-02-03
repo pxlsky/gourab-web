@@ -9,16 +9,15 @@
     
     <style>
         :root {
-            /* --- LIGHTER FROSTED GLASS THEME --- */
             --glass-bg: rgba(255, 255, 255, 0.07);
             --glass-border: 1px solid rgba(255, 255, 255, 0.15);
             --glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
-            
             --text-primary: #ffffff; 
             --text-secondary: rgba(255, 255, 255, 0.75);
             --card-internal-bg: rgba(255, 255, 255, 0.05);
             --heart-color: #ff2e63;
             --spotify-green: #1DB954;
+            --history-gold: #ffb703;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
@@ -29,10 +28,8 @@
             background-image: url('https://cdn.discordapp.com/attachments/1345025532659503115/1467758726072238121/1000199447.jpg?ex=69818c55&is=69803ad5&hm=1047b9de688aa0a534be2061b6174f359ca9fee911d37fc148475d2d6e9d5e69&');
             background-repeat: no-repeat; background-position: center; background-attachment: fixed; background-size: cover;
             color: var(--text-primary); overflow-x: hidden; padding-bottom: 100px;
-            /* Auto-scroll handled by JS */
         }
 
-        /* Fireflies */
         .firefly {
             position: fixed; left: 50%; top: 50%; width: 4px; height: 4px;
             background-color: #fff; border-radius: 50%;
@@ -43,29 +40,23 @@
 
         .container { max-width: 500px; margin: 0 auto; padding: 20px; }
 
-        /* --- LIQUID ANIMATION --- */
         .glass-card {
             background: var(--glass-bg);
             backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
             border-radius: 30px; border: var(--glass-border); box-shadow: var(--glass-shadow);
             padding: 25px; margin-bottom: 25px; position: relative; overflow: hidden;
-            
             opacity: 0; transform: translate3d(0, 80px, 0) scale(0.92) perspective(1000px) rotateX(10deg); filter: blur(5px);
             transition: all 1s cubic-bezier(0.19, 1, 0.22, 1);
             will-change: transform, opacity, filter;
         }
-        .glass-card.visible { 
-            opacity: 1; transform: translate3d(0, 0, 0) scale(1) perspective(1000px) rotateX(0deg); filter: blur(0px);
-        }
+        .glass-card.visible { opacity: 1; transform: translate3d(0, 0, 0) scale(1) perspective(1000px) rotateX(0deg); filter: blur(0px); }
 
-        /* Profile Header */
         .status-bar { display: flex; justify-content: space-between; opacity: 0.9; margin-bottom: 15px; font-size: 13px; font-weight: 600; }
         .profile-header { text-align: center; }
         .profile-img-container { position: relative; display: inline-block; margin-bottom: 15px; }
         .profile-img { 
             width: 120px; height: 120px; border-radius: 50%; object-fit: cover; 
-            border: 3px solid rgba(255,255,255,0.8); 
-            animation: pulse-border 3s infinite;
+            border: 3px solid rgba(255,255,255,0.8); animation: pulse-border 3s infinite;
         }
         @keyframes pulse-border { 0% { box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.4); } 70% { box-shadow: 0 0 0 15px rgba(255, 255, 255, 0); } 100% { box-shadow: 0 0 0 0 rgba(255, 255, 255, 0); } }
         
@@ -73,41 +64,65 @@
         .verified-badge { color: #4dabf7; font-size: 20px; cursor: pointer; filter: drop-shadow(0 0 10px #4dabf7); }
         .tags { font-size: 13px; color: var(--text-secondary); margin-bottom: 15px; letter-spacing: 0.5px; }
 
-        /* --- MUSIC VINYL UI --- */
+        /* --- PREMIUM MUSIC CARD (VINYL STYLE) --- */
         .music-pill {
-            background: rgba(0, 0, 0, 0.5); border-radius: 50px; padding: 8px;
-            display: flex; align-items: center; gap: 15px; border: 1px solid rgba(255,255,255,0.1);
+            background: rgba(255, 255, 255, 0.08); 
+            border-radius: 50px; 
+            padding: 8px 10px;
+            display: flex; align-items: center; gap: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
             position: relative; overflow: hidden;
         }
+        
+        /* Album Art Circle */
         .disk-wrapper {
-            width: 55px; height: 55px; border-radius: 50%;
+            width: 50px; height: 50px; border-radius: 50%;
             background: #111; padding: 2px;
-            box-shadow: 0 0 15px rgba(29, 185, 84, 0.3);
             flex-shrink: 0; position: relative;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            transition: box-shadow 0.3s;
         }
         .music-cover {
             width: 100%; height: 100%; border-radius: 50%; object-fit: cover;
             animation: spin 4s linear infinite; animation-play-state: paused;
         }
-        .disk-wrapper::after {
+        .disk-wrapper::after { /* Vinyl Hole */
             content: ''; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
-            width: 12px; height: 12px; background: #222; border-radius: 50%; border: 2px solid #000;
+            width: 10px; height: 10px; background: #222; border-radius: 50%; border: 2px solid #000; z-index: 2;
         }
-        .playing .music-cover { animation-play-state: running; }
-        @keyframes spin { 100% { transform: rotate(360deg); } }
 
         .music-info { display: flex; flex-direction: column; overflow: hidden; flex: 1; text-align: left; }
-        .music-status { font-size: 9px; font-weight: 800; letter-spacing: 1px; color: var(--spotify-green); text-transform: uppercase; margin-bottom: 2px; }
-        .music-title { font-size: 14px; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-        .music-artist { font-size: 12px; opacity: 0.7; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
         
-        .eq-bars { display: flex; gap: 3px; align-items: flex-end; height: 15px; margin-right: 10px; }
+        /* Status Badge */
+        .music-status { 
+            font-size: 9px; font-weight: 800; letter-spacing: 1px; 
+            text-transform: uppercase; margin-bottom: 2px;
+            display: flex; align-items: center; gap: 5px;
+        }
+        .music-title { font-size: 14px; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: white; }
+        .music-artist { font-size: 12px; opacity: 0.7; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+        /* LIVE STATE STYLES */
+        .music-pill.playing .disk-wrapper { box-shadow: 0 0 20px rgba(29, 185, 84, 0.4); }
+        .music-pill.playing .music-cover { animation-play-state: running; }
+        .music-pill.playing .music-status { color: var(--spotify-green); }
+
+        /* LAST PLAYED STATE STYLES (Elegant) */
+        .music-pill.inactive { background: rgba(255,255,255,0.05); }
+        .music-pill.inactive .disk-wrapper { box-shadow: 0 0 0 rgba(0,0,0,0); border: 1px solid rgba(255,255,255,0.1); }
+        .music-pill.inactive .music-status { color: var(--history-gold); } /* Gold text */
+        .music-pill.inactive .music-cover { opacity: 0.9; } /* Keep colorful */
+
+        /* EQ Bars */
+        .eq-bars { display: flex; gap: 3px; align-items: flex-end; height: 15px; margin-right: 12px; }
         .eq-bar { width: 3px; background: var(--spotify-green); border-radius: 2px; animation: bounce 0.6s infinite ease-in-out alternate; }
         .eq-bar:nth-child(2) { animation-delay: 0.1s; } .eq-bar:nth-child(3) { animation-delay: 0.2s; }
-        .inactive .eq-bars { display: none; }
+        .inactive .eq-bars { display: none; } /* Hide EQ when offline */
         @keyframes bounce { 0% { height: 4px; } 100% { height: 15px; } }
+        @keyframes spin { 100% { transform: rotate(360deg); } }
 
-        /* --- RESTORED SECTIONS --- */
+        /* --- SECTIONS --- */
         .personal-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; text-align: center; }
         .personal-item { background: var(--card-internal-bg); padding: 12px 5px; border-radius: 18px; border: 1px solid rgba(255,255,255,0.1); display: flex; flex-direction: column; align-items: center; justify-content: center; height: 95px; }
         .personal-icon { font-size: 20px; margin-bottom: 6px; color: rgba(255,255,255,0.9); }
@@ -118,12 +133,10 @@
         .flip-front, .flip-back { position: absolute; width: 100%; height: 100%; backface-visibility: hidden; display: flex; flex-direction: column; align-items: center; justify-content: center; }
         .flip-back { transform: rotateY(180deg); }
 
-        /* Top Tracks */
         .music-item { background: rgba(255, 255, 255, 0.05); margin: 10px 0; padding: 12px 15px; border-radius: 20px; display: flex; align-items: center; justify-content: space-between; border: 1px solid rgba(255,255,255,0.1); transition: background 0.3s ease; }
         .music-item.playing { background: rgba(255, 255, 255, 0.15); border-color: rgba(255,255,255,0.4); box-shadow: 0 0 15px rgba(255,255,255,0.1); }
         .play-btn { width: 40px; height: 40px; border-radius: 50%; background: rgba(255,255,255,0.15); display: flex; align-items: center; justify-content: center; cursor: pointer; margin-right: 15px; border: 1px solid rgba(255,255,255,0.2); transition: transform 0.2s; }
         .play-btn:active { transform: scale(0.9); }
-        
         .track-eq { display: flex; gap: 2px; height: 12px; align-items: flex-end; opacity: 0; transition: opacity 0.3s; }
         .playing .track-eq { opacity: 1; }
         .t-bar { width: 3px; background: white; border-radius: 2px; animation: tBounce 0.5s infinite alternate; }
@@ -132,26 +145,17 @@
 
         .info-row { display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid rgba(255,255,255,0.1); font-size: 14px; }
         .info-row:last-child { border-bottom: none; }
-
         .creativity-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 25px; }
         .chip { background: var(--card-internal-bg); padding: 15px; border-radius: 18px; text-align: center; font-size: 13px; font-weight: 500; border: 1px solid rgba(255,255,255,0.15); display: flex; flex-direction: column; align-items: center; justify-content: center; }
         .chip i { font-size: 22px; margin-bottom: 8px; }
-
         .edu-list { display: flex; flex-direction: column; gap: 10px; }
         .edu-item { background: var(--card-internal-bg); padding: 15px; border-radius: 18px; display: flex; align-items: center; border: 1px solid rgba(255,255,255,0.15); }
         .edu-icon { width: 40px; height: 40px; border-radius: 12px; background: rgba(255,255,255,0.1); display: flex; align-items: center; justify-content: center; margin-right: 15px; font-size: 18px; }
-
         .social-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 10px; }
-        .social-btn {
-            display: flex; flex-direction: column; align-items: center; justify-content: center;
-            background: rgba(255, 255, 255, 0.12); color: var(--text-primary); text-decoration: none;
-            padding: 18px 5px; border-radius: 24px; font-weight: 500; font-size: 13px;
-            border: 1px solid rgba(255,255,255,0.25); transition: all 0.2s ease; position: relative; overflow: hidden; cursor: pointer;
-        }
+        .social-btn { display: flex; flex-direction: column; align-items: center; justify-content: center; background: rgba(255, 255, 255, 0.12); color: var(--text-primary); text-decoration: none; padding: 18px 5px; border-radius: 24px; font-weight: 500; font-size: 13px; border: 1px solid rgba(255,255,255,0.25); transition: all 0.2s ease; position: relative; overflow: hidden; cursor: pointer; }
         .social-btn:active { transform: scale(0.96); background: rgba(255,255,255,0.3); }
         .social-btn i { font-size: 26px; margin-bottom: 8px; color: #fff; filter: drop-shadow(0 2px 5px rgba(0,0,0,0.3)); }
 
-        /* Share Flip */
         .morph-out-fwd { animation: btnFlipOut 0.4s forwards ease-in; pointer-events: none; }
         .morph-in-fwd { animation: cardFlipIn 0.5s forwards cubic-bezier(0.175, 0.885, 0.32, 1.85); animation-delay: 0.1s; }
         .morph-out-rev { animation: cardFlipOut 0.4s forwards ease-in; pointer-events: none; }
@@ -161,10 +165,8 @@
         @keyframes cardFlipOut { 0% { transform: perspective(600px) rotateY(0deg) scale(1); opacity: 1; } 100% { transform: perspective(600px) rotateY(90deg) scale(0.8); opacity: 0; } }
         @keyframes btnFlipIn { 0% { transform: perspective(600px) rotateY(-90deg) scale(0.8); opacity: 0; } 100% { transform: perspective(600px) rotateY(0deg) scale(1); opacity: 1; } }
 
-        /* --- RESTORED PILL LIKE BUTTON --- */
         .like-float {
             position: fixed; bottom: 25px; right: 25px;
-            /* Pill Shape */
             padding: 14px 28px; border-radius: 50px; 
             background: rgba(255, 255, 255, 0.15); backdrop-filter: blur(15px);
             border: 1px solid rgba(255, 255, 255, 0.4);
@@ -174,26 +176,10 @@
             color: white; font-weight: 600; font-size: 14px;
         }
         .like-float:active { transform: scale(0.95); }
-        .like-float i { font-size: 18px; transition: color 0.3s; }
-        
-        /* LIKED STATE (RED GLOW) */
-        .like-float.liked { 
-            border-color: var(--heart-color); 
-            background: rgba(255, 46, 99, 0.2); 
-            box-shadow: 0 0 30px rgba(255, 46, 99, 0.6); 
-            color: var(--heart-color);
-        }
+        .like-float.liked { border-color: var(--heart-color); background: rgba(255, 46, 99, 0.2); box-shadow: 0 0 30px rgba(255, 46, 99, 0.6); color: var(--heart-color); }
         .like-float.liked i { color: var(--heart-color); }
-        
-        /* Jelly Animation */
         .jelly { animation: jelly 0.6s; }
-        @keyframes jelly { 
-            0% { transform: scale(1); } 
-            25% { transform: scale(0.9, 1.1); } 
-            50% { transform: scale(1.1, 0.9); } 
-            75% { transform: scale(0.95, 1.05); } 
-            100% { transform: scale(1); } 
-        }
+        @keyframes jelly { 0% { transform: scale(1); } 25% { transform: scale(0.9, 1.1); } 50% { transform: scale(1.1, 0.9); } 75% { transform: scale(0.95, 1.05); } 100% { transform: scale(1); } }
 
         #thumbsUpPopup { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%) scale(0); font-size: 120px; z-index: 2000; opacity: 0; pointer-events: none; background: -webkit-linear-gradient(45deg, #ff2e63, #ff00de); -webkit-background-clip: text; -webkit-text-fill-color: transparent; filter: drop-shadow(0 0 20px rgba(255,46,99,0.5)); }
         @keyframes fbLikePop { 0% { transform: translate(-50%, -50%) scale(0) rotate(-45deg); opacity: 0; } 50% { transform: translate(-50%, -50%) scale(1.3) rotate(0deg); opacity: 1; } 70% { transform: translate(-50%, -50%) scale(0.9) rotate(0deg); opacity: 1; } 100% { transform: translate(-50%, -50%) scale(2) rotate(-10deg); opacity: 0; } }
@@ -210,7 +196,7 @@
 </head>
 <body>
 
-    <div id="thumbsUpPopup"><i class="fas fa-thumbs-up"></i></div>
+    <div id="thumbsUpPopup"><i class="fas fa-heart"></i></div>
 
     <div id="dynamic-toast">
         <i class="fas fa-check-circle" style="color:#4ade80; font-size:16px;"></i>
@@ -258,7 +244,7 @@
                     <img id="music-art" src="https://i.scdn.co/image/ab67616d0000b273577395562725d223594b2377" class="music-cover">
                 </div>
                 <div class="music-info">
-                    <span id="music-status" class="music-status">OFFLINE</span>
+                    <span id="music-status" class="music-status"><i class="fas fa-clock"></i> &nbsp;<span id="status-text">OFFLINE</span></span>
                     <span id="music-song" class="music-title">Not Playing</span>
                     <span id="music-artist" class="music-artist">Spotify</span>
                 </div>
@@ -354,7 +340,6 @@
     </div>
 
     <script>
-        // --- 1. BLOOP SOUND (WEB AUDIO API) ---
         const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
         
         function playBloop() {
@@ -362,48 +347,31 @@
             const osc = audioCtx.createOscillator();
             const gain = audioCtx.createGain();
             osc.connect(gain); gain.connect(audioCtx.destination);
-            osc.type = 'sine';
-            osc.frequency.setValueAtTime(600, audioCtx.currentTime);
-            osc.frequency.exponentialRampToValueAtTime(150, audioCtx.currentTime + 0.15);
-            gain.gain.setValueAtTime(0.5, audioCtx.currentTime);
-            gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.15);
+            osc.type = 'sine'; osc.frequency.setValueAtTime(600, audioCtx.currentTime); osc.frequency.exponentialRampToValueAtTime(150, audioCtx.currentTime + 0.15);
+            gain.gain.setValueAtTime(0.5, audioCtx.currentTime); gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.15);
             osc.start(); osc.stop(audioCtx.currentTime + 0.2);
         }
 
-        // --- 2. LIKE BUTTON LOGIC (VISUAL ONLY) ---
+        // Like Logic
         const likeBtn = document.getElementById('like-btn');
         const likeText = document.getElementById('like-text');
         const popup = document.getElementById('thumbsUpPopup');
 
-        // Check if previously liked
         if (localStorage.getItem('liked_visual_final') === 'true') {
             likeBtn.classList.add('liked');
             likeText.innerText = "Liked";
         }
 
         function triggerLike() {
-            // 1. Play Sound
             playBloop();
-
-            // 2. Add Red State
             likeBtn.classList.add('liked');
-            likeText.innerText = "Liked"; // Change text
-            
-            // 3. Jelly Animation on Button
-            likeBtn.classList.remove('jelly'); // reset
-            void likeBtn.offsetWidth; // trigger reflow
-            likeBtn.classList.add('jelly');
-
-            // 4. Pop-up Heart Animation
-            popup.style.animation = 'none';
-            void popup.offsetWidth; // trigger reflow
-            popup.style.animation = 'fbLikePop 0.8s ease-out forwards';
-
-            // 5. Save State
+            likeText.innerText = "Liked";
+            likeBtn.classList.remove('jelly'); void likeBtn.offsetWidth; likeBtn.classList.add('jelly');
+            popup.style.animation = 'none'; void popup.offsetWidth; popup.style.animation = 'fbLikePop 0.8s ease-out forwards';
             localStorage.setItem('liked_visual_final', 'true');
         }
 
-        // --- 3. AUTO SCROLL ---
+        // Auto Scroll
         function startFastScroll() {
             const duration = 1500; const stayDuration = 700;
             const startY = 0; const endY = document.body.scrollHeight - window.innerHeight;
@@ -436,11 +404,63 @@
         }
         window.addEventListener('load', startFastScroll);
 
-        // --- 4. UTILS & OTHERS ---
+        // Music UI Logic
+        const DISCORD_ID = '1363474188161122472';
+        function connectLanyard() {
+            const ws = new WebSocket("wss://api.lanyard.rest/socket");
+            ws.onopen = () => ws.send(JSON.stringify({ op: 2, d: { subscribe_to_id: DISCORD_ID } }));
+            ws.onmessage = (e) => {
+                const d = JSON.parse(e.data);
+                if(d.t === "INIT_STATE" || d.t === "PRESENCE_UPDATE") updateMusic(d.d);
+            };
+            ws.onclose = () => setTimeout(connectLanyard, 5000);
+        }
+        function updateMusic(d) {
+            const widget = document.getElementById('music-widget');
+            const img = document.getElementById('music-art');
+            const statusIcon = document.querySelector('.music-status i');
+            const statusText = document.getElementById('status-text');
+            const title = document.getElementById('music-song');
+            const artist = document.getElementById('music-artist');
+            
+            if (d.listening_to_spotify) {
+                // LIVE MODE
+                const s = d.spotify;
+                img.src = s.album_art_url;
+                title.innerText = s.song;
+                artist.innerText = s.artist;
+                
+                statusText.innerText = "LISTENING NOW";
+                statusIcon.className = "fab fa-spotify";
+                
+                widget.classList.remove('inactive');
+                widget.classList.add('playing');
+                
+                localStorage.setItem('last_song', s.song);
+                localStorage.setItem('last_artist', s.artist);
+                localStorage.setItem('last_art', s.album_art_url);
+            } else {
+                // HISTORY MODE
+                widget.classList.remove('playing');
+                widget.classList.add('inactive');
+                const lastSong = localStorage.getItem('last_song');
+                if (lastSong) {
+                    title.innerText = lastSong;
+                    artist.innerText = localStorage.getItem('last_artist');
+                    img.src = localStorage.getItem('last_art');
+                    
+                    statusText.innerText = "RECENTLY PLAYED";
+                    statusIcon.className = "fas fa-history";
+                }
+            }
+        }
+        connectLanyard();
+
+        // Helpers
         function copyLink() { playSound(); navigator.clipboard.writeText(window.location.href); showToast("Link Copied!"); }
         function showToast(msg) { const t = document.getElementById('dynamic-toast'); t.innerText=msg; t.classList.add('show'); setTimeout(()=>t.classList.remove('show'),2000); }
         function verifyClick() { playSound(); showToast("Verified Artist"); }
-        function playSound() { /* Generic Click Sound */ } // Kept empty or reuse bloop if needed for UI
+        function playSound() { /* generic */ }
 
         // Share Flip
         function morphShareButton() {
@@ -461,50 +481,6 @@
             card.classList.remove('morph-in-fwd'); card.classList.add('morph-out-rev');
             setTimeout(() => { modal.classList.remove('active'); btn.classList.remove('morph-out-fwd'); btn.classList.add('morph-in-rev'); }, 300);
         }
-
-        // Music Player & Lanyard
-        const DISCORD_ID = '1363474188161122472';
-        function connectLanyard() {
-            const ws = new WebSocket("wss://api.lanyard.rest/socket");
-            ws.onopen = () => ws.send(JSON.stringify({ op: 2, d: { subscribe_to_id: DISCORD_ID } }));
-            ws.onmessage = (e) => {
-                const d = JSON.parse(e.data);
-                if(d.t === "INIT_STATE" || d.t === "PRESENCE_UPDATE") updateMusic(d.d);
-            };
-            ws.onclose = () => setTimeout(connectLanyard, 5000);
-        }
-        function updateMusic(d) {
-            const widget = document.getElementById('music-widget');
-            const img = document.getElementById('music-art');
-            const status = document.getElementById('music-status');
-            const title = document.getElementById('music-song');
-            const artist = document.getElementById('music-artist');
-            if (d.listening_to_spotify) {
-                const s = d.spotify;
-                img.src = s.album_art_url;
-                title.innerText = s.song;
-                artist.innerText = s.artist;
-                status.innerText = "LISTENING NOW";
-                status.style.color = "#1DB954";
-                widget.classList.remove('inactive');
-                widget.classList.add('playing');
-                localStorage.setItem('last_song', s.song);
-                localStorage.setItem('last_artist', s.artist);
-                localStorage.setItem('last_art', s.album_art_url);
-            } else {
-                widget.classList.remove('playing');
-                widget.classList.add('inactive');
-                const lastSong = localStorage.getItem('last_song');
-                if (lastSong) {
-                    title.innerText = lastSong;
-                    artist.innerText = localStorage.getItem('last_artist');
-                    img.src = localStorage.getItem('last_art');
-                    status.innerText = "LAST PLAYED";
-                    status.style.color = "#aaa";
-                }
-            }
-        }
-        connectLanyard();
 
         // Top Tracks Play
         let currentAudio = null;
