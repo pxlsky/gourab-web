@@ -29,7 +29,7 @@
             background-image: url('https://cdn.discordapp.com/attachments/1345025532659503115/1467758726072238121/1000199447.jpg?ex=69818c55&is=69803ad5&hm=1047b9de688aa0a534be2061b6174f359ca9fee911d37fc148475d2d6e9d5e69&');
             background-repeat: no-repeat; background-position: center; background-attachment: fixed; background-size: cover;
             color: var(--text-primary); overflow-x: hidden; padding-bottom: 100px;
-            /* Scroll behavior handled by JS for auto-scroll */
+            /* Auto-scroll handled by JS */
         }
 
         /* Fireflies */
@@ -124,7 +124,6 @@
         .play-btn { width: 40px; height: 40px; border-radius: 50%; background: rgba(255,255,255,0.15); display: flex; align-items: center; justify-content: center; cursor: pointer; margin-right: 15px; border: 1px solid rgba(255,255,255,0.2); transition: transform 0.2s; }
         .play-btn:active { transform: scale(0.9); }
         
-        /* INDEPENDENT TRACK EQ */
         .track-eq { display: flex; gap: 2px; height: 12px; align-items: flex-end; opacity: 0; transition: opacity 0.3s; }
         .playing .track-eq { opacity: 1; }
         .t-bar { width: 3px; background: white; border-radius: 2px; animation: tBounce 0.5s infinite alternate; }
@@ -162,22 +161,31 @@
         @keyframes cardFlipOut { 0% { transform: perspective(600px) rotateY(0deg) scale(1); opacity: 1; } 100% { transform: perspective(600px) rotateY(90deg) scale(0.8); opacity: 0; } }
         @keyframes btnFlipIn { 0% { transform: perspective(600px) rotateY(-90deg) scale(0.8); opacity: 0; } 100% { transform: perspective(600px) rotateY(0deg) scale(1); opacity: 1; } }
 
-        /* CIRCULAR LIKE BUTTON (NO COUNT) */
+        /* --- RESTORED PILL LIKE BUTTON --- */
         .like-float {
             position: fixed; bottom: 25px; right: 25px;
-            width: 55px; height: 55px; border-radius: 50%; /* Perfect Circle */
+            /* Pill Shape */
+            padding: 14px 28px; border-radius: 50px; 
             background: rgba(255, 255, 255, 0.15); backdrop-filter: blur(15px);
             border: 1px solid rgba(255, 255, 255, 0.4);
-            display: flex; align-items: center; justify-content: center; /* Center Icon */
+            display: flex; align-items: center; justify-content: center; gap: 8px;
             box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-            z-index: 1000; cursor: pointer; transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+            z-index: 1000; cursor: pointer; transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            color: white; font-weight: 600; font-size: 14px;
         }
-        .like-float:active { transform: scale(0.9); }
-        .like-float.liked i { color: var(--heart-color); }
-        .like-float.liked { border-color: var(--heart-color); background: rgba(255, 46, 99, 0.15); box-shadow: 0 0 40px rgba(255, 46, 99, 0.6); }
-        .like-float i { font-size: 22px; transition: color 0.3s; }
+        .like-float:active { transform: scale(0.95); }
+        .like-float i { font-size: 18px; transition: color 0.3s; }
         
-        /* Jelly Animation Class */
+        /* LIKED STATE (RED GLOW) */
+        .like-float.liked { 
+            border-color: var(--heart-color); 
+            background: rgba(255, 46, 99, 0.2); 
+            box-shadow: 0 0 30px rgba(255, 46, 99, 0.6); 
+            color: var(--heart-color);
+        }
+        .like-float.liked i { color: var(--heart-color); }
+        
+        /* Jelly Animation */
         .jelly { animation: jelly 0.6s; }
         @keyframes jelly { 
             0% { transform: scale(1); } 
@@ -202,7 +210,7 @@
 </head>
 <body>
 
-    <div id="thumbsUpPopup"><i class="fas fa-heart"></i></div>
+    <div id="thumbsUpPopup"><i class="fas fa-thumbs-up"></i></div>
 
     <div id="dynamic-toast">
         <i class="fas fa-check-circle" style="color:#4ade80; font-size:16px;"></i>
@@ -342,6 +350,7 @@
 
     <div class="like-float" id="like-btn" onclick="triggerLike()">
         <i class="fas fa-heart"></i>
+        <span id="like-text">Like</span>
     </div>
 
     <script>
@@ -349,39 +358,27 @@
         const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
         
         function playBloop() {
-            // Resume context if browser suspended it (common in Chrome)
             if (audioCtx.state === 'suspended') audioCtx.resume();
-            
             const osc = audioCtx.createOscillator();
             const gain = audioCtx.createGain();
-            
-            // Connect nodes
-            osc.connect(gain);
-            gain.connect(audioCtx.destination);
-            
-            // Sound Physics: Droplet "Bloop"
+            osc.connect(gain); gain.connect(audioCtx.destination);
             osc.type = 'sine';
-            
-            // Frequency sweep (High -> Low quickly)
             osc.frequency.setValueAtTime(600, audioCtx.currentTime);
             osc.frequency.exponentialRampToValueAtTime(150, audioCtx.currentTime + 0.15);
-            
-            // Gain envelope (Volume drop)
             gain.gain.setValueAtTime(0.5, audioCtx.currentTime);
             gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.15);
-            
-            // Play
-            osc.start();
-            osc.stop(audioCtx.currentTime + 0.2);
+            osc.start(); osc.stop(audioCtx.currentTime + 0.2);
         }
 
         // --- 2. LIKE BUTTON LOGIC (VISUAL ONLY) ---
         const likeBtn = document.getElementById('like-btn');
+        const likeText = document.getElementById('like-text');
         const popup = document.getElementById('thumbsUpPopup');
 
-        // Check if previously liked (to keep it red)
-        if (localStorage.getItem('liked_visual_only') === 'true') {
+        // Check if previously liked
+        if (localStorage.getItem('liked_visual_final') === 'true') {
             likeBtn.classList.add('liked');
+            likeText.innerText = "Liked";
         }
 
         function triggerLike() {
@@ -390,6 +387,7 @@
 
             // 2. Add Red State
             likeBtn.classList.add('liked');
+            likeText.innerText = "Liked"; // Change text
             
             // 3. Jelly Animation on Button
             likeBtn.classList.remove('jelly'); // reset
@@ -402,7 +400,7 @@
             popup.style.animation = 'fbLikePop 0.8s ease-out forwards';
 
             // 5. Save State
-            localStorage.setItem('liked_visual_only', 'true');
+            localStorage.setItem('liked_visual_final', 'true');
         }
 
         // --- 3. AUTO SCROLL ---
