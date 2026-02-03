@@ -9,15 +9,17 @@
     
     <style>
         :root {
-            --glass-bg: rgba(255, 255, 255, 0.07);
-            --glass-border: 1px solid rgba(255, 255, 255, 0.15);
+            /* --- OPTIMIZED THEME --- */
+            --glass-bg: rgba(255, 255, 255, 0.06);
+            --glass-border: rgba(255, 255, 255, 0.1);
             --glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
             --text-primary: #ffffff; 
             --text-secondary: rgba(255, 255, 255, 0.75);
-            --card-internal-bg: rgba(255, 255, 255, 0.05);
+            --card-internal-bg: rgba(255, 255, 255, 0.04);
             --heart-color: #ff2e63;
             --spotify-green: #1DB954;
             --history-gold: #ffb703;
+            --timeline-color: rgba(255, 255, 255, 0.4);
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
@@ -27,20 +29,18 @@
             background-color: #000000;
             color: var(--text-primary); 
             overflow-x: hidden; 
-            padding-bottom: 100px;
+            padding-bottom: 120px;
         }
 
-        /* --- FIXED BACKGROUND LAYER (Fixes Instagram Bug) --- */
+        /* Fixed Background Layer */
         .fixed-background {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            z-index: -2; /* Behind everything */
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -2;
             background-image: url('https://cdn.discordapp.com/attachments/1345025532659503115/1468145542319308865/1000199447.jpg?ex=6982f496&is=6981a316&hm=a3dc0c171c78454d12111272d21b4db2c5e80864fea39575b9919a6486bd744a&');
-            background-size: cover;
-            background-position: center;
-            background-repeat: no-repeat;
+            background-size: cover; background-position: center; background-repeat: no-repeat;
+            will-change: transform;
         }
 
+        /* Fireflies */
         .firefly {
             position: fixed; left: 50%; top: 50%; width: 4px; height: 4px;
             background-color: #fff; border-radius: 50%;
@@ -51,76 +51,65 @@
 
         .container { max-width: 500px; margin: 0 auto; padding: 20px; position: relative; }
 
+        /* --- GLASS CARD --- */
         .glass-card {
             background: var(--glass-bg);
             backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
-            border-radius: 30px; border: var(--glass-border); box-shadow: var(--glass-shadow);
-            padding: 25px; margin-bottom: 25px; position: relative; overflow: hidden;
-            opacity: 0; transform: translate3d(0, 80px, 0) scale(0.92) perspective(1000px) rotateX(10deg); filter: blur(5px);
-            transition: all 1s cubic-bezier(0.19, 1, 0.22, 1);
-            will-change: transform, opacity, filter;
+            border-radius: 28px; 
+            border: 1px solid var(--glass-border); 
+            box-shadow: var(--glass-shadow);
+            padding: 26px; margin-bottom: 24px; position: relative; overflow: hidden;
+            
+            transform: translate3d(0, 50px, 0); 
+            opacity: 0;
+            transition: opacity 0.8s ease-out, transform 0.8s cubic-bezier(0.19, 1, 0.22, 1);
+            will-change: opacity, transform;
         }
-        .glass-card.visible { opacity: 1; transform: translate3d(0, 0, 0) scale(1) perspective(1000px) rotateX(0deg); filter: blur(0px); }
-
-        .status-bar { display: flex; justify-content: space-between; opacity: 0.9; margin-bottom: 15px; font-size: 13px; font-weight: 600; }
-        .profile-header { text-align: center; }
-        .profile-img-container { position: relative; display: inline-block; margin-bottom: 15px; }
         
+        .glass-card.visible { opacity: 1; transform: translate3d(0, 0, 0); }
+
+        /* Profile Header */
+        .status-bar { display: flex; justify-content: space-between; opacity: 0.8; margin-bottom: 15px; font-size: 13px; font-weight: 600; letter-spacing: 0.5px; }
+        .profile-header { text-align: center; }
+        .profile-img-container { position: relative; display: inline-block; margin-bottom: 18px; }
         .profile-img { 
-            width: 120px; height: 120px; border-radius: 50%; object-fit: cover; 
-            border: 3px solid rgba(255,255,255,0.8); animation: pulse-border 3s infinite;
-            background-color: #333; /* Fallback color */
+            width: 125px; height: 125px; border-radius: 50%; object-fit: cover; 
+            border: 3px solid rgba(255,255,255,0.8); box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            animation: pulse-border 3s infinite;
         }
         @keyframes pulse-border { 0% { box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.4); } 70% { box-shadow: 0 0 0 15px rgba(255, 255, 255, 0); } 100% { box-shadow: 0 0 0 0 rgba(255, 255, 255, 0); } }
         
-        h1 { font-size: 26px; font-weight: 700; display: flex; align-items: center; justify-content: center; gap: 8px; margin-bottom: 5px; }
-        .verified-badge { color: #4dabf7; font-size: 20px; cursor: pointer; filter: drop-shadow(0 0 10px #4dabf7); }
-        .tags { font-size: 13px; color: var(--text-secondary); margin-bottom: 15px; letter-spacing: 0.5px; }
+        h1 { font-size: 28px; font-weight: 700; display: flex; align-items: center; justify-content: center; gap: 8px; margin-bottom: 6px; }
+        .verified-badge { color: #4dabf7; font-size: 22px; cursor: pointer; filter: drop-shadow(0 0 10px #4dabf7); }
+        .tags { font-size: 14px; color: var(--text-secondary); margin-bottom: 20px; font-weight: 500; }
 
-        /* --- PREMIUM MUSIC CARD --- */
+        /* --- MUSIC UI --- */
         .music-pill {
             background: rgba(255, 255, 255, 0.08); 
-            border-radius: 50px; 
-            padding: 8px 10px;
+            border-radius: 50px; padding: 10px 12px;
             display: flex; align-items: center; gap: 15px;
             border: 1px solid rgba(255, 255, 255, 0.1);
-            transition: all 0.3s ease;
-            position: relative; overflow: hidden;
+            transition: all 0.3s ease; position: relative; overflow: hidden;
         }
         .disk-wrapper {
-            width: 50px; height: 50px; border-radius: 50%;
-            background: #111; padding: 2px;
-            flex-shrink: 0; position: relative;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            width: 52px; height: 52px; border-radius: 50%; background: #111; padding: 2px;
+            flex-shrink: 0; position: relative; box-shadow: 0 4px 15px rgba(0,0,0,0.3);
             transition: box-shadow 0.3s;
         }
-        .music-cover {
-            width: 100%; height: 100%; border-radius: 50%; object-fit: cover;
-            animation: spin 4s linear infinite; animation-play-state: paused;
-        }
-        .disk-wrapper::after {
-            content: ''; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
-            width: 10px; height: 10px; background: #222; border-radius: 50%; border: 2px solid #000; z-index: 2;
-        }
+        .music-cover { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; animation: spin 4s linear infinite; animation-play-state: paused; }
+        .disk-wrapper::after { content: ''; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 10px; height: 10px; background: #222; border-radius: 50%; border: 2px solid #000; z-index: 2; }
         .music-info { display: flex; flex-direction: column; overflow: hidden; flex: 1; text-align: left; }
-        .music-status { 
-            font-size: 9px; font-weight: 800; letter-spacing: 1px; 
-            text-transform: uppercase; margin-bottom: 2px;
-            display: flex; align-items: center; gap: 5px;
-        }
+        .music-status { font-size: 10px; font-weight: 800; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 3px; display: flex; align-items: center; gap: 5px; }
         .music-title { font-size: 14px; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: white; }
         .music-artist { font-size: 12px; opacity: 0.7; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 
-        /* LIVE & HISTORY STATES */
         .music-pill.playing .disk-wrapper { box-shadow: 0 0 20px rgba(29, 185, 84, 0.4); }
         .music-pill.playing .music-cover { animation-play-state: running; }
         .music-pill.playing .music-status { color: var(--spotify-green); }
-
         .music-pill.inactive { background: rgba(255,255,255,0.05); }
         .music-pill.inactive .disk-wrapper { box-shadow: 0 0 0 rgba(0,0,0,0); border: 1px solid rgba(255,255,255,0.1); }
         .music-pill.inactive .music-status { color: var(--history-gold); }
-        .music-pill.inactive .music-cover { opacity: 0.9; }
-
+        
         .eq-bars { display: flex; gap: 3px; align-items: flex-end; height: 15px; margin-right: 12px; }
         .eq-bar { width: 3px; background: var(--spotify-green); border-radius: 2px; animation: bounce 0.6s infinite ease-in-out alternate; }
         .eq-bar:nth-child(2) { animation-delay: 0.1s; } .eq-bar:nth-child(3) { animation-delay: 0.2s; }
@@ -128,40 +117,91 @@
         @keyframes bounce { 0% { height: 4px; } 100% { height: 15px; } }
         @keyframes spin { 100% { transform: rotate(360deg); } }
 
-        /* --- SECTIONS --- */
-        .personal-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; text-align: center; }
-        .personal-item { background: var(--card-internal-bg); padding: 12px 5px; border-radius: 18px; border: 1px solid rgba(255,255,255,0.1); display: flex; flex-direction: column; align-items: center; justify-content: center; height: 95px; }
-        .personal-icon { font-size: 20px; margin-bottom: 6px; color: rgba(255,255,255,0.9); }
-        .personal-label { font-size: 10px; opacity: 0.6; text-transform: uppercase; }
-        .personal-value { font-size: 13px; font-weight: 600; }
+        /* --- GRIDS --- */
+        .section-title { font-size: 18px; font-weight: 600; margin-bottom: 18px; color: #fff; }
+
+        .personal-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; text-align: center; }
+        .personal-item { background: var(--card-internal-bg); padding: 14px 5px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.1); display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100px; }
+        .personal-icon { font-size: 22px; margin-bottom: 8px; color: rgba(255,255,255,0.9); }
+        .personal-label { font-size: 10px; opacity: 0.6; text-transform: uppercase; font-weight: 600; }
+        .personal-value { font-size: 14px; font-weight: 700; margin-top: 2px; }
         
         .flip-inner { transition: transform 0.8s; transform-style: preserve-3d; position: relative; width: 100%; height: 100%; }
         .flipped .flip-inner { transform: rotateY(180deg); }
         .flip-front, .flip-back { position: absolute; width: 100%; height: 100%; backface-visibility: hidden; display: flex; flex-direction: column; align-items: center; justify-content: center; }
         .flip-back { transform: rotateY(180deg); }
 
-        .music-item { background: rgba(255, 255, 255, 0.05); margin: 10px 0; padding: 12px 15px; border-radius: 20px; display: flex; align-items: center; justify-content: space-between; border: 1px solid rgba(255,255,255,0.1); transition: background 0.3s ease; }
-        .music-item.playing { background: rgba(255, 255, 255, 0.15); border-color: rgba(255,255,255,0.4); box-shadow: 0 0 15px rgba(255,255,255,0.1); }
-        .play-btn { width: 40px; height: 40px; border-radius: 50%; background: rgba(255,255,255,0.15); display: flex; align-items: center; justify-content: center; cursor: pointer; margin-right: 15px; border: 1px solid rgba(255,255,255,0.2); transition: transform 0.2s; }
-        .play-btn:active { transform: scale(0.9); }
+        .music-item { background: rgba(255, 255, 255, 0.05); margin: 10px 0; padding: 14px 16px; border-radius: 20px; display: flex; align-items: center; justify-content: space-between; border: 1px solid rgba(255,255,255,0.1); transition: background 0.2s ease; }
+        .music-item:active { background: rgba(255, 255, 255, 0.1); }
+        .music-item.playing { background: rgba(255, 255, 255, 0.15); border-color: rgba(255,255,255,0.3); }
+        .play-btn { width: 42px; height: 42px; border-radius: 50%; background: rgba(255,255,255,0.1); display: flex; align-items: center; justify-content: center; cursor: pointer; margin-right: 15px; font-size: 14px; border: 1px solid rgba(255,255,255,0.1); }
         .track-eq { display: flex; gap: 2px; height: 12px; align-items: flex-end; opacity: 0; transition: opacity 0.3s; }
         .playing .track-eq { opacity: 1; }
         .t-bar { width: 3px; background: white; border-radius: 2px; animation: tBounce 0.5s infinite alternate; }
         .t-bar:nth-child(1) { animation-delay: 0s; } .t-bar:nth-child(2) { animation-delay: 0.2s; } .t-bar:nth-child(3) { animation-delay: 0.4s; }
         @keyframes tBounce { 0% { height: 3px; } 100% { height: 14px; } }
 
-        .info-row { display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid rgba(255,255,255,0.1); font-size: 14px; }
+        .info-row { display: flex; justify-content: space-between; padding: 14px 0; border-bottom: 1px solid rgba(255,255,255,0.1); font-size: 14px; }
         .info-row:last-child { border-bottom: none; }
         .creativity-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 25px; }
-        .chip { background: var(--card-internal-bg); padding: 15px; border-radius: 18px; text-align: center; font-size: 13px; font-weight: 500; border: 1px solid rgba(255,255,255,0.15); display: flex; flex-direction: column; align-items: center; justify-content: center; }
-        .chip i { font-size: 22px; margin-bottom: 8px; }
-        .edu-list { display: flex; flex-direction: column; gap: 10px; }
-        .edu-item { background: var(--card-internal-bg); padding: 15px; border-radius: 18px; display: flex; align-items: center; border: 1px solid rgba(255,255,255,0.15); }
-        .edu-icon { width: 40px; height: 40px; border-radius: 12px; background: rgba(255,255,255,0.1); display: flex; align-items: center; justify-content: center; margin-right: 15px; font-size: 18px; }
+        .chip { background: var(--card-internal-bg); padding: 18px; border-radius: 20px; text-align: center; font-size: 13px; font-weight: 600; border: 1px solid rgba(255,255,255,0.1); display: flex; flex-direction: column; align-items: center; justify-content: center; }
+        .chip i { font-size: 24px; margin-bottom: 10px; opacity: 0.9; }
+
+        /* --- JOURNEY TIMELINE --- */
+        .timeline { position: relative; padding-left: 20px; margin-top: 10px; }
+        
+        /* The Vertical Line with Animation */
+        .timeline::before {
+            content: ''; position: absolute; left: 0; top: 15px; width: 2px;
+            background: linear-gradient(to bottom, rgba(255,255,255,0) 0%, var(--timeline-color) 15%, var(--timeline-color) 85%, rgba(255,255,255,0) 100%);
+            /* Start with 0 height */
+            height: 0; 
+            transition: height 2.5s cubic-bezier(0.25, 1, 0.5, 1);
+        }
+        
+        /* Trigger Animation specifically when timeline is active */
+        .timeline.lines-visible::before {
+            height: calc(100% - 30px);
+        }
+
+        .timeline-item { position: relative; margin-bottom: 20px; padding-left: 25px; opacity: 0; transform: translateX(-10px); transition: all 0.5s ease; }
+        
+        /* Staggered Item Animation */
+        .timeline.lines-visible .timeline-item { opacity: 1; transform: translateX(0); }
+        .timeline.lines-visible .timeline-item:nth-child(1) { transition-delay: 0.3s; }
+        .timeline.lines-visible .timeline-item:nth-child(2) { transition-delay: 0.6s; }
+        .timeline.lines-visible .timeline-item:nth-child(3) { transition-delay: 0.9s; }
+        .timeline.lines-visible .timeline-item:nth-child(4) { transition-delay: 1.2s; }
+
+        .timeline-item:last-child { margin-bottom: 0; }
+        
+        .timeline-dot {
+            position: absolute; left: -24px; top: 18px; width: 10px; height: 10px;
+            background: #fff; border-radius: 50%;
+            box-shadow: 0 0 10px rgba(255,255,255,0.5);
+            border: 2px solid #000;
+        }
+        
+        .timeline-card {
+            background: var(--card-internal-bg); padding: 16px; border-radius: 18px;
+            border: 1px solid rgba(255,255,255,0.1); display: flex; align-items: center;
+            transition: transform 0.2s ease;
+        }
+        .timeline-card:active { transform: scale(0.98); background: rgba(255,255,255,0.08); }
+        
+        .t-icon { 
+            width: 38px; height: 38px; border-radius: 12px; background: rgba(255,255,255,0.1); 
+            display: flex; align-items: center; justify-content: center; margin-right: 15px; font-size: 16px; flex-shrink: 0;
+        }
+        .t-content { display: flex; flex-direction: column; }
+        .t-title { font-size: 14px; font-weight: 700; margin-bottom: 2px; }
+        .t-desc { font-size: 11px; opacity: 0.6; text-transform: uppercase; letter-spacing: 0.5px; line-height: 1.4; }
+
+        /* Socials */
         .social-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 10px; }
-        .social-btn { display: flex; flex-direction: column; align-items: center; justify-content: center; background: rgba(255, 255, 255, 0.12); color: var(--text-primary); text-decoration: none; padding: 18px 5px; border-radius: 24px; font-weight: 500; font-size: 13px; border: 1px solid rgba(255,255,255,0.25); transition: all 0.2s ease; position: relative; overflow: hidden; cursor: pointer; }
-        .social-btn:active { transform: scale(0.96); background: rgba(255,255,255,0.3); }
-        .social-btn i { font-size: 26px; margin-bottom: 8px; color: #fff; filter: drop-shadow(0 2px 5px rgba(0,0,0,0.3)); }
+        .social-btn { display: flex; flex-direction: column; align-items: center; justify-content: center; background: rgba(255, 255, 255, 0.1); color: var(--text-primary); text-decoration: none; padding: 20px 5px; border-radius: 24px; font-weight: 500; font-size: 13px; border: 1px solid rgba(255,255,255,0.2); transition: all 0.2s ease; position: relative; overflow: hidden; cursor: pointer; }
+        .social-btn:active { transform: scale(0.96); background: rgba(255,255,255,0.25); }
+        .social-btn i { font-size: 26px; margin-bottom: 10px; color: #fff; filter: drop-shadow(0 2px 5px rgba(0,0,0,0.3)); }
 
         .morph-out-fwd { animation: btnFlipOut 0.4s forwards ease-in; pointer-events: none; }
         .morph-in-fwd { animation: cardFlipIn 0.5s forwards cubic-bezier(0.175, 0.885, 0.32, 1.85); animation-delay: 0.1s; }
@@ -175,7 +215,7 @@
         .like-float {
             position: fixed; bottom: 25px; right: 25px;
             padding: 14px 28px; border-radius: 50px; 
-            background: rgba(255, 255, 255, 0.15); backdrop-filter: blur(15px);
+            background: rgba(255, 255, 255, 0.15); backdrop-filter: blur(20px);
             border: 1px solid rgba(255, 255, 255, 0.4);
             display: flex; align-items: center; justify-content: center; gap: 8px;
             box-shadow: 0 10px 30px rgba(0,0,0,0.3);
@@ -262,35 +302,36 @@
         </div>
 
         <div class="glass-card">
+            <h2 class="section-title">Personal</h2>
             <div class="personal-grid">
                 <div class="personal-item" id="bday-card">
                     <div class="flip-inner">
                         <div class="flip-front">
                             <i class="fas fa-cake-candles personal-icon" style="color:#ff9f1c;"></i>
-                            <div style="font-size:10px; opacity:0.6;">BIRTHDAY</div>
-                            <div style="font-weight:700;">09 Aug</div>
+                            <div class="personal-label">Birthday</div>
+                            <div class="personal-value">09 Aug</div>
                         </div>
                         <div class="flip-back">
-                            <div style="font-size:18px; font-weight:700; color:#ff9f1c;" id="bday-count">--</div>
-                            <div style="font-size:10px;">Days Left</div>
+                            <div class="personal-value" style="color:#ff9f1c; font-size:16px;" id="bday-count">--</div>
+                            <div class="personal-label">Days Left</div>
                         </div>
                     </div>
                 </div>
                 <div class="personal-item">
                     <i class="fas fa-ruler-vertical personal-icon" style="color:#4dabf7;"></i>
-                    <div style="font-size:10px; opacity:0.6;">HEIGHT</div>
-                    <div style="font-weight:700;">5'8"</div>
+                    <div class="personal-label">Height</div>
+                    <div class="personal-value">5'8"</div>
                 </div>
                 <div class="personal-item">
                     <i class="fas fa-map-pin personal-icon" style="color:#ff2e63;"></i>
-                    <div style="font-size:10px; opacity:0.6;">LOCATION</div>
-                    <div style="font-weight:700;">Nadia</div>
+                    <div class="personal-label">Location</div>
+                    <div class="personal-value">Nadia</div>
                 </div>
             </div>
         </div>
 
         <div class="glass-card">
-            <h2 style="font-size:19px; font-weight:600; margin-bottom:15px;">Top Tracks</h2>
+            <h2 class="section-title">Top Tracks</h2>
             <div class="music-item" id="track1"><audio id="audio1" src="song1.mp3"></audio><div class="play-btn" onclick="togglePlay(1)"><i class="fas fa-play"></i></div><div style="flex-grow:1"><span style="display:block; font-weight:600; font-size:14px;">Amake Nao</span><span style="font-size:11px; opacity:0.7;">Debayan Banerjee</span></div><div class="track-eq"><div class="t-bar"></div><div class="t-bar"></div><div class="t-bar"></div></div></div>
             <div class="music-item" id="track2"><audio id="audio2" src="song2.mp3"></audio><div class="play-btn" onclick="togglePlay(2)"><i class="fas fa-play"></i></div><div style="flex-grow:1"><span style="display:block; font-weight:600; font-size:14px;">Finding Her</span><span style="font-size:11px; opacity:0.7;">Kushagra</span></div><div class="track-eq"><div class="t-bar"></div><div class="t-bar"></div><div class="t-bar"></div></div></div>
             <div class="music-item" id="track3"><audio id="audio3" src="song3.mp3"></audio><div class="play-btn" onclick="togglePlay(3)"><i class="fas fa-play"></i></div><div style="flex-grow:1"><span style="display:block; font-weight:600; font-size:14px;">Hote Paare Na</span><span style="font-size:11px; opacity:0.7;">Original Soundtrack</span></div><div class="track-eq"><div class="t-bar"></div><div class="t-bar"></div><div class="t-bar"></div></div></div>
@@ -299,7 +340,7 @@
         </div>
 
         <div class="glass-card">
-            <h2 style="font-size:19px; font-weight:600; margin-bottom:15px;">Favorites</h2>
+            <h2 class="section-title">Favorites</h2>
             <div class="info-row"><span class="label">Singers</span><span class="value">Sonu, Arijit, Shreya</span></div>
             <div class="info-row"><span class="label">Color</span><span class="value">Black & White</span></div>
             <div class="info-row"><span class="label">Actors</span><span class="value">Dev Adhikari, Varun Dhawan</span></div>
@@ -308,7 +349,7 @@
         </div>
 
         <div class="glass-card">
-            <h2 style="font-size:19px; font-weight:600; margin-bottom:15px;">Creativity</h2>
+            <h2 class="section-title">Creativity</h2>
             <div class="creativity-grid">
                 <div class="chip"><i class="fas fa-palette"></i>Gfx Artist</div>
                 <div class="chip"><i class="fas fa-desktop"></i>Digital Art</div>
@@ -316,17 +357,54 @@
                 <div class="chip"><i class="fas fa-pen-nib"></i>Writing</div>
             </div>
 
-            <h2 style="font-size:19px; font-weight:600; margin-bottom:15px;">Education</h2>
-            <div class="edu-list">
-                <div class="edu-item"><div class="edu-icon"><i class="fas fa-school"></i></div><span class="edu-text">HS: MRBHS</span></div>
-                <div class="edu-item"><div class="edu-icon"><i class="fas fa-university"></i></div><span class="edu-text">BA: SRLM</span></div>
-                <div class="edu-item"><div class="edu-icon"><i class="fas fa-bolt"></i></div><span class="edu-text">ITI Certified</span></div>
-                <div class="edu-item"><div class="edu-icon"><i class="fas fa-laptop-code"></i></div><span class="edu-text">MDT (NBCE)</span></div>
+            <h2 class="section-title" style="margin-top:25px;">My Journey</h2>
+            
+            <div class="timeline">
+                <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-card">
+                        <div class="t-icon"><i class="fas fa-school"></i></div>
+                        <div class="t-content">
+                            <span class="t-title">High School</span>
+                            <span class="t-desc">Majdia Rail Bazar High School</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-card">
+                        <div class="t-icon"><i class="fas fa-university"></i></div>
+                        <div class="t-content">
+                            <span class="t-title">Graduation</span>
+                            <span class="t-desc">Sudhiranjan Lahiri Mahavidyalaya</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-card">
+                        <div class="t-icon"><i class="fas fa-bolt"></i></div>
+                        <div class="t-content">
+                            <span class="t-title">ITI Certified</span>
+                            <span class="t-desc">Industrial Training Institute</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-card">
+                        <div class="t-icon"><i class="fas fa-laptop-code"></i></div>
+                        <div class="t-content">
+                            <span class="t-title">MDT Course</span>
+                            <span class="t-desc">National Board of Computer Education</span>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
 
         <div class="glass-card">
-            <h2 style="font-size:19px; font-weight:600; margin-bottom:15px;">Connect</h2>
+            <h2 class="section-title">Connect</h2>
             <div class="social-grid">
                 <a href="https://www.instagram.com/gourab_adhikary_" class="social-btn"><i class="fab fa-instagram"></i>Instagram</a>
                 <a href="https://www.facebook.com/share/16j5Yo2LnZ/" class="social-btn"><i class="fab fa-facebook-f"></i>Facebook</a>
@@ -380,17 +458,27 @@
             localStorage.setItem('liked_visual_final', 'true');
         }
 
-        // Auto Scroll
+        // Auto Scroll (Jitter Fix: Stops on interaction)
         function startFastScroll() {
             const duration = 1500; const stayDuration = 700;
             const startY = 0; const endY = document.body.scrollHeight - window.innerHeight;
             let startTime = null; let direction = 1;
+            let isUserInteracting = false;
+
+            // Stop auto-scroll on interaction
+            const stopScroll = () => { isUserInteracting = true; };
+            window.addEventListener('pointerdown', stopScroll);
+            window.addEventListener('wheel', stopScroll);
+            window.addEventListener('touchstart', stopScroll);
             
             setTimeout(() => requestAnimationFrame(scrollStep), 1000);
 
             function scrollStep(timestamp) {
+                if (isUserInteracting) return; // Exit if user touches screen
+
                 if (!startTime) startTime = timestamp;
                 const elapsed = timestamp - startTime;
+                
                 if (direction === 1) {
                     if (elapsed < duration) {
                         const t = elapsed / duration;
@@ -530,6 +618,18 @@
             });
         }, { threshold: 0.1 });
         document.querySelectorAll('.glass-card').forEach(el => observer.observe(el));
+
+        // TIMELINE REPLAY OBSERVER (THE FIX)
+        const timelineObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if(entry.isIntersecting) {
+                    entry.target.classList.add('lines-visible');
+                } else {
+                    entry.target.classList.remove('lines-visible'); // Reset animation on exit
+                }
+            });
+        }, { threshold: 0.3 }); // Waits until 30% of timeline is visible
+        document.querySelectorAll('.timeline').forEach(el => timelineObserver.observe(el));
 
         // Views
         fetch('https://api.counterapi.dev/v1/gourab-bio/views/up')
