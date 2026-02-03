@@ -25,9 +25,20 @@
         body {
             font-family: 'Inter', sans-serif;
             background-color: #000000;
-            background-image: url('https://cdn.discordapp.com/attachments/1345025532659503115/1467758726072238121/1000199447.jpg?ex=69818c55&is=69803ad5&hm=1047b9de688aa0a534be2061b6174f359ca9fee911d37fc148475d2d6e9d5e69&');
-            background-repeat: no-repeat; background-position: center; background-attachment: fixed; background-size: cover;
-            color: var(--text-primary); overflow-x: hidden; padding-bottom: 100px;
+            color: var(--text-primary); 
+            overflow-x: hidden; 
+            padding-bottom: 100px;
+        }
+
+        /* --- FIXED BACKGROUND LAYER (Fixes Instagram Bug) --- */
+        .fixed-background {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            z-index: -2; /* Behind everything */
+            background-image: url('https://cdn.discordapp.com/attachments/1345025532659503115/1468145542319308865/1000199447.jpg?ex=6982f496&is=6981a316&hm=a3dc0c171c78454d12111272d21b4db2c5e80864fea39575b9919a6486bd744a&');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
         }
 
         .firefly {
@@ -38,7 +49,7 @@
         }
         @keyframes move { 0% { transform: translate(-50vw, 50vh); } 100% { transform: translate(50vw, -50vh); } }
 
-        .container { max-width: 500px; margin: 0 auto; padding: 20px; }
+        .container { max-width: 500px; margin: 0 auto; padding: 20px; position: relative; }
 
         .glass-card {
             background: var(--glass-bg);
@@ -54,9 +65,11 @@
         .status-bar { display: flex; justify-content: space-between; opacity: 0.9; margin-bottom: 15px; font-size: 13px; font-weight: 600; }
         .profile-header { text-align: center; }
         .profile-img-container { position: relative; display: inline-block; margin-bottom: 15px; }
+        
         .profile-img { 
             width: 120px; height: 120px; border-radius: 50%; object-fit: cover; 
             border: 3px solid rgba(255,255,255,0.8); animation: pulse-border 3s infinite;
+            background-color: #333; /* Fallback color */
         }
         @keyframes pulse-border { 0% { box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.4); } 70% { box-shadow: 0 0 0 15px rgba(255, 255, 255, 0); } 100% { box-shadow: 0 0 0 0 rgba(255, 255, 255, 0); } }
         
@@ -64,7 +77,7 @@
         .verified-badge { color: #4dabf7; font-size: 20px; cursor: pointer; filter: drop-shadow(0 0 10px #4dabf7); }
         .tags { font-size: 13px; color: var(--text-secondary); margin-bottom: 15px; letter-spacing: 0.5px; }
 
-        /* --- PREMIUM MUSIC CARD (VINYL STYLE) --- */
+        /* --- PREMIUM MUSIC CARD --- */
         .music-pill {
             background: rgba(255, 255, 255, 0.08); 
             border-radius: 50px; 
@@ -74,8 +87,6 @@
             transition: all 0.3s ease;
             position: relative; overflow: hidden;
         }
-        
-        /* Album Art Circle */
         .disk-wrapper {
             width: 50px; height: 50px; border-radius: 50%;
             background: #111; padding: 2px;
@@ -87,14 +98,11 @@
             width: 100%; height: 100%; border-radius: 50%; object-fit: cover;
             animation: spin 4s linear infinite; animation-play-state: paused;
         }
-        .disk-wrapper::after { /* Vinyl Hole */
+        .disk-wrapper::after {
             content: ''; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
             width: 10px; height: 10px; background: #222; border-radius: 50%; border: 2px solid #000; z-index: 2;
         }
-
         .music-info { display: flex; flex-direction: column; overflow: hidden; flex: 1; text-align: left; }
-        
-        /* Status Badge */
         .music-status { 
             font-size: 9px; font-weight: 800; letter-spacing: 1px; 
             text-transform: uppercase; margin-bottom: 2px;
@@ -103,22 +111,20 @@
         .music-title { font-size: 14px; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: white; }
         .music-artist { font-size: 12px; opacity: 0.7; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 
-        /* LIVE STATE STYLES */
+        /* LIVE & HISTORY STATES */
         .music-pill.playing .disk-wrapper { box-shadow: 0 0 20px rgba(29, 185, 84, 0.4); }
         .music-pill.playing .music-cover { animation-play-state: running; }
         .music-pill.playing .music-status { color: var(--spotify-green); }
 
-        /* LAST PLAYED STATE STYLES (Elegant) */
         .music-pill.inactive { background: rgba(255,255,255,0.05); }
         .music-pill.inactive .disk-wrapper { box-shadow: 0 0 0 rgba(0,0,0,0); border: 1px solid rgba(255,255,255,0.1); }
-        .music-pill.inactive .music-status { color: var(--history-gold); } /* Gold text */
-        .music-pill.inactive .music-cover { opacity: 0.9; } /* Keep colorful */
+        .music-pill.inactive .music-status { color: var(--history-gold); }
+        .music-pill.inactive .music-cover { opacity: 0.9; }
 
-        /* EQ Bars */
         .eq-bars { display: flex; gap: 3px; align-items: flex-end; height: 15px; margin-right: 12px; }
         .eq-bar { width: 3px; background: var(--spotify-green); border-radius: 2px; animation: bounce 0.6s infinite ease-in-out alternate; }
         .eq-bar:nth-child(2) { animation-delay: 0.1s; } .eq-bar:nth-child(3) { animation-delay: 0.2s; }
-        .inactive .eq-bars { display: none; } /* Hide EQ when offline */
+        .inactive .eq-bars { display: none; }
         @keyframes bounce { 0% { height: 4px; } 100% { height: 15px; } }
         @keyframes spin { 100% { transform: rotate(360deg); } }
 
@@ -128,6 +134,7 @@
         .personal-icon { font-size: 20px; margin-bottom: 6px; color: rgba(255,255,255,0.9); }
         .personal-label { font-size: 10px; opacity: 0.6; text-transform: uppercase; }
         .personal-value { font-size: 13px; font-weight: 600; }
+        
         .flip-inner { transition: transform 0.8s; transform-style: preserve-3d; position: relative; width: 100%; height: 100%; }
         .flipped .flip-inner { transform: rotateY(180deg); }
         .flip-front, .flip-back { position: absolute; width: 100%; height: 100%; backface-visibility: hidden; display: flex; flex-direction: column; align-items: center; justify-content: center; }
@@ -196,6 +203,8 @@
 </head>
 <body>
 
+    <div class="fixed-background"></div>
+
     <div id="thumbsUpPopup"><i class="fas fa-heart"></i></div>
 
     <div id="dynamic-toast">
@@ -229,7 +238,7 @@
             </div>
             
             <div class="profile-img-container">
-                <img src="https://cdn.discordapp.com/attachments/1345025532659503115/1467758711081799804/10001682842.jpg?ex=69818c52&is=69803ad2&hm=dacedadde4fca62b78b45d705565a2c1e0330a73143b49e9ec8b777a6a5bcb92&" class="profile-img">
+                <img src="https://cdn.discordapp.com/attachments/1345025532659503115/1468145520152150016/10001682842.jpg?ex=6982f490&is=6981a310&hm=8e4d6ec09668c013d81d60eb0ec50e3c1ccca337982b9108f3e985644062e33e&" class="profile-img">
             </div>
             
             <h1>Gourab Adhikary <i class="fas fa-check-circle verified-badge" onclick="verifyClick()"></i></h1>
@@ -244,7 +253,7 @@
                     <img id="music-art" src="https://i.scdn.co/image/ab67616d0000b273577395562725d223594b2377" class="music-cover">
                 </div>
                 <div class="music-info">
-                    <span id="music-status" class="music-status"><i class="fas fa-clock"></i> &nbsp;<span id="status-text">OFFLINE</span></span>
+                    <span id="music-status" class="music-status"><i class="fas fa-clock"></i>  <span id="status-text">OFFLINE</span></span>
                     <span id="music-song" class="music-title">Not Playing</span>
                     <span id="music-artist" class="music-artist">Spotify</span>
                 </div>
