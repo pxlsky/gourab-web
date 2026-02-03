@@ -9,6 +9,7 @@
     
     <style>
         :root {
+            /* --- DARK THEME BASE --- */
             --glass-bg: linear-gradient(135deg, rgba(60, 140, 255, 0.03), rgba(220, 100, 255, 0.03));
             --glass-border: 1px solid rgba(255, 255, 255, 0.3);
             --glass-shadow: 0 20px 40px rgba(0, 0, 0, 0.2), inset 0 1px 2px rgba(255, 255, 255, 0.6), inset 0 0 10px rgba(255, 255, 255, 0.1); 
@@ -19,7 +20,14 @@
             --heart-color: #ff2e63;
         }
 
-        * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+        * { 
+            box-sizing: border-box; margin: 0; padding: 0; 
+            -webkit-tap-highlight-color: transparent; 
+            -webkit-font-smoothing: antialiased;
+            text-rendering: optimizeLegibility;
+        }
+
+        html { scroll-behavior: smooth; }
 
         body {
             font-family: 'Inter', sans-serif;
@@ -27,52 +35,69 @@
             background-image: url('https://cdn.discordapp.com/attachments/1345025532659503115/1467758726072238121/1000199447.jpg?ex=69818c55&is=69803ad5&hm=1047b9de688aa0a534be2061b6174f359ca9fee911d37fc148475d2d6e9d5e69&');
             background-repeat: no-repeat; background-position: center center; background-attachment: fixed; background-size: cover;
             color: var(--text-primary); overflow-x: hidden; padding-bottom: 100px;
-            /* Performance */
-            text-rendering: optimizeLegibility; -webkit-font-smoothing: antialiased; will-change: scroll-position;
+            will-change: scroll-position;
         }
 
         .container { max-width: 500px; margin: 0 auto; padding: 20px; }
 
-        /* --- 1. REFINED SPRING PHYSICS --- */
+        /* --- 1. ULTRA-LIQUID ANIMATION --- */
         .glass-card {
             background: var(--glass-bg);
             backdrop-filter: blur(10px) saturate(110%); -webkit-backdrop-filter: blur(10px) saturate(110%);
             border-radius: 32px; border: var(--glass-border); box-shadow: var(--glass-shadow);
             padding: 25px; margin-bottom: 30px; position: relative; overflow: hidden;
-            
-            /* Start slightly down (60px) and scale (0.95) - Less aggressive than before */
-            transform: translate3d(0, 60px, 0) scale(0.95);
             opacity: 0; 
-            
-            /* Duration: 0.6s 
-               Bezier: 1.35 Magnitude. 
-               This goes slightly past 100% (to 1.1) and settles back to 1.0.
-               It feels like a high-quality metal spring.
-            */
-            transition: opacity 0.6s ease, transform 0.6s cubic-bezier(0.34, 1.35, 0.64, 1);
-            will-change: transform, opacity;
+            transform: translate3d(0, 80px, 0) scale(0.94) perspective(1000px) rotateX(15deg);
+            filter: blur(8px); 
+            transition: all 1.2s cubic-bezier(0.19, 1, 0.22, 1);
+            will-change: transform, opacity, filter;
+            backface-visibility: hidden;
         }
-        
-        .glass-card.visible { opacity: 1; transform: translate3d(0, 0, 0) scale(1); }
+        .glass-card.visible { 
+            opacity: 1; 
+            transform: translate3d(0, 0, 0) scale(1) perspective(1000px) rotateX(0deg);
+            filter: blur(0px);
+        }
 
         /* Profile Header */
         .status-bar { display: flex; justify-content: space-between; align-items: center; width: 100%; margin-bottom: 15px; opacity: 0.9; }
         .profile-header { text-align: center; padding-top: 15px; }
-        .profile-img { width: 130px; height: 130px; border-radius: 50%; object-fit: cover; border: 3px solid rgba(255, 255, 255, 0.6); box-shadow: 0 10px 25px rgba(0,0,0,0.3); margin-bottom: 15px; }
+        .profile-img { 
+            width: 130px; height: 130px; border-radius: 50%; object-fit: cover; 
+            border: 3px solid rgba(255, 255, 255, 0.6); box-shadow: 0 10px 25px rgba(0,0,0,0.3); margin-bottom: 15px; 
+            will-change: transform;
+        }
         h1 { font-size: 28px; font-weight: 700; margin-bottom: 5px; text-shadow: 0 2px 15px rgba(0,0,0,0.5); display: flex; align-items: center; justify-content: center; gap: 8px; }
         .verified-badge { color: #4dabf7; font-size: 22px; cursor: pointer; filter: drop-shadow(0 0 8px rgba(77, 171, 247, 0.5)); transition: transform 0.5s ease; }
         .verified-badge.spin { transform: rotate(360deg) scale(1.2); }
         .tags { font-size: 14px; color: var(--text-secondary); font-weight: 500; margin-bottom: 15px; }
 
-        /* LIVE STATUS CARD */
-        .live-status-box {
-            background: rgba(0, 0, 0, 0.3); border-radius: 20px; padding: 12px; margin-bottom: 5px;
-            display: flex; align-items: center; gap: 12px; border: 1px solid rgba(255,255,255,0.1);
+        /* --- NEW SMART MUSIC CARD UI --- */
+        .live-activity-card {
+            background: rgba(0, 0, 0, 0.4); border-radius: 24px; padding: 10px 15px; margin-bottom: 5px;
+            display: flex; align-items: center; gap: 12px; border: 1px solid rgba(255,255,255,0.15);
+            transition: all 0.5s ease;
         }
-        #status-dot { width: 12px; height: 12px; border-radius: 50%; background: #9ca3af; box-shadow: 0 0 10px rgba(156,163,175,0.4); }
-        .activity-text { display: flex; flex-direction: column; text-align: left; overflow: hidden; }
-        #activity-name { font-size: 13px; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-        #activity-detail { font-size: 11px; opacity: 0.7; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .album-cover {
+            width: 45px; height: 45px; border-radius: 12px; object-fit: cover;
+            background: #222; border: 1px solid rgba(255,255,255,0.1);
+        }
+        .activity-text-group { display: flex; flex-direction: column; text-align: left; overflow: hidden; flex: 1; }
+        .status-badge { font-size: 10px; text-transform: uppercase; font-weight: 700; letter-spacing: 1px; color: #1DB954; margin-bottom: 2px; display: flex; align-items: center; gap: 5px; }
+        .song-title { font-size: 13px; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: white; }
+        .artist-name { font-size: 11px; opacity: 0.7; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        
+        /* Mini EQ Animation */
+        .mini-eq { display: flex; gap: 2px; align-items: flex-end; height: 12px; margin-left: 10px; }
+        .eq-bar { width: 3px; background: #1DB954; border-radius: 2px; animation: eqBounce 0.5s infinite ease-in-out alternate; }
+        .eq-bar:nth-child(2) { animation-delay: 0.1s; } 
+        .eq-bar:nth-child(3) { animation-delay: 0.2s; }
+        @keyframes eqBounce { 0% { height: 3px; opacity: 0.5; } 100% { height: 12px; opacity: 1; } }
+        
+        /* Inactive State */
+        .live-activity-card.inactive .mini-eq { display: none; }
+        .live-activity-card.inactive .status-badge { color: rgba(255,255,255,0.5); }
+        .live-activity-card.inactive .album-cover { filter: grayscale(100%); opacity: 0.7; }
 
         /* Personal Grid */
         .personal-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; text-align: center; }
@@ -80,7 +105,6 @@
         .personal-icon { font-size: 20px; margin-bottom: 6px; color: rgba(255,255,255,0.9); }
         .personal-label { font-size: 10px; opacity: 0.6; text-transform: uppercase; }
         .personal-value { font-size: 13px; font-weight: 600; }
-        
         .flip-container { perspective: 1000px; width: 100%; height: 100%; border-radius: 18px; }
         .flip-inner { position: relative; width: 100%; height: 100%; text-align: center; transition: transform 0.8s; transform-style: preserve-3d; display: flex; align-items: center; justify-content: center; }
         .flip-container.flipped .flip-inner { transform: rotateY(180deg); }
@@ -123,39 +147,33 @@
         .social-btn i { font-size: 26px; margin-bottom: 8px; color: #fff; filter: drop-shadow(0 2px 5px rgba(0,0,0,0.3)); }
         .social-btn:active { transform: scale(0.96); background: rgba(255,255,255,0.3); }
 
-        /* --- 2. FIXED SHARE FLIP ANIMATION --- */
+        /* Share Flip */
         .morph-out-fwd { animation: btnFlipOut 0.4s forwards ease-in; pointer-events: none; }
-        @keyframes btnFlipOut {
-            0% { transform: perspective(600px) rotateY(0deg) scale(1); opacity: 1; }
-            100% { transform: perspective(600px) rotateY(90deg) scale(0.8); opacity: 0; }
-        }
-
-        .morph-in-fwd { animation: cardFlipIn 0.5s forwards cubic-bezier(0.175, 0.885, 0.32, 1.275); animation-delay: 0.1s; }
-        @keyframes cardFlipIn {
-            0% { transform: perspective(600px) rotateY(-90deg) scale(0.8); opacity: 0; }
-            100% { transform: perspective(600px) rotateY(0deg) scale(1); opacity: 1; }
-        }
-
+        @keyframes btnFlipOut { 0% { transform: perspective(600px) rotateY(0deg) scale(1); opacity: 1; } 100% { transform: perspective(600px) rotateY(90deg) scale(0.8); opacity: 0; } }
+        .morph-in-fwd { animation: cardFlipIn 0.5s forwards cubic-bezier(0.175, 0.885, 0.32, 1.85); animation-delay: 0.1s; }
+        @keyframes cardFlipIn { 0% { transform: perspective(600px) rotateY(-90deg) scale(0.8); opacity: 0; } 100% { transform: perspective(600px) rotateY(0deg) scale(1); opacity: 1; } }
         .morph-out-rev { animation: cardFlipOut 0.4s forwards ease-in; pointer-events: none; }
-        @keyframes cardFlipOut {
-            0% { transform: perspective(600px) rotateY(0deg) scale(1); opacity: 1; }
-            100% { transform: perspective(600px) rotateY(90deg) scale(0.8); opacity: 0; }
-        }
+        @keyframes cardFlipOut { 0% { transform: perspective(600px) rotateY(0deg) scale(1); opacity: 1; } 100% { transform: perspective(600px) rotateY(90deg) scale(0.8); opacity: 0; } }
+        .morph-in-rev { animation: btnFlipIn 0.5s forwards cubic-bezier(0.175, 0.885, 0.32, 1.85); animation-delay: 0.1s; }
+        @keyframes btnFlipIn { 0% { transform: perspective(600px) rotateY(-90deg) scale(0.8); opacity: 0; } 100% { transform: perspective(600px) rotateY(0deg) scale(1); opacity: 1; } }
 
-        .morph-in-rev { animation: btnFlipIn 0.5s forwards cubic-bezier(0.175, 0.885, 0.32, 1.275); animation-delay: 0.1s; }
-        @keyframes btnFlipIn {
-            0% { transform: perspective(600px) rotateY(-90deg) scale(0.8); opacity: 0; }
-            100% { transform: perspective(600px) rotateY(0deg) scale(1); opacity: 1; }
+        /* Like Button */
+        .like-container { 
+            position: fixed; bottom: 25px; right: 25px; 
+            height: 55px; width: auto; padding: 0 20px;
+            background: rgba(255, 255, 255, 0.1); 
+            backdrop-filter: blur(15px); 
+            border: 1px solid rgba(255, 255, 255, 0.4); 
+            border-radius: 50px; 
+            display: flex; align-items: center; justify-content: center; gap: 8px;
+            cursor: pointer; z-index: 1000; 
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3); 
+            transition: background 0.3s ease, transform 0.2s; 
         }
-
-        /* Like Button - Fixed */
-        .like-container { position: fixed; bottom: 25px; right: 25px; width: 60px; height: 60px; background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(15px); border: 1px solid rgba(255, 255, 255, 0.4); border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 1000; box-shadow: 0 10px 30px rgba(0,0,0,0.3); transition: background 0.3s ease; }
+        .like-container:active { transform: scale(0.95); }
         .like-container.liked { border-color: var(--heart-color); background: rgba(255, 46, 99, 0.15); box-shadow: 0 0 30px rgba(255, 46, 99, 0.5); }
         .like-container.liked i { color: var(--heart-color); }
-        /* Jelly */
-        @keyframes jelly {
-            0% { transform: scale(1); } 25% { transform: scale(0.85, 1.15); } 50% { transform: scale(1.15, 0.85); } 75% { transform: scale(0.95, 1.05); } 100% { transform: scale(1); }
-        }
+        @keyframes jelly { 0% { transform: scale(1); } 25% { transform: scale(0.85, 1.15); } 50% { transform: scale(1.15, 0.85); } 75% { transform: scale(0.95, 1.05); } 100% { transform: scale(1); } }
         .like-container.jelly { animation: jelly 0.5s; }
 
         /* FB Pop */
@@ -211,12 +229,14 @@
                 <i class="fas fa-eye"></i> <span id="visit-count">10,000</span>
             </div>
 
-            <div class="live-status-box">
-                <div id="status-dot"></div>
-                <div class="activity-text">
-                    <span id="activity-name">Syncing...</span>
-                    <span id="activity-detail">Connecting to Discord</span>
+            <div class="live-activity-card" id="activity-card">
+                <img id="activity-img" src="https://i.scdn.co/image/ab67616d0000b273577395562725d223594b2377" class="album-cover">
+                <div class="activity-text-group">
+                    <span id="activity-status" class="status-badge"><i class="fab fa-spotify"></i> LAST PLAYED</span>
+                    <span id="activity-song" class="song-title">Connect..</span>
+                    <span id="activity-artist" class="artist-name">Spotify</span>
                 </div>
+                <div id="activity-eq" class="mini-eq"><div class="eq-bar"></div><div class="eq-bar"></div><div class="eq-bar"></div></div>
             </div>
         </div>
 
@@ -287,7 +307,10 @@
 
     </div>
 
-    <div class="like-container" onclick="triggerLikeEffect()"><i class="fas fa-heart"></i></div>
+    <div class="like-container" onclick="triggerLikeEffect()">
+        <i class="fas fa-heart" style="font-size: 20px;"></i>
+        <span id="like-count" style="font-size: 14px; font-weight: 600;">400</span>
+    </div>
 
     <script>
         // --- SOUND ENGINE ---
@@ -396,51 +419,100 @@
         }
         window.addEventListener('load', startFastScroll);
 
-        // --- STICKY MUSIC (MEMORY MODE) ---
-        async function updateStatus() {
-            const USER_ID = '1363474188161122472';
-            try {
-                const r = await fetch(`https://api.lanyard.rest/v1/users/${USER_ID}`);
-                const { data } = await r.json();
-                const dot = document.getElementById('status-dot');
-                const name = document.getElementById('activity-name');
-                const detail = document.getElementById('activity-detail');
-
-                const colors = { online: '#22c55e', idle: '#facc15', dnd: '#ef4444', offline: '#9ca3af' };
-                dot.style.backgroundColor = colors[data.discord_status] || '#9ca3af';
-
-                if (data.listening_to_spotify) {
-                    name.innerHTML = `<i class="fab fa-spotify" style="color:#1DB954"></i> Listening to Spotify`;
-                    detail.innerText = `${data.spotify.song} - ${data.spotify.artist}`;
-                    localStorage.setItem('last_song', data.spotify.song);
-                    localStorage.setItem('last_artist', data.spotify.artist);
-                } else {
-                    const lastSong = localStorage.getItem('last_song');
-                    const lastArtist = localStorage.getItem('last_artist');
-                    if (lastSong) {
-                        name.innerHTML = `<i class="fab fa-spotify" style="color:#1DB954; opacity:0.7"></i> Recently Played`;
-                        detail.innerText = `${lastSong} - ${lastArtist}`;
-                    } else if (data.activities.length > 0) {
-                        const act = data.activities[0];
-                        name.innerText = `Doing: ${act.name}`;
-                        detail.innerText = act.details || "Active Now";
-                    } else {
-                        name.innerText = data.discord_status === 'offline' ? "Offline" : "Online";
-                        detail.innerText = "No activity";
-                    }
-                }
-            } catch (e) { console.log("Lanyard Error"); }
+        // --- SMART MUSIC CARD (LIVE + LAST PLAYED MEMORY) ---
+        const USER_ID = '1363474188161122472';
+        
+        function connectLanyard() {
+            const ws = new WebSocket("wss://api.lanyard.rest/socket");
+            ws.onopen = () => { ws.send(JSON.stringify({ op: 2, d: { subscribe_to_id: USER_ID } })); };
+            ws.onmessage = (event) => {
+                const data = JSON.parse(event.data);
+                if (data.t === "INIT_STATE" || data.t === "PRESENCE_UPDATE") updateMusicUI(data.d);
+            };
+            ws.onclose = () => { setTimeout(connectLanyard, 5000); };
         }
-        setInterval(updateStatus, 5000); updateStatus();
 
-        // --- JELLY LIKE ANIMATION ---
+        function updateMusicUI(data) {
+            const card = document.getElementById('activity-card');
+            const img = document.getElementById('activity-img');
+            const status = document.getElementById('activity-status');
+            const song = document.getElementById('activity-song');
+            const artist = document.getElementById('activity-artist');
+            const eq = document.getElementById('activity-eq');
+
+            if (data.listening_to_spotify) {
+                // LIVE MODE
+                const s = data.spotify;
+                img.src = s.album_art_url;
+                status.innerHTML = `<i class="fab fa-spotify"></i> LISTENING NOW`;
+                status.style.color = "#1DB954";
+                song.innerText = s.song;
+                artist.innerText = s.artist;
+                card.classList.remove('inactive');
+                eq.style.display = "flex";
+                
+                // Save to Memory
+                localStorage.setItem('last_played_song', s.song);
+                localStorage.setItem('last_played_artist', s.artist);
+                localStorage.setItem('last_played_art', s.album_art_url);
+            } else {
+                // MEMORY MODE
+                const savedSong = localStorage.getItem('last_played_song');
+                if(savedSong) {
+                    img.src = localStorage.getItem('last_played_art');
+                    status.innerHTML = `<i class="fas fa-history"></i> LAST PLAYED`;
+                    status.style.color = "rgba(255,255,255,0.5)";
+                    song.innerText = savedSong;
+                    artist.innerText = localStorage.getItem('last_played_artist');
+                    card.classList.add('inactive'); // Dims it
+                } else {
+                    // Fallback if no history
+                    status.innerText = data.discord_status === "offline" ? "OFFLINE" : "ONLINE";
+                    song.innerText = "No Activity";
+                    artist.innerText = "Chilling";
+                    card.classList.add('inactive');
+                }
+            }
+        }
+        
+        // Initial Memory Load
+        updateMusicUI({ listening_to_spotify: false }); 
+        connectLanyard();
+
+
+        // --- JELLY LIKE ANIMATION & INSTANT FEEDBACK (400 OFFSET) ---
+        const likeKey = 'gourab-bio-likes';
+        const likeCountEl = document.getElementById('like-count');
+        const OFFSET = 400; // The base number
+
+        // Fetch initial count
+        fetch(`https://api.counterapi.dev/v1/${likeKey}/count`)
+            .then(r => r.json())
+            .then(d => likeCountEl.innerText = (d.count + OFFSET).toLocaleString())
+            .catch(() => likeCountEl.innerText = OFFSET);
+
         function triggerLikeEffect() {
             playSound();
             const btn = document.querySelector('.like-container');
             const popup = document.getElementById('thumbsUpPopup');
+            
+            // 1. Visual Effect
             btn.classList.add('liked', 'jelly');
             setTimeout(() => btn.classList.remove('jelly'), 600);
             popup.style.animation = 'none'; popup.offsetHeight; popup.style.animation = 'fbLikePop 0.8s ease-out forwards';
+
+            // 2. INSTANTLY Update Number (Optimistic UI)
+            let currentVal = parseInt(likeCountEl.innerText.replace(/,/g, ''));
+            likeCountEl.innerText = (currentVal + 1).toLocaleString();
+
+            // 3. Send to Server (Background)
+            fetch(`https://api.counterapi.dev/v1/${likeKey}/up`)
+                .then(r => r.json())
+                .then(d => {
+                    // Sync with server just in case
+                    likeCountEl.innerText = (d.count + OFFSET).toLocaleString();
+                })
+                .catch(err => console.log("Offline like")); 
         }
 
         // --- Music Player ---
@@ -478,14 +550,20 @@
         async function fetchWeather() { try { const res = await fetch('https://api.open-meteo.com/v1/forecast?latitude=23.4&longitude=88.5&current_weather=true'); const data = await res.json(); document.getElementById('weather-info').innerHTML = `${Math.round(data.current_weather.temperature)}° <i class="fas fa-cloud"></i>`; } catch (e) {} } fetchWeather();
         setInterval(() => { document.getElementById('clock-time').innerText = new Date().toLocaleTimeString([], {hour:'2-digit', minute:'2-digit', hour12:false}); }, 1000);
         
-        // --- Elastic Scroll Observer ---
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) { entry.target.classList.add('visible'); }
-                else { entry.target.classList.remove('visible'); }
-            });
-        }, { threshold: 0.1, rootMargin: "0px 0px -20px 0px" });
-        document.querySelectorAll('.glass-card').forEach(el => observer.observe(el));
+        // --- COME & GO VISIBILITY OBSERVER (ANIMATION RE-TRIGGER) ---
+        window.addEventListener('DOMContentLoaded', () => {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach((entry) => {
+                    if (entry.isIntersecting) { 
+                        entry.target.classList.add('visible'); 
+                    } else {
+                        entry.target.classList.remove('visible'); 
+                    }
+                });
+            }, { threshold: 0.15, rootMargin: "0px 0px -20px 0px" });
+
+            document.querySelectorAll('.glass-card').forEach(el => observer.observe(el));
+        });
 
         fetch('https://api.counterapi.dev/v1/gourab-bio/views/up').then(r=>r.json()).then(d=>{document.getElementById('visit-count').innerText=(10000+d.count).toLocaleString()});
     </script>
