@@ -5,11 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Gourab Adhikary | Bio</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     
     <style>
         :root {
-            /* --- OPTIMIZED THEME --- */
             --glass-bg: rgba(255, 255, 255, 0.06);
             --glass-border: rgba(255, 255, 255, 0.1);
             --glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
@@ -30,24 +29,16 @@
             color: var(--text-primary); 
             overflow-x: hidden; 
             padding-bottom: 120px;
+            overscroll-behavior: none;
         }
 
-        /* Fixed Background Layer */
+        /* Fixed Background */
         .fixed-background {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -2;
             background-image: url('https://cdn.discordapp.com/attachments/1345025532659503115/1468145542319308865/1000199447.jpg?ex=6982f496&is=6981a316&hm=a3dc0c171c78454d12111272d21b4db2c5e80864fea39575b9919a6486bd744a&');
             background-size: cover; background-position: center; background-repeat: no-repeat;
             will-change: transform;
         }
-
-        /* Fireflies */
-        .firefly {
-            position: fixed; left: 50%; top: 50%; width: 4px; height: 4px;
-            background-color: #fff; border-radius: 50%;
-            box-shadow: 0 0 10px #fff, 0 0 20px #ff00de;
-            animation: move 15s linear infinite; pointer-events: none; z-index: -1; opacity: 0.6;
-        }
-        @keyframes move { 0% { transform: translate(-50vw, 50vh); } 100% { transform: translate(50vw, -50vh); } }
 
         .container { max-width: 500px; margin: 0 auto; padding: 20px; position: relative; }
 
@@ -75,15 +66,15 @@
         .profile-img { 
             width: 125px; height: 125px; border-radius: 50%; object-fit: cover; 
             border: 3px solid rgba(255,255,255,0.8); box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-            animation: pulse-border 3s infinite;
         }
-        @keyframes pulse-border { 0% { box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.4); } 70% { box-shadow: 0 0 0 15px rgba(255, 255, 255, 0); } 100% { box-shadow: 0 0 0 0 rgba(255, 255, 255, 0); } }
         
-        h1 { font-size: 28px; font-weight: 700; display: flex; align-items: center; justify-content: center; gap: 8px; margin-bottom: 6px; }
-        .verified-badge { color: #4dabf7; font-size: 22px; cursor: pointer; filter: drop-shadow(0 0 10px #4dabf7); }
+        .name-wrapper { display: flex; align-items: center; justify-content: center; gap: 8px; margin-bottom: 6px; }
+        h1 { font-size: 28px; font-weight: 700; margin: 0; color: white; }
+        .verified-badge { color: #4dabf7; font-size: 22px; filter: drop-shadow(0 0 5px rgba(0,0,0,0.5)); }
+        
         .tags { font-size: 14px; color: var(--text-secondary); margin-bottom: 20px; font-weight: 500; }
 
-        /* --- MUSIC UI --- */
+        /* Music Widget Header */
         .music-pill {
             background: rgba(255, 255, 255, 0.08); 
             border-radius: 50px; padding: 10px 12px;
@@ -91,11 +82,7 @@
             border: 1px solid rgba(255, 255, 255, 0.1);
             transition: all 0.3s ease; position: relative; overflow: hidden;
         }
-        .disk-wrapper {
-            width: 52px; height: 52px; border-radius: 50%; background: #111; padding: 2px;
-            flex-shrink: 0; position: relative; box-shadow: 0 4px 15px rgba(0,0,0,0.3);
-            transition: box-shadow 0.3s;
-        }
+        .disk-wrapper { width: 52px; height: 52px; border-radius: 50%; background: #111; padding: 2px; flex-shrink: 0; position: relative; box-shadow: 0 4px 15px rgba(0,0,0,0.3); }
         .music-cover { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; animation: spin 4s linear infinite; animation-play-state: paused; }
         .disk-wrapper::after { content: ''; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 10px; height: 10px; background: #222; border-radius: 50%; border: 2px solid #000; z-index: 2; }
         .music-info { display: flex; flex-direction: column; overflow: hidden; flex: 1; text-align: left; }
@@ -117,9 +104,8 @@
         @keyframes bounce { 0% { height: 4px; } 100% { height: 15px; } }
         @keyframes spin { 100% { transform: rotate(360deg); } }
 
-        /* --- GRIDS --- */
+        /* Grids */
         .section-title { font-size: 18px; font-weight: 600; margin-bottom: 18px; color: #fff; }
-
         .personal-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; text-align: center; }
         .personal-item { background: var(--card-internal-bg); padding: 14px 5px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.1); display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100px; }
         .personal-icon { font-size: 22px; margin-bottom: 8px; color: rgba(255,255,255,0.9); }
@@ -131,13 +117,38 @@
         .flip-front, .flip-back { position: absolute; width: 100%; height: 100%; backface-visibility: hidden; display: flex; flex-direction: column; align-items: center; justify-content: center; }
         .flip-back { transform: rotateY(180deg); }
 
-        .music-item { background: rgba(255, 255, 255, 0.05); margin: 10px 0; padding: 14px 16px; border-radius: 20px; display: flex; align-items: center; justify-content: space-between; border: 1px solid rgba(255,255,255,0.1); transition: background 0.2s ease; }
-        .music-item:active { background: rgba(255, 255, 255, 0.1); }
+        /* --- VERTICAL MUSIC LIST --- */
+        .music-item { 
+            background: rgba(255, 255, 255, 0.05); 
+            margin: 10px 0; padding: 12px; 
+            border-radius: 16px; 
+            display: flex; align-items: center; 
+            border: 1px solid rgba(255,255,255,0.1); 
+            transition: background 0.2s ease; 
+        }
+        .music-item:active { background: rgba(255, 255, 255, 0.1); transform: scale(0.98); }
         .music-item.playing { background: rgba(255, 255, 255, 0.15); border-color: rgba(255,255,255,0.3); }
-        .play-btn { width: 42px; height: 42px; border-radius: 50%; background: rgba(255,255,255,0.1); display: flex; align-items: center; justify-content: center; cursor: pointer; margin-right: 15px; font-size: 14px; border: 1px solid rgba(255,255,255,0.1); }
+        
+        .thumb-img { width: 45px; height: 45px; border-radius: 10px; object-fit: cover; margin-right: 15px; background: #333; }
+        
+        .play-btn { 
+            width: 35px; height: 35px; border-radius: 50%; 
+            background: rgba(255,255,255,0.1); 
+            display: flex; align-items: center; justify-content: center; 
+            cursor: pointer; margin-right: 15px; font-size: 12px; 
+            border: 1px solid rgba(255,255,255,0.1); 
+        }
+        
         .track-eq { display: flex; gap: 2px; height: 12px; align-items: flex-end; opacity: 0; transition: opacity 0.3s; }
         .playing .track-eq { opacity: 1; }
-        .t-bar { width: 3px; background: white; border-radius: 2px; animation: tBounce 0.5s infinite alternate; }
+        
+        /* DYNAMIC EQ COLOR SUPPORT */
+        .t-bar { 
+            width: 3px; 
+            background: var(--eq-color, white); 
+            border-radius: 2px; 
+            animation: tBounce 0.5s infinite alternate; 
+        }
         .t-bar:nth-child(1) { animation-delay: 0s; } .t-bar:nth-child(2) { animation-delay: 0.2s; } .t-bar:nth-child(3) { animation-delay: 0.4s; }
         @keyframes tBounce { 0% { height: 3px; } 100% { height: 14px; } }
 
@@ -150,23 +161,19 @@
         /* --- JOURNEY TIMELINE --- */
         .timeline { position: relative; padding-left: 20px; margin-top: 10px; }
         
-        /* The Vertical Line with Animation */
         .timeline::before {
             content: ''; position: absolute; left: 0; top: 15px; width: 2px;
             background: linear-gradient(to bottom, rgba(255,255,255,0) 0%, var(--timeline-color) 15%, var(--timeline-color) 85%, rgba(255,255,255,0) 100%);
-            /* Start with 0 height */
             height: 0; 
             transition: height 2.5s cubic-bezier(0.25, 1, 0.5, 1);
         }
         
-        /* Trigger Animation specifically when timeline is active */
         .timeline.lines-visible::before {
             height: calc(100% - 30px);
         }
 
         .timeline-item { position: relative; margin-bottom: 20px; padding-left: 25px; opacity: 0; transform: translateX(-10px); transition: all 0.5s ease; }
         
-        /* Staggered Item Animation */
         .timeline.lines-visible .timeline-item { opacity: 1; transform: translateX(0); }
         .timeline.lines-visible .timeline-item:nth-child(1) { transition-delay: 0.3s; }
         .timeline.lines-visible .timeline-item:nth-child(2) { transition-delay: 0.6s; }
@@ -265,10 +272,6 @@
         </div>
     </div>
 
-    <div class="firefly" style="top: 20%; left: 20%; animation-duration: 8s;"></div>
-    <div class="firefly" style="top: 70%; left: 80%; animation-duration: 12s;"></div>
-    <div class="firefly" style="top: 40%; left: 60%; animation-duration: 10s;"></div>
-
     <div class="container">
         
         <div class="glass-card profile-header">
@@ -281,7 +284,9 @@
                 <img src="https://cdn.discordapp.com/attachments/1345025532659503115/1468145520152150016/10001682842.jpg?ex=6982f490&is=6981a310&hm=8e4d6ec09668c013d81d60eb0ec50e3c1ccca337982b9108f3e985644062e33e&" class="profile-img">
             </div>
             
-            <h1>Gourab Adhikary <i class="fas fa-check-circle verified-badge" onclick="verifyClick()"></i></h1>
+            <div class="name-wrapper">
+                <h1>Gourab Adhikary <i class="fas fa-check-circle verified-badge" onclick="verifyClick()"></i></h1>
+            </div>
             <p class="tags">Artist • Extrovert • Melophile</p>
             
             <div style="font-size: 12px; opacity: 0.6; margin-bottom: 15px;">
@@ -332,11 +337,46 @@
 
         <div class="glass-card">
             <h2 class="section-title">Top Tracks</h2>
-            <div class="music-item" id="track1"><audio id="audio1" src="song1.mp3"></audio><div class="play-btn" onclick="togglePlay(1)"><i class="fas fa-play"></i></div><div style="flex-grow:1"><span style="display:block; font-weight:600; font-size:14px;">Amake Nao</span><span style="font-size:11px; opacity:0.7;">Debayan Banerjee</span></div><div class="track-eq"><div class="t-bar"></div><div class="t-bar"></div><div class="t-bar"></div></div></div>
-            <div class="music-item" id="track2"><audio id="audio2" src="song2.mp3"></audio><div class="play-btn" onclick="togglePlay(2)"><i class="fas fa-play"></i></div><div style="flex-grow:1"><span style="display:block; font-weight:600; font-size:14px;">Finding Her</span><span style="font-size:11px; opacity:0.7;">Kushagra</span></div><div class="track-eq"><div class="t-bar"></div><div class="t-bar"></div><div class="t-bar"></div></div></div>
-            <div class="music-item" id="track3"><audio id="audio3" src="song3.mp3"></audio><div class="play-btn" onclick="togglePlay(3)"><i class="fas fa-play"></i></div><div style="flex-grow:1"><span style="display:block; font-weight:600; font-size:14px;">Hote Paare Na</span><span style="font-size:11px; opacity:0.7;">Original Soundtrack</span></div><div class="track-eq"><div class="t-bar"></div><div class="t-bar"></div><div class="t-bar"></div></div></div>
-            <div class="music-item" id="track4"><audio id="audio4" src="song4.mp3"></audio><div class="play-btn" onclick="togglePlay(4)"><i class="fas fa-play"></i></div><div style="flex-grow:1"><span style="display:block; font-weight:600; font-size:14px;">Rimjhim E Dhara Te</span><span style="font-size:11px; opacity:0.7;">Shaan, Jeet Gannguli</span></div><div class="track-eq"><div class="t-bar"></div><div class="t-bar"></div><div class="t-bar"></div></div></div>
-            <div class="music-item" id="track5"><audio id="audio5" src="song5.mp3"></audio><div class="play-btn" onclick="togglePlay(5)"><i class="fas fa-play"></i></div><div style="flex-grow:1"><span style="display:block; font-weight:600; font-size:14px;">Mere Naam Tu</span><span style="font-size:11px; opacity:0.7;">Abhay Jodhpurkar</span></div><div class="track-eq"><div class="t-bar"></div><div class="t-bar"></div><div class="t-bar"></div></div></div>
+            
+            <div class="music-item" id="track1" style="--eq-color: #00e5ff;">
+                <img src="https://cdn.discordapp.com/attachments/1345025532659503115/1468532136096174234/Srikanto-Bengali-2022-20220323213204-500x500.jpg?ex=69845ca1&is=69830b21&hm=9bc1bb90974b7643c99258123a4580c56846cff53d48a32484bc9057f37c9966&" class="thumb-img">
+                <audio id="audio1" src="song1.mp3"></audio>
+                <div class="play-btn" onclick="togglePlay(1)"><i class="fas fa-play"></i></div>
+                <div style="flex-grow:1"><span style="display:block; font-weight:600; font-size:14px;">Amake Nao</span><span style="font-size:11px; opacity:0.7;">Debayan Banerjee</span></div>
+                <div class="track-eq"><div class="t-bar"></div><div class="t-bar"></div><div class="t-bar"></div></div>
+            </div>
+
+            <div class="music-item" id="track2" style="--eq-color: #1effc6;">
+                <img src="https://cdn.discordapp.com/attachments/1345025532659503115/1468532134464720978/Finding-Her-Hindi-2025-20250104190643-500x500.jpg?ex=69845ca0&is=69830b20&hm=a83475a43e6b0dc0e7b0be3ab37970efb9c34dba44b038a1fb514e195d1c9786&" class="thumb-img">
+                <audio id="audio2" src="song2.mp3"></audio>
+                <div class="play-btn" onclick="togglePlay(2)"><i class="fas fa-play"></i></div>
+                <div style="flex-grow:1"><span style="display:block; font-weight:600; font-size:14px;">Finding Her</span><span style="font-size:11px; opacity:0.7;">Kushagra</span></div>
+                <div class="track-eq"><div class="t-bar"></div><div class="t-bar"></div><div class="t-bar"></div></div>
+            </div>
+
+            <div class="music-item" id="track3" style="--eq-color: #ff2e63;">
+                <img src="https://cdn.discordapp.com/attachments/1345025532659503115/1468532135374618634/Bolo-Dugga-Maiki-Original-Motion-Picture-Soundtrack-Bengali-2017-20251216020802-500x500.jpg?ex=69845ca1&is=69830b21&hm=cf01850efceba5a76cf8a1171aa7a38dd631c500751ae182159cc905c1b96845&" class="thumb-img">
+                <audio id="audio3" src="song3.mp3"></audio>
+                <div class="play-btn" onclick="togglePlay(3)"><i class="fas fa-play"></i></div>
+                <div style="flex-grow:1"><span style="display:block; font-weight:600; font-size:14px;">Bolo Dugga Maiki</span><span style="font-size:11px; opacity:0.7;">Original Soundtrack</span></div>
+                <div class="track-eq"><div class="t-bar"></div><div class="t-bar"></div><div class="t-bar"></div></div>
+            </div>
+
+            <div class="music-item" id="track4" style="--eq-color: #ff9f1c;">
+                <img src="https://cdn.discordapp.com/attachments/1345025532659503115/1468532134980616192/Premer-Kahini-Original-Motion-Picture-Soundtrack-Bengali-2008-20251216013004-500x500.jpg?ex=69845ca0&is=69830b20&hm=a6f74bdf3489dc8f52902de9a10b36bad7a4b81880729b7c56ab74072b1357d7&" class="thumb-img">
+                <audio id="audio4" src="song4.mp3"></audio>
+                <div class="play-btn" onclick="togglePlay(4)"><i class="fas fa-play"></i></div>
+                <div style="flex-grow:1"><span style="display:block; font-weight:600; font-size:14px;">Rimjhim E Dhara Te</span><span style="font-size:11px; opacity:0.7;">Shaan, Jeet Gannguli</span></div>
+                <div class="track-eq"><div class="t-bar"></div><div class="t-bar"></div><div class="t-bar"></div></div>
+            </div>
+
+            <div class="music-item" id="track5" style="--eq-color: #4dabf7;">
+                <img src="https://cdn.discordapp.com/attachments/1345025532659503115/1468532133613142198/Zero-Hindi-2018-20200902134005-500x500.jpg?ex=69845ca0&is=69830b20&hm=4f77e723fcfd3ae2eaa9ca2f94d271a0025a3fa3aad62083b32e6f5ba1f53063&" class="thumb-img">
+                <audio id="audio5" src="song5.mp3"></audio>
+                <div class="play-btn" onclick="togglePlay(5)"><i class="fas fa-play"></i></div>
+                <div style="flex-grow:1"><span style="display:block; font-weight:600; font-size:14px;">Mere Naam Tu</span><span style="font-size:11px; opacity:0.7;">Abhay Jodhpurkar</span></div>
+                <div class="track-eq"><div class="t-bar"></div><div class="t-bar"></div><div class="t-bar"></div></div>
+            </div>
         </div>
 
         <div class="glass-card">
@@ -358,48 +398,11 @@
             </div>
 
             <h2 class="section-title" style="margin-top:25px;">My Journey</h2>
-            
             <div class="timeline">
-                <div class="timeline-item">
-                    <div class="timeline-dot"></div>
-                    <div class="timeline-card">
-                        <div class="t-icon"><i class="fas fa-school"></i></div>
-                        <div class="t-content">
-                            <span class="t-title">High School</span>
-                            <span class="t-desc">Majdia Rail Bazar High School</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="timeline-item">
-                    <div class="timeline-dot"></div>
-                    <div class="timeline-card">
-                        <div class="t-icon"><i class="fas fa-university"></i></div>
-                        <div class="t-content">
-                            <span class="t-title">Graduation</span>
-                            <span class="t-desc">Sudhiranjan Lahiri Mahavidyalaya</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="timeline-item">
-                    <div class="timeline-dot"></div>
-                    <div class="timeline-card">
-                        <div class="t-icon"><i class="fas fa-bolt"></i></div>
-                        <div class="t-content">
-                            <span class="t-title">ITI Certified</span>
-                            <span class="t-desc">Industrial Training Institute</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="timeline-item">
-                    <div class="timeline-dot"></div>
-                    <div class="timeline-card">
-                        <div class="t-icon"><i class="fas fa-laptop-code"></i></div>
-                        <div class="t-content">
-                            <span class="t-title">MDT Course</span>
-                            <span class="t-desc">National Board of Computer Education</span>
-                        </div>
-                    </div>
-                </div>
+                <div class="timeline-item"><div class="timeline-dot"></div><div class="timeline-card"><div class="t-icon"><i class="fas fa-school"></i></div><div class="t-content"><span class="t-title">High School</span><span class="t-desc">Majdia Rail Bazar High School</span></div></div></div>
+                <div class="timeline-item"><div class="timeline-dot"></div><div class="timeline-card"><div class="t-icon"><i class="fas fa-university"></i></div><div class="t-content"><span class="t-title">Graduation</span><span class="t-desc">Sudhiranjan Lahiri Mahavidyalaya</span></div></div></div>
+                <div class="timeline-item"><div class="timeline-dot"></div><div class="timeline-card"><div class="t-icon"><i class="fas fa-bolt"></i></div><div class="t-content"><span class="t-title">ITI Certified</span><span class="t-desc">Industrial Training Institute</span></div></div></div>
+                <div class="timeline-item"><div class="timeline-dot"></div><div class="timeline-card"><div class="t-icon"><i class="fas fa-laptop-code"></i></div><div class="t-content"><span class="t-title">MDT Course</span><span class="t-desc">National Board of Computer Education</span></div></div></div>
             </div>
         </div>
 
@@ -412,10 +415,7 @@
                 <a href="https://pin.it/5LefalJSQ" class="social-btn"><i class="fab fa-pinterest-p"></i>Pinterest</a>
                 <a href="https://t.me/pixelated_sky" class="social-btn"><i class="fab fa-telegram-plane"></i>Telegram</a>
                 <a href="https://open.spotify.com/user/31ytmu3ev7fgrvf7sd5rts6ta3qi" class="social-btn"><i class="fab fa-spotify"></i>Spotify</a>
-                
-                <div id="shareBtn" class="social-btn" onclick="morphShareButton()" style="grid-column: span 3; background: rgba(255,255,255,0.15);">
-                    <i class="fas fa-qrcode"></i> Share Profile
-                </div>
+                <div id="shareBtn" class="social-btn" onclick="morphShareButton()" style="grid-column: span 3; background: rgba(255,255,255,0.15);"><i class="fas fa-qrcode"></i> Share Profile</div>
             </div>
         </div>
 
@@ -428,11 +428,9 @@
 
     <script>
         const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-        
         function playBloop() {
             if (audioCtx.state === 'suspended') audioCtx.resume();
-            const osc = audioCtx.createOscillator();
-            const gain = audioCtx.createGain();
+            const osc = audioCtx.createOscillator(); const gain = audioCtx.createGain();
             osc.connect(gain); gain.connect(audioCtx.destination);
             osc.type = 'sine'; osc.frequency.setValueAtTime(600, audioCtx.currentTime); osc.frequency.exponentialRampToValueAtTime(150, audioCtx.currentTime + 0.15);
             gain.gain.setValueAtTime(0.5, audioCtx.currentTime); gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.15);
@@ -445,63 +443,42 @@
         const popup = document.getElementById('thumbsUpPopup');
 
         if (localStorage.getItem('liked_visual_final') === 'true') {
-            likeBtn.classList.add('liked');
-            likeText.innerText = "Liked";
+            likeBtn.classList.add('liked'); likeText.innerText = "Liked";
         }
 
         function triggerLike() {
             playBloop();
-            likeBtn.classList.add('liked');
-            likeText.innerText = "Liked";
+            likeBtn.classList.add('liked'); likeText.innerText = "Liked";
             likeBtn.classList.remove('jelly'); void likeBtn.offsetWidth; likeBtn.classList.add('jelly');
             popup.style.animation = 'none'; void popup.offsetWidth; popup.style.animation = 'fbLikePop 0.8s ease-out forwards';
             localStorage.setItem('liked_visual_final', 'true');
         }
 
-        // Auto Scroll (Jitter Fix: Stops on interaction)
+        // Auto Scroll
         function startFastScroll() {
             const duration = 1500; const stayDuration = 700;
             const startY = 0; const endY = document.body.scrollHeight - window.innerHeight;
-            let startTime = null; let direction = 1;
-            let isUserInteracting = false;
-
-            // Stop auto-scroll on interaction
+            let startTime = null; let direction = 1; let isUserInteracting = false;
             const stopScroll = () => { isUserInteracting = true; };
-            window.addEventListener('pointerdown', stopScroll);
-            window.addEventListener('wheel', stopScroll);
-            window.addEventListener('touchstart', stopScroll);
-            
+            window.addEventListener('pointerdown', stopScroll); window.addEventListener('wheel', stopScroll); window.addEventListener('touchstart', stopScroll);
             setTimeout(() => requestAnimationFrame(scrollStep), 1000);
-
             function scrollStep(timestamp) {
-                if (isUserInteracting) return; // Exit if user touches screen
-
+                if (isUserInteracting) return;
                 if (!startTime) startTime = timestamp;
                 const elapsed = timestamp - startTime;
-                
                 if (direction === 1) {
-                    if (elapsed < duration) {
-                        const t = elapsed / duration;
-                        const ease = -(Math.cos(Math.PI * t) - 1) / 2;
-                        window.scrollTo(0, startY + (endY * ease));
-                        requestAnimationFrame(scrollStep);
-                    } else if (elapsed < duration + stayDuration) {
-                        window.scrollTo(0, endY);
-                        requestAnimationFrame(scrollStep);
-                    } else { startTime = null; direction = -1; requestAnimationFrame(scrollStep); }
+                    if (elapsed < duration) { window.scrollTo(0, startY + (endY * (-(Math.cos(Math.PI * (elapsed / duration)) - 1) / 2))); requestAnimationFrame(scrollStep); }
+                    else if (elapsed < duration + stayDuration) { window.scrollTo(0, endY); requestAnimationFrame(scrollStep); }
+                    else { startTime = null; direction = -1; requestAnimationFrame(scrollStep); }
                 } else {
-                    if (elapsed < duration) {
-                        const t = elapsed / duration;
-                        const ease = -(Math.cos(Math.PI * t) - 1) / 2;
-                        window.scrollTo(0, endY - (endY * ease));
-                        requestAnimationFrame(scrollStep);
-                    } else { window.scrollTo(0, 0); }
+                    if (elapsed < duration) { window.scrollTo(0, endY - (endY * (-(Math.cos(Math.PI * (elapsed / duration)) - 1) / 2))); requestAnimationFrame(scrollStep); }
+                    else { window.scrollTo(0, 0); }
                 }
             }
         }
         window.addEventListener('load', startFastScroll);
 
-        // Music UI Logic
+        // Music Logic
         const DISCORD_ID = '1363474188161122472';
         function connectLanyard() {
             const ws = new WebSocket("wss://api.lanyard.rest/socket");
@@ -519,67 +496,34 @@
             const statusText = document.getElementById('status-text');
             const title = document.getElementById('music-song');
             const artist = document.getElementById('music-artist');
-            
             if (d.listening_to_spotify) {
-                // LIVE MODE
-                const s = d.spotify;
-                img.src = s.album_art_url;
-                title.innerText = s.song;
-                artist.innerText = s.artist;
-                
-                statusText.innerText = "LISTENING NOW";
-                statusIcon.className = "fab fa-spotify";
-                
-                widget.classList.remove('inactive');
-                widget.classList.add('playing');
-                
-                localStorage.setItem('last_song', s.song);
-                localStorage.setItem('last_artist', s.artist);
-                localStorage.setItem('last_art', s.album_art_url);
+                const s = d.spotify; img.src = s.album_art_url; title.innerText = s.song; artist.innerText = s.artist;
+                statusText.innerText = "LISTENING NOW"; statusIcon.className = "fab fa-spotify";
+                widget.classList.remove('inactive'); widget.classList.add('playing');
             } else {
-                // HISTORY MODE
-                widget.classList.remove('playing');
-                widget.classList.add('inactive');
-                const lastSong = localStorage.getItem('last_song');
-                if (lastSong) {
-                    title.innerText = lastSong;
-                    artist.innerText = localStorage.getItem('last_artist');
-                    img.src = localStorage.getItem('last_art');
-                    
-                    statusText.innerText = "RECENTLY PLAYED";
-                    statusIcon.className = "fas fa-history";
-                }
+                widget.classList.remove('playing'); widget.classList.add('inactive');
             }
         }
         connectLanyard();
 
-        // Helpers
         function copyLink() { playSound(); navigator.clipboard.writeText(window.location.href); showToast("Link Copied!"); }
         function showToast(msg) { const t = document.getElementById('dynamic-toast'); t.innerText=msg; t.classList.add('show'); setTimeout(()=>t.classList.remove('show'),2000); }
-        function verifyClick() { playSound(); showToast("Verified Artist"); }
-        function playSound() { /* generic */ }
+        function verifyClick() { playSound(); }
+        function playSound() {}
 
-        // Share Flip
         function morphShareButton() {
-            playBloop();
-            const btn = document.getElementById('shareBtn');
-            const card = document.getElementById('activeQrCard');
-            const modal = document.getElementById('qrModal');
+            playBloop(); const btn = document.getElementById('shareBtn'); const card = document.getElementById('activeQrCard'); const modal = document.getElementById('qrModal');
             document.getElementById('qrImage').src = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(window.location.href)}`;
             document.getElementById('share-url').innerText = window.location.href;
             btn.classList.remove('morph-in-rev'); btn.classList.add('morph-out-fwd');
             setTimeout(() => { modal.classList.add('active'); card.style.display='block'; card.classList.remove('morph-out-rev'); card.classList.add('morph-in-fwd'); }, 300);
         }
         function closeQR() {
-            playBloop();
-            const modal = document.getElementById('qrModal');
-            const card = document.getElementById('activeQrCard');
-            const btn = document.getElementById('shareBtn');
+            playBloop(); const modal = document.getElementById('qrModal'); const card = document.getElementById('activeQrCard'); const btn = document.getElementById('shareBtn');
             card.classList.remove('morph-in-fwd'); card.classList.add('morph-out-rev');
             setTimeout(() => { modal.classList.remove('active'); btn.classList.remove('morph-out-fwd'); btn.classList.add('morph-in-rev'); }, 300);
         }
 
-        // Top Tracks Play
         let currentAudio = null;
         function togglePlay(id) {
             playBloop();
@@ -597,50 +541,24 @@
             audio.play(); btnIcon.classList.remove('fa-play'); btnIcon.classList.add('fa-pause'); container.classList.add('playing'); currentAudio = audio;
         }
 
-        // Clock & Date
-        setInterval(() => {
-            const now = new Date();
-            document.getElementById('time').innerText = now.toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'});
-        }, 1000);
-
-        // Birthday Flip
-        const now = new Date();
-        const bday = new Date(now.getFullYear(), 7, 9);
+        setInterval(() => { document.getElementById('time').innerText = new Date().toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'}); }, 1000);
+        const now = new Date(); const bday = new Date(now.getFullYear(), 7, 9);
         if(now > bday) bday.setFullYear(now.getFullYear()+1);
         document.getElementById('bday-count').innerText = Math.ceil((bday-now)/(1000*60*60*24));
         setInterval(() => document.getElementById('bday-card').classList.toggle('flipped'), 4000);
 
-        // Scroll Observer
         const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if(entry.isIntersecting) entry.target.classList.add('visible');
-                else entry.target.classList.remove('visible');
-            });
+            entries.forEach(entry => { if(entry.isIntersecting) entry.target.classList.add('visible'); else entry.target.classList.remove('visible'); });
         }, { threshold: 0.1 });
         document.querySelectorAll('.glass-card').forEach(el => observer.observe(el));
 
-        // TIMELINE REPLAY OBSERVER (THE FIX)
         const timelineObserver = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if(entry.isIntersecting) {
-                    entry.target.classList.add('lines-visible');
-                } else {
-                    entry.target.classList.remove('lines-visible'); // Reset animation on exit
-                }
-            });
-        }, { threshold: 0.3 }); // Waits until 30% of timeline is visible
+            entries.forEach(entry => { if(entry.isIntersecting) entry.target.classList.add('lines-visible'); else entry.target.classList.remove('lines-visible'); });
+        }, { threshold: 0.3 });
         document.querySelectorAll('.timeline').forEach(el => timelineObserver.observe(el));
 
-        // Views
-        fetch('https://api.counterapi.dev/v1/gourab-bio/views/up')
-            .then(r=>r.json())
-            .then(d => document.getElementById('views').innerText = (10000+d.count).toLocaleString() + " Views");
-            
-        // Weather
-        fetch('https://api.open-meteo.com/v1/forecast?latitude=23.4&longitude=88.5&current_weather=true')
-            .then(r=>r.json()).then(d=>{
-                document.getElementById('weather').innerText = Math.round(d.current_weather.temperature) + "°C ☁️";
-            });
+        fetch('https://api.counterapi.dev/v1/gourab-bio/views/up').then(r=>r.json()).then(d => document.getElementById('views').innerText = (10000+d.count).toLocaleString() + " Views");
+        fetch('https://api.open-meteo.com/v1/forecast?latitude=23.4&longitude=88.5&current_weather=true').then(r=>r.json()).then(d=>{ document.getElementById('weather').innerText = Math.round(d.current_weather.temperature) + "°C ☁️"; });
     </script>
 </body>
 </html>
