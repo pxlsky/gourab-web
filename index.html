@@ -182,25 +182,72 @@
         .t-bar:nth-child(1) { animation-delay: 0s; } .t-bar:nth-child(2) { animation-delay: 0.2s; } .t-bar:nth-child(3) { animation-delay: 0.4s; }
         @keyframes tBounce { 0% { height: 3px; } 100% { height: 14px; } }
 
-        /* --- FAVORITES ROWS --- */
+        /* --- AUTO-EXPAND FAVORITES (With Delay) --- */
         .fav-row-container { display: flex; flex-direction: column; gap: 10px; }
+        
         .fav-row {
             background: var(--card-internal-bg);
             border: 1px solid var(--card-internal-border);
-            border-radius: 18px; padding: 14px 16px;
-            display: flex; align-items: center; gap: 15px;
-            transition: transform 0.2s;
+            border-radius: 18px; 
+            overflow: hidden;
+            transition: background 0.3s ease;
+            position: relative;
         }
-        .fav-row:hover { background: rgba(255,255,255,0.1); transform: translateX(5px); }
+        
+        /* Header part of row */
+        .fav-header {
+            padding: 14px 16px;
+            display: flex; align-items: center; gap: 15px;
+            position: relative; z-index: 2;
+        }
+
         .fav-icon-box {
             width: 40px; height: 40px; border-radius: 12px;
             background: rgba(255,255,255,0.08);
             display: flex; align-items: center; justify-content: center;
             font-size: 18px; flex-shrink: 0;
         }
+        
         .fav-content { flex: 1; min-width: 0; }
         .fav-label { display: block; font-size: 10px; text-transform: uppercase; font-weight: 700; opacity: 0.5; margin-bottom: 3px; letter-spacing: 0.5px; }
         .fav-value { display: block; font-size: 14px; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: #fff; }
+        
+        /* Expanded Content - Lag Free with Delay */
+        .fav-expanded {
+            max-height: 0;
+            overflow: hidden;
+            opacity: 0;
+            padding: 0 16px;
+            display: flex; gap: 15px;
+            
+            /* Hardware Acceleration */
+            will-change: max-height, opacity, padding;
+            
+            /* Physics-based Easing + Delay */
+            /* Wait 0.4s before starting expansion, then take 0.8s to open with smooth curve */
+            transition: 
+                max-height 0.8s cubic-bezier(0.25, 1, 0.5, 1) 0.4s, 
+                padding 0.8s cubic-bezier(0.25, 1, 0.5, 1) 0.4s, 
+                opacity 0.6s ease 0.5s; 
+        }
+        
+        /* Active class added via JS Scroll Observer */
+        .fav-row.active .fav-expanded {
+            max-height: 150px; 
+            opacity: 1;
+            padding-bottom: 18px;
+        }
+        
+        /* LARGER ICONS */
+        .fav-avatar {
+            width: 65px; height: 65px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid rgba(255,255,255,0.15);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.4);
+            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        .fav-avatar:hover { transform: scale(1.1) rotate(3deg); border-color: #fff; }
 
         /* Creativity */
         .creativity-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 25px; }
@@ -404,8 +451,8 @@
                 <img src="https://cdn.discordapp.com/attachments/1345025532659503115/1468532135374618634/Bolo-Dugga-Maiki-Original-Motion-Picture-Soundtrack-Bengali-2017-20251216020802-500x500.jpg?ex=69845ca1&is=69830b21&hm=cf01850efceba5a76cf8a1171aa7a38dd631c500751ae182159cc905c1b96845&" class="thumb-img">
                 <div class="play-btn" onclick="togglePlay(3)"><i class="fas fa-play"></i></div>
                 <div class="track-info">
-                    <span class="track-name">Bolo Dugga Maiki</span>
-                    <span class="track-artist">Original Soundtrack</span>
+                    <span class="track-name">Hote Pare Na</span>
+                    <span class="track-artist">Arindom & Prashmita Paul</span>
                 </div>
                 <div class="track-eq"><div class="t-bar"></div><div class="t-bar"></div><div class="t-bar"></div></div>
                 <audio id="audio3" src="song3.mp3"></audio>
@@ -438,43 +485,65 @@
             <h2 class="section-title">Favorites</h2>
             <div class="fav-row-container">
                 
-                <div class="fav-row">
-                    <div class="fav-icon-box" style="color: #4dabf7;"><i class="fas fa-microphone-lines"></i></div>
-                    <div class="fav-content">
-                        <span class="fav-label">Favorite Singers</span>
-                        <span class="fav-value">Sonu, Arijit, Shreya</span>
+                <div class="fav-row auto-expand">
+                    <div class="fav-header">
+                        <div class="fav-icon-box" style="color: #4dabf7;"><i class="fas fa-microphone-lines"></i></div>
+                        <div class="fav-content">
+                            <span class="fav-label">Favorite Singers</span>
+                            <span class="fav-value">Sonu, Arijit, Shreya</span>
+                        </div>
+                    </div>
+                    <div class="fav-expanded">
+                        <img src="https://i.ibb.co/7tN2787C/sonu-nigam-house-0-1200-jpg.webp" class="fav-avatar" alt="Sonu Nigam">
+                        <img src="https://i.ibb.co/8thndzz/arjit-singh-680x680.png" class="fav-avatar" alt="Arijit Singh">
+                        <img src="https://i.ibb.co/s9p9VgrX/Shreya-Ghoshal.webp" class="fav-avatar" alt="Shreya Ghoshal">
+                    </div>
+                </div>
+
+                <div class="fav-row auto-expand">
+                    <div class="fav-header">
+                        <div class="fav-icon-box" style="color: #ff2e63;"><i class="fas fa-film"></i></div>
+                        <div class="fav-content">
+                            <span class="fav-label">Favorite Actors</span>
+                            <span class="fav-value">Dev Adhikari, Varun Dhawan</span>
+                        </div>
+                    </div>
+                    <div class="fav-expanded">
+                        <img src="https://i.ibb.co/7t6CzHx9/278715828-881090322615196-1544420575469782926-n-819x1024.jpg" class="fav-avatar" alt="Dev">
+                        <img src="https://i.ibb.co/b5SWKFY9/250px-Varun-Dhawan-at-Mehboob-Studios-in-2025-cropped.jpg" class="fav-avatar" alt="Varun">
                     </div>
                 </div>
 
                 <div class="fav-row">
-                    <div class="fav-icon-box" style="color: #ff2e63;"><i class="fas fa-film"></i></div>
-                    <div class="fav-content">
-                        <span class="fav-label">Favorite Actors</span>
-                        <span class="fav-value">Dev Adhikari, Varun Dhawan</span>
+                    <div class="fav-header">
+                        <div class="fav-icon-box" style="color: #ff9f1c;"><i class="fas fa-palette"></i></div>
+                        <div class="fav-content">
+                            <span class="fav-label">Favorite Color</span>
+                            <span class="fav-value">Black & White</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="fav-row auto-expand">
+                    <div class="fav-header">
+                        <div class="fav-icon-box" style="color: #69db7c;"><i class="fas fa-running"></i></div>
+                        <div class="fav-content">
+                            <span class="fav-label">Favorite Player</span>
+                            <span class="fav-value">MS Dhoni</span>
+                        </div>
+                    </div>
+                    <div class="fav-expanded">
+                        <img src="https://i.ibb.co/WvxhgYxC/F1-JHn-OYak-AA-UCL.jpg" class="fav-avatar" alt="Dhoni">
                     </div>
                 </div>
 
                 <div class="fav-row">
-                    <div class="fav-icon-box" style="color: #ff9f1c;"><i class="fas fa-palette"></i></div>
-                    <div class="fav-content">
-                        <span class="fav-label">Favorite Color</span>
-                        <span class="fav-value">Black & White</span>
-                    </div>
-                </div>
-
-                <div class="fav-row">
-                    <div class="fav-icon-box" style="color: #69db7c;"><i class="fas fa-running"></i></div>
-                    <div class="fav-content">
-                        <span class="fav-label">Favorite Player</span>
-                        <span class="fav-value">MS Dhoni</span>
-                    </div>
-                </div>
-
-                <div class="fav-row">
-                    <div class="fav-icon-box" style="color: #e599f7;"><i class="fas fa-plane"></i></div>
-                    <div class="fav-content">
-                        <span class="fav-label">Hobbies</span>
-                        <span class="fav-value">Travelling, Learn New Art</span>
+                    <div class="fav-header">
+                        <div class="fav-icon-box" style="color: #e599f7;"><i class="fas fa-plane"></i></div>
+                        <div class="fav-content">
+                            <span class="fav-label">Hobbies</span>
+                            <span class="fav-value">Travelling, Learn New Art</span>
+                        </div>
                     </div>
                 </div>
 
@@ -516,7 +585,7 @@
 
     <div class="like-float" id="like-btn" onclick="triggerLike()">
         <i class="fas fa-heart"></i>
-        </div>
+    </div>
 
     <script>
         const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
@@ -687,6 +756,19 @@
             });
         }, { threshold: 0.1 });
         document.querySelectorAll('.glass-card').forEach(el => observer.observe(el));
+
+        // --- AUTO-EXPAND FAVORITES OBSERVER (WITH DELAY LOGIC) ---
+        const favObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if(entry.isIntersecting) {
+                    // Triggers when 70% visible
+                    entry.target.classList.add('active');
+                } else {
+                    entry.target.classList.remove('active');
+                }
+            });
+        }, { threshold: 0.7 }); // High threshold for perfect timing
+        document.querySelectorAll('.auto-expand').forEach(el => favObserver.observe(el));
 
         const timelineObserver = new IntersectionObserver((entries) => {
             entries.forEach(entry => { if(entry.isIntersecting) entry.target.classList.add('lines-visible'); else entry.target.classList.remove('lines-visible'); });
