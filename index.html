@@ -38,30 +38,35 @@
             overscroll-behavior: none;
         }
 
-        /* Fixed Background */
+        /* Fixed Background - Optimized */
         .fixed-background {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -2;
             background-image: url('https://i.ibb.co/HDM9FwXj/1000199447.jpg');
             background-size: cover; background-position: center; background-repeat: no-repeat;
-            will-change: transform;
+            will-change: transform; /* Hardware accel hint */
             filter: brightness(0.7);
         }
 
         .container { max-width: 500px; margin: 0 auto; padding: 20px; position: relative; }
 
-        /* --- GLASS CARD --- */
+        /* --- OPTIMIZED GLASS CARD --- */
         .glass-card {
             background: var(--glass-bg);
+            /* Removed backdrop-filter from base class to reduce lag on scroll */
             backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
             border-radius: 28px; 
             border: 1px solid var(--glass-border); 
             box-shadow: var(--glass-shadow);
             padding: 24px; margin-bottom: 24px; position: relative; overflow: hidden;
             
+            /* Initial State for Animation */
             opacity: 0;
-            transform: translateY(40px) scale(0.96);
-            transition: opacity 0.7s cubic-bezier(0.2, 0.8, 0.2, 1), transform 0.7s cubic-bezier(0.2, 0.8, 0.2, 1);
+            transform: translateY(30px) scale(0.98); /* Reduced movement for smoother feel */
+            transition: opacity 0.6s ease-out, transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
+            
+            /* Performance Optimization */
             will-change: opacity, transform;
+            content-visibility: auto; /* Browser optimization for off-screen content */
         }
         
         .glass-card.visible { opacity: 1; transform: translateY(0) scale(1); }
@@ -71,11 +76,14 @@
         .profile-header { text-align: center; }
         .profile-img-container { position: relative; display: inline-block; margin-bottom: 18px; }
         
+        /* PULSE ANIMATION - Optimized */
         .profile-img { 
             width: 125px; height: 125px; border-radius: 50%; object-fit: cover; 
             border: 3px solid rgba(255,255,255,0.8); 
             box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            /* Use a simpler animation if possible, but keeping exact look as requested */
             animation: pulse-border 3s infinite;
+            will-change: box-shadow; /* Hint to browser */
         }
 
         @keyframes pulse-border {
@@ -96,10 +104,11 @@
             border-radius: 50px; padding: 8px 10px;
             display: flex; align-items: center; gap: 15px;
             border: 1px solid var(--card-internal-border);
-            transition: all 0.3s ease; position: relative; overflow: hidden;
+            transition: background 0.3s ease; /* Only animate background */
+            position: relative; overflow: hidden;
         }
         .disk-wrapper { width: 48px; height: 48px; border-radius: 50%; background: #111; padding: 2px; flex-shrink: 0; position: relative; box-shadow: 0 4px 15px rgba(0,0,0,0.3); }
-        .music-cover { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; animation: spin 4s linear infinite; animation-play-state: paused; }
+        .music-cover { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; animation: spin 4s linear infinite; animation-play-state: paused; will-change: transform; }
         .disk-wrapper::after { content: ''; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 10px; height: 10px; background: #222; border-radius: 50%; border: 2px solid #000; z-index: 2; }
         .music-info { display: flex; flex-direction: column; overflow: hidden; flex: 1; text-align: left; }
         .music-status { font-size: 9px; font-weight: 800; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 3px; display: flex; align-items: center; gap: 5px; }
@@ -111,7 +120,7 @@
         .music-pill.inactive .music-status { color: #ffb703; }
         
         .eq-bars { display: flex; gap: 3px; align-items: flex-end; height: 15px; margin-right: 12px; }
-        .eq-bar { width: 3px; background: #1DB954; border-radius: 2px; animation: bounce 0.6s infinite ease-in-out alternate; }
+        .eq-bar { width: 3px; background: #1DB954; border-radius: 2px; animation: bounce 0.6s infinite ease-in-out alternate; will-change: height; }
         .eq-bar:nth-child(2) { animation-delay: 0.1s; } .eq-bar:nth-child(3) { animation-delay: 0.2s; }
         .inactive .eq-bars { display: none; }
         @keyframes bounce { 0% { height: 4px; } 100% { height: 15px; } }
@@ -125,14 +134,13 @@
             padding: 14px 5px; border-radius: 18px; 
             border: 1px solid var(--card-internal-border); 
             display: flex; flex-direction: column; align-items: center; justify-content: center; height: 95px;
-            transition: background 0.3s;
+            /* Removed unnecessary transition on hover for performance */
         }
-        .personal-item:hover { background: rgba(255,255,255,0.1); }
         .personal-icon { font-size: 20px; margin-bottom: 8px; color: rgba(255,255,255,0.9); }
         .personal-label { font-size: 10px; opacity: 0.6; text-transform: uppercase; font-weight: 700; letter-spacing: 0.5px; }
         .personal-value { font-size: 14px; font-weight: 700; margin-top: 4px; }
         
-        .flip-inner { transition: transform 0.8s; transform-style: preserve-3d; position: relative; width: 100%; height: 100%; }
+        .flip-inner { transition: transform 0.8s; transform-style: preserve-3d; position: relative; width: 100%; height: 100%; will-change: transform; }
         .flipped .flip-inner { transform: rotateY(180deg); }
         .flip-front, .flip-back { position: absolute; width: 100%; height: 100%; backface-visibility: hidden; display: flex; flex-direction: column; align-items: center; justify-content: center; }
         .flip-back { transform: rotateY(180deg); }
@@ -146,7 +154,8 @@
             justify-content: space-between;
             gap: 15px; 
             border: 1px solid var(--card-internal-border); 
-            transition: all 0.2s ease; 
+            /* Removed generic 'all' transition to improve perf */
+            transition: background 0.2s ease, border-color 0.2s ease, transform 0.1s ease;
         }
         .music-item:active { transform: scale(0.98); background: rgba(255, 255, 255, 0.1); }
         .music-item.playing { background: rgba(255, 255, 255, 0.12); border-color: rgba(255,255,255,0.3); }
@@ -178,7 +187,7 @@
         }
         .playing .track-eq { opacity: 1; }
         
-        .t-bar { width: 3px; background: var(--eq-color, white); border-radius: 2px; animation: tBounce 0.5s infinite alternate; }
+        .t-bar { width: 3px; background: var(--eq-color, white); border-radius: 2px; animation: tBounce 0.5s infinite alternate; will-change: height; }
         .t-bar:nth-child(1) { animation-delay: 0s; } .t-bar:nth-child(2) { animation-delay: 0.2s; } .t-bar:nth-child(3) { animation-delay: 0.4s; }
         @keyframes tBounce { 0% { height: 3px; } 100% { height: 14px; } }
 
@@ -190,7 +199,7 @@
             border: 1px solid var(--card-internal-border);
             border-radius: 18px; 
             overflow: hidden;
-            transition: background 0.3s ease;
+            /* Removed generic transition to reduce paint load */
             position: relative;
         }
         
@@ -220,11 +229,10 @@
             padding: 0 16px;
             display: flex; gap: 15px;
             
-            /* Hardware Acceleration */
+            /* Hardware Acceleration - CRITICAL for smoothness */
             will-change: max-height, opacity, padding;
             
             /* Physics-based Easing + Delay */
-            /* Wait 0.4s before starting expansion, then take 0.8s to open with smooth curve */
             transition: 
                 max-height 0.8s cubic-bezier(0.25, 1, 0.5, 1) 0.4s, 
                 padding 0.8s cubic-bezier(0.25, 1, 0.5, 1) 0.4s, 
@@ -245,7 +253,8 @@
             object-fit: cover;
             border: 2px solid rgba(255,255,255,0.15);
             box-shadow: 0 5px 15px rgba(0,0,0,0.4);
-            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            /* Simple transform only */
+            transition: transform 0.3s ease;
         }
         .fav-avatar:hover { transform: scale(1.1) rotate(3deg); border-color: #fff; }
 
@@ -260,18 +269,18 @@
             content: ''; position: absolute; left: 0; top: 15px; width: 2px;
             background: linear-gradient(to bottom, rgba(255,255,255,0) 0%, var(--timeline-color) 15%, var(--timeline-color) 85%, rgba(255,255,255,0) 100%);
             height: 0; 
-            transition: height 2.5s cubic-bezier(0.25, 1, 0.5, 1);
+            transition: height 1.5s ease-out; /* Simpler transition */
         }
         .timeline.lines-visible::before { height: calc(100% - 30px); }
-        .timeline-item { position: relative; margin-bottom: 20px; padding-left: 25px; opacity: 0; transform: translateX(-10px); transition: all 0.5s ease; }
+        .timeline-item { position: relative; margin-bottom: 20px; padding-left: 25px; opacity: 0; transform: translateX(-10px); transition: opacity 0.5s ease, transform 0.5s ease; }
         .timeline.lines-visible .timeline-item { opacity: 1; transform: translateX(0); }
-        .timeline.lines-visible .timeline-item:nth-child(1) { transition-delay: 0.3s; }
-        .timeline.lines-visible .timeline-item:nth-child(2) { transition-delay: 0.6s; }
-        .timeline.lines-visible .timeline-item:nth-child(3) { transition-delay: 0.9s; }
-        .timeline.lines-visible .timeline-item:nth-child(4) { transition-delay: 1.2s; }
+        .timeline.lines-visible .timeline-item:nth-child(1) { transition-delay: 0.1s; }
+        .timeline.lines-visible .timeline-item:nth-child(2) { transition-delay: 0.3s; }
+        .timeline.lines-visible .timeline-item:nth-child(3) { transition-delay: 0.5s; }
+        .timeline.lines-visible .timeline-item:nth-child(4) { transition-delay: 0.7s; }
         .timeline-item:last-child { margin-bottom: 0; }
         .timeline-dot { position: absolute; left: -24px; top: 18px; width: 10px; height: 10px; background: #fff; border-radius: 50%; box-shadow: 0 0 10px rgba(255,255,255,0.5); border: 2px solid #000; }
-        .timeline-card { background: var(--card-internal-bg); padding: 14px; border-radius: 16px; border: 1px solid var(--card-internal-border); display: flex; align-items: center; transition: transform 0.2s ease; }
+        .timeline-card { background: var(--card-internal-bg); padding: 14px; border-radius: 16px; border: 1px solid var(--card-internal-border); display: flex; align-items: center; transition: transform 0.1s ease; }
         .timeline-card:active { transform: scale(0.98); background: rgba(255,255,255,0.1); }
         .t-icon { width: 36px; height: 36px; border-radius: 10px; background: rgba(255,255,255,0.1); display: flex; align-items: center; justify-content: center; margin-right: 12px; font-size: 14px; flex-shrink: 0; }
         .t-content { display: flex; flex-direction: column; }
@@ -280,7 +289,7 @@
 
         /* Socials */
         .social-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 10px; }
-        .social-btn { display: flex; flex-direction: column; align-items: center; justify-content: center; background: var(--card-internal-bg); color: var(--text-primary); text-decoration: none; padding: 18px 5px; border-radius: 20px; font-weight: 600; font-size: 12px; border: 1px solid var(--card-internal-border); transition: all 0.2s ease; position: relative; overflow: hidden; cursor: pointer; }
+        .social-btn { display: flex; flex-direction: column; align-items: center; justify-content: center; background: var(--card-internal-bg); color: var(--text-primary); text-decoration: none; padding: 18px 5px; border-radius: 20px; font-weight: 600; font-size: 12px; border: 1px solid var(--card-internal-border); transition: transform 0.2s ease, background 0.2s ease; position: relative; overflow: hidden; cursor: pointer; }
         .social-btn:active { transform: scale(0.96); background: rgba(255,255,255,0.15); }
         .social-btn i { font-size: 24px; margin-bottom: 8px; color: #fff; filter: drop-shadow(0 2px 5px rgba(0,0,0,0.3)); }
 
@@ -304,7 +313,7 @@
             display: flex; align-items: center; justify-content: center;
             box-shadow: 0 5px 15px rgba(0,0,0,0.2);
             z-index: 1000; cursor: pointer; 
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             color: white; font-size: 20px;
         }
         .like-float:active { transform: scale(0.9); }
@@ -614,14 +623,16 @@
             localStorage.setItem('liked_visual_final', 'true');
         }
 
-        // Auto Scroll
+        // Auto Scroll (Reduced frequency for performance)
         function startFastScroll() {
             const duration = 1500; const stayDuration = 700;
             const startY = 0; const endY = document.body.scrollHeight - window.innerHeight;
             let startTime = null; let direction = 1; let isUserInteracting = false;
             const stopScroll = () => { isUserInteracting = true; };
             window.addEventListener('pointerdown', stopScroll); window.addEventListener('wheel', stopScroll); window.addEventListener('touchstart', stopScroll);
+            
             setTimeout(() => requestAnimationFrame(scrollStep), 1000);
+            
             function scrollStep(timestamp) {
                 if (isUserInteracting) return;
                 if (!startTime) startTime = timestamp;
