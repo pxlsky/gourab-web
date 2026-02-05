@@ -20,7 +20,7 @@
             --heart-color: #ff2e63;
             --spotify-green: #1DB954;
             --online-green: #4ade80; 
-            --status-glow: rgba(255, 255, 255, 0.3);
+            --status-glow: rgba(255, 255, 255, 0.5); /* Default fallback */
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
@@ -78,7 +78,7 @@
         .verified-badge { color: #4dabf7; font-size: 22px; filter: drop-shadow(0 0 10px rgba(77, 171, 247, 0.5)); }
         .tags { font-size: 14px; color: var(--text-secondary); margin-bottom: 20px; font-weight: 500; }
 
-        /* --- STATUS WIDGET --- */
+        /* --- STATUS WIDGET (UPDATED) --- */
         .music-pill {
             background: var(--card-internal-bg); 
             border-radius: 60px; padding: 8px 12px;
@@ -93,7 +93,12 @@
         /* Icon Animations */
         .anim-sleep .music-cover { animation: breathe 5s ease-in-out infinite; filter: brightness(0.6) grayscale(0.4); }
         .anim-study .music-cover { animation: float-bob 3s ease-in-out infinite; filter: contrast(1.1); }
-        .anim-watch .music-cover, .anim-game .music-cover { animation: dynamic-glow 3s infinite alternate; }
+        
+        /* STRONG GLOW ANIMATION */
+        .anim-watch .music-cover, .anim-game .music-cover { 
+            animation: super-glow 2s infinite ease-in-out alternate; 
+        }
+        
         .anim-music .music-cover { animation: spin 4s linear infinite; }
         
         .music-info { display: flex; flex-direction: column; overflow: hidden; flex: 1; text-align: left; }
@@ -131,7 +136,7 @@
         .popcorn-kernel:nth-child(2) { animation: pop-right 1.2s infinite ease-out; animation-delay: 0.4s; }
         .popcorn-kernel:nth-child(3) { animation: pop-center 1.2s infinite ease-out; animation-delay: 0.8s; }
 
-        /* 3. NEW CONTINUOUS YOUTUBE ANIMATION (Flying Play Buttons) */
+        /* 3. YouTube Flying Stream */
         .yt-stream-base {
             width: 18px; height: 12px;
             border: 2px solid #FF0000;
@@ -165,7 +170,13 @@
         @keyframes bounce { 0% { height: 4px; } 100% { height: 15px; } }
         @keyframes breathe { 0%, 100% { transform: scale(1); opacity: 0.8; } 50% { transform: scale(1.08); opacity: 1; } }
         @keyframes float-bob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-3px); } }
-        @keyframes dynamic-glow { 0%, 100% { box-shadow: 0 0 5px rgba(255,255,255,0.1); } 50% { box-shadow: 0 0 20px var(--status-glow); } }
+        
+        /* SUPER GLOW ANIMATION (Enhanced) */
+        @keyframes super-glow { 
+            0% { box-shadow: 0 0 5px var(--status-glow); filter: brightness(1); } 
+            100% { box-shadow: 0 0 25px var(--status-glow), 0 0 10px var(--status-glow); filter: brightness(1.2); } 
+        }
+
         @keyframes box-bounce { 0%, 100% { transform: scale(1) translateY(0); } 50% { transform: scale(1.1, 0.9) translateY(1px); } }
         @keyframes pop-left { 0% { transform: translate(0,0) scale(0.5); opacity: 1; } 100% { transform: translate(-8px, -12px) scale(1.2) rotate(-90deg); opacity: 0; } }
         @keyframes pop-right { 0% { transform: translate(0,0) scale(0.5); opacity: 1; } 100% { transform: translate(8px, -12px) scale(1.2) rotate(90deg); opacity: 0; } }
@@ -714,7 +725,7 @@
                 art: "https://upload.wikimedia.org/wikipedia/commons/thumb/0/09/YouTube_full-color_icon_%282017%29.svg/1024px-YouTube_full-color_icon_%282017%29.svg.png", 
                 animClass: "anim-watch",
                 miniAnim: "yt-stream", // NEW CONTINUOUS ANIMATION
-                glow: "rgba(255,0,0,0.6)" 
+                glow: "rgba(255,0,0,0.9)" 
             },
             { 
                 name: "Watching Prime Video", type: "Movie", 
@@ -728,7 +739,7 @@
                 art: "https://i.ibb.co/rGN45QZd/e6eb7b7969a33bc9e472b0e544821937.jpg", 
                 animClass: "anim-game",
                 miniAnim: "game",
-                glow: "rgba(255,255,255,0.6)"
+                glow: "rgba(255,255,255,0.9)"
             },
             { 
                 name: "Watching Hoichoi", type: "Bengali Content", 
