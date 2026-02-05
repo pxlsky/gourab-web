@@ -19,6 +19,7 @@
             --card-internal-border: rgba(255, 255, 255, 0.1);
             --heart-color: #ff2e63;
             --spotify-green: #1DB954;
+            --online-green: #4ade80; 
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
@@ -43,7 +44,7 @@
 
         .container { max-width: 500px; margin: 0 auto; padding: 20px; position: relative; z-index: 10; }
 
-        /* --- GLASS CARD (SCROLL ANIMATION) --- */
+        /* --- GLASS CARD --- */
         .glass-card {
             background: var(--glass-bg);
             backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
@@ -76,7 +77,7 @@
         .verified-badge { color: #4dabf7; font-size: 22px; filter: drop-shadow(0 0 10px rgba(77, 171, 247, 0.5)); }
         .tags { font-size: 14px; color: var(--text-secondary); margin-bottom: 20px; font-weight: 500; }
 
-        /* --- STATUS WIDGET --- */
+        /* --- STATUS WIDGET (RE-ENGINEERED) --- */
         .music-pill {
             background: var(--card-internal-bg); 
             border-radius: 60px; padding: 8px 12px;
@@ -87,39 +88,66 @@
         }
         .status-img-container { width: 48px; height: 48px; border-radius: 50%; flex-shrink: 0; position: relative; box-shadow: 0 4px 10px rgba(0,0,0,0.4); }
         .music-cover { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; display: block; will-change: transform, filter; }
+        
+        /* Main Icon Animations */
         .anim-sleep .music-cover { animation: breathe 5s ease-in-out infinite; filter: brightness(0.6) grayscale(0.4); }
         .anim-study .music-cover { animation: float-bob 3s ease-in-out infinite; filter: contrast(1.1); }
         .anim-watch .music-cover { animation: cine-glow 3s infinite; }
         .anim-game .music-cover { animation: game-shake 0.2s ease-in-out infinite alternate; border: 2px solid rgba(255,255,255,0.8); }
-        .anim-shop .music-cover { animation: bounce-shop 1s infinite; }
         .anim-music .music-cover { animation: spin 4s linear infinite; }
+        
         .music-info { display: flex; flex-direction: column; overflow: hidden; flex: 1; text-align: left; }
         .music-status { font-size: 9px; font-weight: 800; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 3px; display: flex; align-items: center; gap: 5px; }
         .music-title { font-size: 13px; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: white; }
         .music-artist { font-size: 11px; opacity: 0.7; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-        .music-pill.playing .music-status { color: #1DB954; }
+        
+        /* Status Colors */
+        .music-pill.playing .music-status { color: var(--spotify-green); }
+        .music-pill.online .music-status { color: var(--online-green); }
         .music-pill.inactive .music-status { color: #ffb703; }
-        .eq-bars { display: flex; gap: 3px; align-items: flex-end; height: 15px; margin-right: 12px; }
-        .eq-bar { width: 3px; background: #1DB954; border-radius: 2px; animation: bounce 0.6s infinite ease-in-out alternate; will-change: height; }
+
+        /* --- MINI ANIMATIONS (RIGHT SIDE) --- */
+        .mini-anim-box { width: 24px; height: 24px; display: flex; align-items: center; justify-content: center; margin-right: 10px; position: relative; }
+
+        /* 1. Equalizer (Music) */
+        .eq-bars { display: flex; gap: 3px; align-items: flex-end; height: 15px; }
+        .eq-bar { width: 3px; background: var(--spotify-green); border-radius: 2px; animation: bounce 0.6s infinite ease-in-out alternate; will-change: height; }
         .eq-bar:nth-child(2) { animation-delay: 0.1s; } .eq-bar:nth-child(3) { animation-delay: 0.2s; }
-        .inactive .eq-bars { display: none; }
+
+        /* 2. Popcorn (Movies/Shows) */
+        .popcorn-bucket { width: 14px; height: 18px; background: repeating-linear-gradient(90deg, #ff4d4d 0px, #ff4d4d 3px, #fff 3px, #fff 6px); clip-path: polygon(10% 0, 90% 0, 80% 100%, 20% 100%); position: relative; margin-top: 5px; }
+        .popcorn-kernel { position: absolute; width: 4px; height: 4px; background: #ffd700; border-radius: 50%; top: -2px; opacity: 0; animation: pop 1s infinite; }
+        .popcorn-kernel:nth-child(1) { left: 2px; animation-delay: 0s; }
+        .popcorn-kernel:nth-child(2) { left: 6px; animation-delay: 0.3s; }
+        .popcorn-kernel:nth-child(3) { left: 10px; animation-delay: 0.6s; }
+
+        /* 3. Play Wave (YouTube/Jio) */
+        .play-tri { width: 0; height: 0; border-style: solid; border-width: 6px 0 6px 10px; border-color: transparent transparent transparent #fff; position: relative; z-index: 2; }
+        .play-wave { position: absolute; width: 20px; height: 20px; border: 2px solid rgba(255,255,255,0.6); border-radius: 50%; animation: ripple 1.5s infinite; opacity: 0; }
+
+        /* 4. Game Controller (Gaming) */
+        .game-icon { font-size: 16px; color: #fff; animation: tilt 1s infinite alternate ease-in-out; }
+
+        /* 5. Zzz (Sleep) */
+        .zzz-text { font-size: 10px; font-weight: 800; color: #a5b4fc; animation: zfloat 2s infinite linear; position: absolute; }
+        .zzz-text:nth-child(2) { animation-delay: 1s; font-size: 8px; left: -5px; }
+
+        /* Keyframes */
         @keyframes spin { 100% { transform: rotate(360deg); } }
         @keyframes bounce { 0% { height: 4px; } 100% { height: 15px; } }
         @keyframes breathe { 0%, 100% { transform: scale(1); opacity: 0.8; } 50% { transform: scale(1.08); opacity: 1; } }
-        @keyframes float-bob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-3px); } }
         @keyframes cine-glow { 0%, 100% { box-shadow: 0 0 5px rgba(255,255,255,0.2); } 50% { box-shadow: 0 0 15px rgba(255, 46, 99, 0.6); } }
         @keyframes game-shake { 0% { transform: translate(0, 0); } 25% { transform: translate(1px, 1px); } 50% { transform: translate(-1px, -1px); } 75% { transform: translate(1px, -1px); } 100% { transform: translate(0, 0); } }
-        @keyframes bounce-shop { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.1); } }
+        @keyframes pop { 0% { transform: translateY(0) scale(1); opacity: 1; } 100% { transform: translateY(-10px) scale(1.2); opacity: 0; } }
+        @keyframes ripple { 0% { transform: scale(0.5); opacity: 1; } 100% { transform: scale(1.5); opacity: 0; } }
+        @keyframes tilt { 0% { transform: rotate(-10deg); } 100% { transform: rotate(10deg); } }
+        @keyframes zfloat { 0% { transform: translate(0, 0); opacity: 0; } 20% { opacity: 1; } 100% { transform: translate(5px, -10px); opacity: 0; } }
 
         .section-title { font-size: 18px; font-weight: 700; margin-bottom: 18px; color: #fff; padding-left: 5px; border-left: 3px solid #fff; line-height: 1; padding-top: 2px; padding-bottom: 2px; }
         
         /* Personal Stats Grid */
         .personal-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; text-align: center; width: 100%; }
-        .stat-card {
-            position: relative; background: rgba(255, 255, 255, 0.04); border: 1px solid rgba(255, 255, 255, 0.08);
-            border-radius: 20px; padding: 12px 5px; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 110px;
-            transition: all 0.3s;
-        }
+        .stat-card { position: relative; background: rgba(255, 255, 255, 0.04); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 20px; padding: 12px 5px; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 110px; transition: all 0.3s; }
         .icon-circle { width: 38px; height: 38px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-bottom: 10px; font-size: 16px; color: white; box-shadow: 0 4px 10px rgba(0,0,0,0.3); }
         .bday-grad { background: linear-gradient(135deg, #ff9966 0%, #ff5e62 100%); }
         .height-grad { background: linear-gradient(135deg, #56CCF2 0%, #2F80ED 100%); }
@@ -187,33 +215,16 @@
         
         /* UPDATED TIMELINE - NO LINE, CIRCULAR ICONS */
         .timeline { margin-top: 15px; display: flex; flex-direction: column; gap: 15px; }
-        
-        .timeline-item { 
-            opacity: 0; transform: translateX(-10px); 
-            transition: opacity 0.5s ease, transform 0.5s ease; 
-        }
-        
-        /* Simple Fade In */
+        .timeline-item { opacity: 0; transform: translateX(-10px); transition: opacity 0.5s ease, transform 0.5s ease; }
         .timeline-item.visible { opacity: 1; transform: translateX(0); }
         .timeline-item:nth-child(1) { transition-delay: 0.1s; }
         .timeline-item:nth-child(2) { transition-delay: 0.2s; }
         .timeline-item:nth-child(3) { transition-delay: 0.3s; }
         .timeline-item:nth-child(4) { transition-delay: 0.4s; }
-
         .timeline-card { background: var(--card-internal-bg); padding: 14px; border-radius: 16px; border: 1px solid var(--card-internal-border); display: flex; align-items: center; transition: transform 0.1s ease; }
         .timeline-card:active { transform: scale(0.98); background: rgba(255,255,255,0.1); }
-        
-        .t-icon { 
-            width: 45px; height: 45px; 
-            border-radius: 50%; /* CIRCLE */
-            display: flex; align-items: center; justify-content: center; 
-            margin-right: 15px; flex-shrink: 0; overflow: hidden;
-            background: rgba(255,255,255,0.05);
-            border: 1px solid rgba(255,255,255,0.1);
-        }
-        
+        .t-icon { width: 45px; height: 45px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-right: 15px; flex-shrink: 0; overflow: hidden; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); }
         .t-img { width: 100%; height: 100%; object-fit: cover; border-radius: 50%; }
-        
         .t-content { display: flex; flex-direction: column; }
         .t-title { font-size: 13px; font-weight: 700; margin-bottom: 2px; }
         .t-desc { font-size: 10px; opacity: 0.7; text-transform: uppercase; letter-spacing: 0.5px; line-height: 1.4; }
@@ -313,7 +324,9 @@
                     <span id="music-song" class="music-title">Sleeping</span>
                     <span id="music-artist" class="music-artist">Do Not Disturb</span>
                 </div>
-                <div class="eq-bars"><div class="eq-bar"></div><div class="eq-bar"></div><div class="eq-bar"></div></div>
+                <div class="mini-anim-box" id="mini-anim">
+                    <div class="eq-bars"><div class="eq-bar"></div><div class="eq-bar"></div><div class="eq-bar"></div></div>
+                </div>
             </div>
         </div>
 
@@ -660,13 +673,44 @@
         function startFastScroll() { const duration = 1500; const stayDuration = 700; const startY = 0; const endY = document.body.scrollHeight - window.innerHeight; let startTime = null; let direction = 1; let isUserInteracting = false; const stopScroll = () => { isUserInteracting = true; }; window.addEventListener('pointerdown', stopScroll); window.addEventListener('wheel', stopScroll); window.addEventListener('touchstart', stopScroll); setTimeout(() => requestAnimationFrame(scrollStep), 1000); function scrollStep(timestamp) { if (isUserInteracting) return; if (!startTime) startTime = timestamp; const elapsed = timestamp - startTime; if (direction === 1) { if (elapsed < duration) { window.scrollTo(0, startY + (endY * (-(Math.cos(Math.PI * (elapsed / duration)) - 1) / 2))); requestAnimationFrame(scrollStep); } else if (elapsed < duration + stayDuration) { window.scrollTo(0, endY); requestAnimationFrame(scrollStep); } else { startTime = null; direction = -1; requestAnimationFrame(scrollStep); } } else { if (elapsed < duration) { window.scrollTo(0, endY - (endY * (-(Math.cos(Math.PI * (elapsed / duration)) - 1) / 2))); requestAnimationFrame(scrollStep); } else { window.scrollTo(0, 0); } } } } window.addEventListener('load', startFastScroll);
 
         // --- NEW DYNAMIC STATUS LOGIC ---
+        // UPDATED: Replaced Netflix with Prime Video and set correct mini-animations
         const randomActivities = [
-            { name: "Watching YouTube", type: "Streaming", art: "https://upload.wikimedia.org/wikipedia/commons/thumb/7/72/YouTube_social_white_square_%282017%29.svg/1200px-YouTube_social_white_square_%282017%29.svg.png", animClass: "anim-watch" },
-            { name: "Watching Netflix", type: "Movie", art: "https://upload.wikimedia.org/wikipedia/commons/7/75/Netflix_icon.svg", animClass: "anim-watch" },
-            { name: "JioCinema", type: "Live Sports", art: "https://v3img.voot.com/v3Storage/assets/jc_logo_stack-1683713023877.jpg", animClass: "anim-watch" },
-            { name: "Wuthering Waves", type: "Gaming", art: "https://i.ibb.co/kszjNwyv/MV5-BMDU5-Mz-Rk-YWQt-Nj-Rm-MS00-MWYy-LWI2-Mj-At-Zm-Rk-MWVk-NDA2-OGU3-Xk-Ey-Xk-Fqc-Gc-V1-FMjpg-UX1000.jpg", animClass: "anim-game" },
-            { name: "Watching Hoichoi", type: "Bengali Content", art: "https://play-lh.googleusercontent.com/l2Uq-M9J-X-iXNykgyX4X5U7X9K7x_J_X_X_X_X_X_X.png", animClass: "anim-watch" },
-            { name: "E-Shopping", type: "Browsing", art: "https://img.icons8.com/color/480/shopping-bag.png", animClass: "anim-shop" }
+            { 
+                name: "Watching YouTube", type: "Streaming", 
+                art: "https://upload.wikimedia.org/wikipedia/commons/thumb/0/09/YouTube_full-color_icon_%282017%29.svg/1024px-YouTube_full-color_icon_%282017%29.svg.png", 
+                animClass: "anim-watch",
+                miniAnim: "play" // Play Button
+            },
+            { 
+                name: "Prime Video", type: "Movie", 
+                art: "https://i.ibb.co/KjYLPP8w/31-W9hs7w0-JL.png", 
+                animClass: "anim-watch",
+                miniAnim: "popcorn" // Popcorn Bucket
+            },
+            { 
+                name: "JioCinema", type: "Live Sports", 
+                art: "https://upload.wikimedia.org/wikipedia/commons/1/14/JioCinema_logo.svg", 
+                animClass: "anim-watch",
+                miniAnim: "play" // Play Button
+            },
+            { 
+                name: "Wuthering Waves", type: "Gaming", 
+                art: "https://i.ibb.co/rGN45QZd/e6eb7b7969a33bc9e472b0e544821937.jpg", 
+                animClass: "anim-game",
+                miniAnim: "game" // Controller
+            },
+            { 
+                name: "Watching Hoichoi", type: "Bengali Content", 
+                art: "https://i.ibb.co/hxmY9bhv/31-U0hg-Cz-Yl-L-AC-UF894-1000-QL80.jpg", 
+                animClass: "anim-watch",
+                miniAnim: "popcorn" // Popcorn Bucket
+            },
+            { 
+                name: "Disney+ Hotstar", type: "Streaming", 
+                art: "https://i.ibb.co/zVppCJ7N/Screenshot-2025-02-14-065533-1739496378365-1739496389150.jpg", 
+                animClass: "anim-watch",
+                miniAnim: "popcorn" // Popcorn Bucket
+            }
         ];
 
         function getOfflineStatus() {
@@ -681,7 +725,8 @@
                     art: "https://img.icons8.com/fluency/240/moon.png",
                     status: "Zzz...",
                     icon: "fas fa-moon",
-                    animClass: "anim-sleep"
+                    animClass: "anim-sleep",
+                    miniAnim: "zzz"
                 };
             }
             
@@ -696,7 +741,8 @@
                     art: "https://img.icons8.com/fluency/240/books.png",
                     status: `${diffMins}m Remaining`,
                     icon: "fas fa-book-open",
-                    animClass: "anim-study"
+                    animClass: "anim-study",
+                    miniAnim: "eq" // Default to EQ or just nothing for study
                 };
             }
 
@@ -714,7 +760,8 @@
                 art: storedActivity.data.art,
                 status: "ONLINE",
                 icon: "fas fa-bolt",
-                animClass: storedActivity.data.animClass
+                animClass: storedActivity.data.animClass,
+                miniAnim: storedActivity.data.miniAnim
             };
         }
 
@@ -728,11 +775,48 @@
             const statusText = document.getElementById('status-text');
             const title = document.getElementById('music-song');
             const artist = document.getElementById('music-artist');
+            const miniAnimBox = document.getElementById('mini-anim');
 
-            widget.classList.remove('playing', 'inactive', 'anim-sleep', 'anim-study', 'anim-watch', 'anim-game', 'anim-shop', 'anim-music');
-            img.src = data.art; title.innerText = data.title; artist.innerText = data.artist; statusText.innerText = data.status; statusIcon.className = data.icon;
+            // Reset classes
+            widget.classList.remove('playing', 'inactive', 'online', 'anim-sleep', 'anim-study', 'anim-watch', 'anim-game', 'anim-shop', 'anim-music');
+            
+            img.src = data.art; 
+            title.innerText = data.title; 
+            artist.innerText = data.artist; 
+            statusText.innerText = data.status; 
+            statusIcon.className = data.icon;
             widget.classList.add(data.animClass);
-            if (data.animClass === 'anim-music') { widget.classList.add('playing'); } else { widget.classList.add('inactive'); }
+
+            // Apply specific state class
+            if (data.animClass === 'anim-music') { 
+                widget.classList.add('playing'); 
+            } else if (data.status === "ONLINE" || data.status === "LISTENING NOW") {
+                // FORCE GREEN TEXT FOR ONLINE STATUS
+                widget.classList.add('online');
+            } else { 
+                widget.classList.add('inactive'); 
+            }
+
+            // RENDER MINI ANIMATIONS
+            let miniHTML = '';
+            
+            if (data.animClass === 'anim-music' || data.miniAnim === 'eq') {
+                miniHTML = `<div class="eq-bars"><div class="eq-bar"></div><div class="eq-bar"></div><div class="eq-bar"></div></div>`;
+            } 
+            else if (data.miniAnim === 'popcorn') {
+                miniHTML = `<div class="popcorn-bucket"><div class="popcorn-kernel"></div><div class="popcorn-kernel"></div><div class="popcorn-kernel"></div></div>`;
+            }
+            else if (data.miniAnim === 'play') {
+                miniHTML = `<div class="play-tri"></div><div class="play-wave"></div>`;
+            }
+            else if (data.miniAnim === 'game') {
+                miniHTML = `<i class="fas fa-gamepad game-icon"></i>`;
+            }
+            else if (data.miniAnim === 'zzz') {
+                miniHTML = `<span class="zzz-text">Zzz</span><span class="zzz-text">Zzz</span>`;
+            }
+
+            miniAnimBox.innerHTML = miniHTML;
         }
 
         function connectLanyard() {
@@ -750,7 +834,8 @@
                             art: data.spotify.album_art_url,
                             status: "LISTENING NOW",
                             icon: "fab fa-spotify",
-                            animClass: "anim-music"
+                            animClass: "anim-music",
+                            miniAnim: "eq"
                         });
                     } else {
                         updateUI(getOfflineStatus());
