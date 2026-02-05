@@ -710,18 +710,16 @@
         const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
         
         // --- CUSTOM SOUND LOGIC ---
-        // Preload the Facebook Like sound
-        const likeSound = new Audio('http://googleusercontent.com/file_content/26');
-        likeSound.volume = 0.6; // Slightly adjusted volume
+        // Just upload "like.mp3" to your GitHub repo root
+        const likeSound = new Audio('like.mp3');
+        likeSound.volume = 0.6; 
 
         function playLikeSound() {
-            // Play custom sound for Like button
             likeSound.currentTime = 0;
             likeSound.play().catch(e => console.log("Audio play failed:", e));
         }
 
         function playBloop() { 
-            // Standard bloop for other interactions (Copy/Verify)
             if (audioCtx.state === 'suspended') audioCtx.resume(); 
             const osc = audioCtx.createOscillator(); 
             const gain = audioCtx.createGain(); 
