@@ -708,52 +708,89 @@
 
     <script>
         const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-        function playBloop() { if (audioCtx.state === 'suspended') audioCtx.resume(); const osc = audioCtx.createOscillator(); const gain = audioCtx.createGain(); osc.connect(gain); gain.connect(audioCtx.destination); osc.type = 'sine'; osc.frequency.setValueAtTime(600, audioCtx.currentTime); osc.frequency.exponentialRampToValueAtTime(150, audioCtx.currentTime + 0.15); gain.gain.setValueAtTime(0.5, audioCtx.currentTime); gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.15); osc.start(); osc.stop(audioCtx.currentTime + 0.2); }
+        
+        // --- CUSTOM SOUND LOGIC ---
+        // Preload the Facebook Like sound
+        const likeSound = new Audio('http://googleusercontent.com/file_content/26');
+        likeSound.volume = 0.6; // Slightly adjusted volume
+
+        function playLikeSound() {
+            // Play custom sound for Like button
+            likeSound.currentTime = 0;
+            likeSound.play().catch(e => console.log("Audio play failed:", e));
+        }
+
+        function playBloop() { 
+            // Standard bloop for other interactions (Copy/Verify)
+            if (audioCtx.state === 'suspended') audioCtx.resume(); 
+            const osc = audioCtx.createOscillator(); 
+            const gain = audioCtx.createGain(); 
+            osc.connect(gain); 
+            gain.connect(audioCtx.destination); 
+            osc.type = 'sine'; 
+            osc.frequency.setValueAtTime(600, audioCtx.currentTime); 
+            osc.frequency.exponentialRampToValueAtTime(150, audioCtx.currentTime + 0.15); 
+            gain.gain.setValueAtTime(0.5, audioCtx.currentTime); 
+            gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.15); 
+            osc.start(); 
+            osc.stop(audioCtx.currentTime + 0.2); 
+        }
         
         const likeBtn = document.getElementById('like-btn');
         const popup = document.getElementById('thumbsUpPopup');
         if (localStorage.getItem('liked_visual_final') === 'true') { likeBtn.classList.add('liked'); }
-        function triggerLike() { playBloop(); likeBtn.classList.add('liked'); likeBtn.classList.remove('jelly'); void likeBtn.offsetWidth; likeBtn.classList.add('jelly'); popup.style.animation = 'none'; void popup.offsetWidth; popup.style.animation = 'fbLikePop 0.8s ease-out forwards'; localStorage.setItem('liked_visual_final', 'true'); }
+        
+        function triggerLike() { 
+            playLikeSound(); // USES NEW SOUND 
+            likeBtn.classList.add('liked'); 
+            likeBtn.classList.remove('jelly'); 
+            void likeBtn.offsetWidth; 
+            likeBtn.classList.add('jelly'); 
+            popup.style.animation = 'none'; 
+            void popup.offsetWidth; 
+            popup.style.animation = 'fbLikePop 0.8s ease-out forwards'; 
+            localStorage.setItem('liked_visual_final', 'true'); 
+        }
+
         function copyUID(uid) { navigator.clipboard.writeText(uid); playBloop(); const btn = document.querySelector('.uid-pill'); const originalHTML = btn.innerHTML; btn.innerHTML = `<span style="color:#4ade80">Copied!</span> <i class="fas fa-check" style="color:#4ade80"></i>`; setTimeout(() => { btn.innerHTML = originalHTML; }, 2000); }
         function startFastScroll() { const duration = 1500; const stayDuration = 700; const startY = 0; const endY = document.body.scrollHeight - window.innerHeight; let startTime = null; let direction = 1; let isUserInteracting = false; const stopScroll = () => { isUserInteracting = true; }; window.addEventListener('pointerdown', stopScroll); window.addEventListener('wheel', stopScroll); window.addEventListener('touchstart', stopScroll); setTimeout(() => requestAnimationFrame(scrollStep), 1000); function scrollStep(timestamp) { if (isUserInteracting) return; if (!startTime) startTime = timestamp; const elapsed = timestamp - startTime; if (direction === 1) { if (elapsed < duration) { window.scrollTo(0, startY + (endY * (-(Math.cos(Math.PI * (elapsed / duration)) - 1) / 2))); requestAnimationFrame(scrollStep); } else if (elapsed < duration + stayDuration) { window.scrollTo(0, endY); requestAnimationFrame(scrollStep); } else { startTime = null; direction = -1; requestAnimationFrame(scrollStep); } } else { if (elapsed < duration) { window.scrollTo(0, endY - (endY * (-(Math.cos(Math.PI * (elapsed / duration)) - 1) / 2))); requestAnimationFrame(scrollStep); } else { window.scrollTo(0, 0); } } } } window.addEventListener('load', startFastScroll);
 
-        // --- NEW DYNAMIC STATUS LOGIC ---
-        // UPDATED: Standardized Text Prefixes & NEW Continuous YouTube Animation
+        // --- GLOBAL SYNC LOGIC (30 MINS) ---
         const randomActivities = [
             { 
                 name: "Watching YouTube", type: "Streaming", 
                 art: "https://upload.wikimedia.org/wikipedia/commons/thumb/0/09/YouTube_full-color_icon_%282017%29.svg/1024px-YouTube_full-color_icon_%282017%29.svg.png", 
                 animClass: "anim-watch",
-                miniAnim: "yt-stream", // NEW CONTINUOUS ANIMATION
-                glow: "rgba(255, 0, 0, 0.9)" // Intense Red
+                miniAnim: "yt-stream", 
+                glow: "rgba(255, 0, 0, 0.9)" 
             },
             { 
                 name: "Watching Prime Video", type: "Movie", 
                 art: "https://i.ibb.co/KjYLPP8w/31-W9hs7w0-JL.png", 
                 animClass: "anim-watch",
                 miniAnim: "popcorn",
-                glow: "rgba(0, 168, 225, 0.9)" // Bright Cyan Blue
+                glow: "rgba(0, 168, 225, 0.9)" 
             },
             { 
                 name: "Playing Wuthering Waves", type: "Gaming", 
                 art: "https://i.ibb.co/rGN45QZd/e6eb7b7969a33bc9e472b0e544821937.jpg", 
                 animClass: "anim-game",
                 miniAnim: "game",
-                glow: "rgba(255, 255, 255, 0.8)" // White
+                glow: "rgba(255, 255, 255, 0.8)" 
             },
             { 
                 name: "Watching Hoichoi", type: "Bengali Content", 
                 art: "https://i.ibb.co/hxmY9bhv/31-U0hg-Cz-Yl-L-AC-UF894-1000-QL80.jpg", 
                 animClass: "anim-watch",
                 miniAnim: "popcorn",
-                glow: "rgba(229, 9, 20, 0.9)" // Deep Red
+                glow: "rgba(229, 9, 20, 0.9)" 
             },
             { 
                 name: "Watching Disney+ Hotstar", type: "Streaming", 
                 art: "https://i.ibb.co/zVppCJ7N/Screenshot-2025-02-14-065533-1739496378365-1739496389150.jpg", 
                 animClass: "anim-watch",
                 miniAnim: "popcorn",
-                glow: "rgba(31, 128, 224, 0.9)" // Royal Blue
+                glow: "rgba(31, 128, 224, 0.9)" 
             }
         ];
 
@@ -786,27 +823,26 @@
                     status: `${diffMins}m Remaining`,
                     icon: "fas fa-book-open",
                     animClass: "anim-study",
-                    miniAnim: "eq" // Default to EQ or just nothing for study
+                    miniAnim: "eq"
                 };
             }
 
-            // 3. Random Activity
-            let storedActivity = JSON.parse(localStorage.getItem('random_status'));
-            const currentTimestamp = Math.floor(Date.now() / 1000);
-            if (!storedActivity || currentTimestamp > storedActivity.expiry) {
-                const randomPick = randomActivities[Math.floor(Math.random() * randomActivities.length)];
-                storedActivity = { data: randomPick, expiry: currentTimestamp + 3600 };
-                localStorage.setItem('random_status', JSON.stringify(storedActivity));
-            }
+            // 3. UNIVERSAL SYNC (30-MIN BLOCKS)
+            // Divide total milliseconds by 30 mins (1800000ms) to get a unique integer for this half-hour
+            const timeBlock = Math.floor(Date.now() / (30 * 60 * 1000));
+            // Use modulo to cycle 0, 1, 2, 3, 4 based on that block
+            const index = timeBlock % randomActivities.length;
+            const syncedData = randomActivities[index];
+
             return {
-                title: storedActivity.data.name,
-                artist: storedActivity.data.type,
-                art: storedActivity.data.art,
+                title: syncedData.name,
+                artist: syncedData.type,
+                art: syncedData.art,
                 status: "ONLINE",
                 icon: "fas fa-bolt",
-                animClass: storedActivity.data.animClass,
-                miniAnim: storedActivity.data.miniAnim,
-                glow: storedActivity.data.glow
+                animClass: syncedData.animClass,
+                miniAnim: syncedData.miniAnim,
+                glow: syncedData.glow
             };
         }
 
@@ -855,7 +891,6 @@
                 miniHTML = `<div class="popcorn-box"><div class="popcorn-kernel"></div><div class="popcorn-kernel"></div><div class="popcorn-kernel"></div></div>`;
             }
             else if (data.miniAnim === 'yt-stream') {
-                // CONTINUOUS FLOATING PLAY BUTTONS
                 miniHTML = `<div class="yt-stream-base"><div class="yt-particle"></div><div class="yt-particle"></div><div class="yt-particle"></div></div>`;
             }
             else if (data.miniAnim === 'play') {
