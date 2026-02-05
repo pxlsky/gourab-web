@@ -20,7 +20,7 @@
             --heart-color: #ff2e63;
             --spotify-green: #1DB954;
             --online-green: #4ade80; 
-            --status-glow: rgba(255, 255, 255, 0.3); /* Default Glow */
+            --status-glow: rgba(255, 255, 255, 0.3);
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
@@ -93,7 +93,6 @@
         /* Main Icon Animations */
         .anim-sleep .music-cover { animation: breathe 5s ease-in-out infinite; filter: brightness(0.6) grayscale(0.4); }
         .anim-study .music-cover { animation: float-bob 3s ease-in-out infinite; filter: contrast(1.1); }
-        /* DYNAMIC GLOW for Watch/Game */
         .anim-watch .music-cover, .anim-game .music-cover { animation: dynamic-glow 3s infinite alternate; }
         .anim-music .music-cover { animation: spin 4s linear infinite; }
         
@@ -115,7 +114,7 @@
         .eq-bar { width: 3px; background: var(--spotify-green); border-radius: 2px; animation: bounce 0.6s infinite ease-in-out alternate; will-change: height; }
         .eq-bar:nth-child(2) { animation-delay: 0.1s; } .eq-bar:nth-child(3) { animation-delay: 0.2s; }
 
-        /* 2. BETTER POPCORN ANIMATION */
+        /* 2. POPCORN ANIMATION */
         .popcorn-box { 
             width: 14px; height: 18px; 
             background: repeating-linear-gradient(90deg, #ff4d4d 0px, #ff4d4d 3px, #fff 3px, #fff 6px);
@@ -132,9 +131,22 @@
         .popcorn-kernel:nth-child(2) { animation: pop-right 1.2s infinite ease-out; animation-delay: 0.4s; }
         .popcorn-kernel:nth-child(3) { animation: pop-center 1.2s infinite ease-out; animation-delay: 0.8s; }
 
-        /* 3. Play Wave */
-        .play-tri { width: 0; height: 0; border-style: solid; border-width: 6px 0 6px 10px; border-color: transparent transparent transparent #fff; position: relative; z-index: 2; }
-        .play-wave { position: absolute; width: 20px; height: 20px; border: 2px solid rgba(255,255,255,0.6); border-radius: 50%; animation: ripple 1.5s infinite; opacity: 0; }
+        /* 3. NEW YOUTUBE SCREEN ANIMATION */
+        .yt-screen {
+            width: 20px; height: 14px;
+            border: 2px solid #ff0000;
+            border-radius: 4px;
+            position: relative;
+            display: flex; align-items: center; justify-content: center;
+            box-shadow: 0 0 5px rgba(255,0,0,0.5);
+            animation: screen-pulse 2s infinite;
+        }
+        .yt-play {
+            width: 0; height: 0;
+            border-style: solid;
+            border-width: 3px 0 3px 5px;
+            border-color: transparent transparent transparent #fff;
+        }
 
         /* 4. Game Controller */
         .game-icon { font-size: 16px; color: #fff; animation: tilt 1s infinite alternate ease-in-out; }
@@ -156,7 +168,11 @@
         @keyframes pop-left { 0% { transform: translate(0,0) scale(0.5); opacity: 1; } 100% { transform: translate(-8px, -12px) scale(1.2) rotate(-90deg); opacity: 0; } }
         @keyframes pop-right { 0% { transform: translate(0,0) scale(0.5); opacity: 1; } 100% { transform: translate(8px, -12px) scale(1.2) rotate(90deg); opacity: 0; } }
         @keyframes pop-center { 0% { transform: translate(0,0) scale(0.5); opacity: 1; } 100% { transform: translate(0px, -15px) scale(1.2); opacity: 0; } }
-        @keyframes ripple { 0% { transform: scale(0.5); opacity: 1; } 100% { transform: scale(1.5); opacity: 0; } }
+        @keyframes screen-pulse { 
+            0% { transform: scale(1); box-shadow: 0 0 5px rgba(255,0,0,0.5); } 
+            50% { transform: scale(1.1); box-shadow: 0 0 10px rgba(255,0,0,0.8); } 
+            100% { transform: scale(1); box-shadow: 0 0 5px rgba(255,0,0,0.5); } 
+        }
         @keyframes tilt { 0% { transform: rotate(-10deg); } 100% { transform: rotate(10deg); } }
         @keyframes zfloat { 0% { transform: translate(0, 0); opacity: 0; } 20% { opacity: 1; } 100% { transform: translate(5px, -10px); opacity: 0; } }
 
@@ -690,24 +706,24 @@
         function startFastScroll() { const duration = 1500; const stayDuration = 700; const startY = 0; const endY = document.body.scrollHeight - window.innerHeight; let startTime = null; let direction = 1; let isUserInteracting = false; const stopScroll = () => { isUserInteracting = true; }; window.addEventListener('pointerdown', stopScroll); window.addEventListener('wheel', stopScroll); window.addEventListener('touchstart', stopScroll); setTimeout(() => requestAnimationFrame(scrollStep), 1000); function scrollStep(timestamp) { if (isUserInteracting) return; if (!startTime) startTime = timestamp; const elapsed = timestamp - startTime; if (direction === 1) { if (elapsed < duration) { window.scrollTo(0, startY + (endY * (-(Math.cos(Math.PI * (elapsed / duration)) - 1) / 2))); requestAnimationFrame(scrollStep); } else if (elapsed < duration + stayDuration) { window.scrollTo(0, endY); requestAnimationFrame(scrollStep); } else { startTime = null; direction = -1; requestAnimationFrame(scrollStep); } } else { if (elapsed < duration) { window.scrollTo(0, endY - (endY * (-(Math.cos(Math.PI * (elapsed / duration)) - 1) / 2))); requestAnimationFrame(scrollStep); } else { window.scrollTo(0, 0); } } } } window.addEventListener('load', startFastScroll);
 
         // --- NEW DYNAMIC STATUS LOGIC ---
-        // UPDATED: Removed JioCinema. Enhanced Popcorn Animation. Added Specific Glow Colors.
+        // UPDATED: Added prefixes ("Watching...", "Playing...") and New YouTube Animation
         const randomActivities = [
             { 
                 name: "Watching YouTube", type: "Streaming", 
                 art: "https://upload.wikimedia.org/wikipedia/commons/thumb/0/09/YouTube_full-color_icon_%282017%29.svg/1024px-YouTube_full-color_icon_%282017%29.svg.png", 
                 animClass: "anim-watch",
-                miniAnim: "play",
-                glow: "rgba(255,0,0,0.6)" // YouTube Red
+                miniAnim: "screen-yt", // NEW ANIMATION TYPE
+                glow: "rgba(255,0,0,0.6)" 
             },
             { 
-                name: "Prime Video", type: "Movie", 
+                name: "Watching Prime Video", type: "Movie", 
                 art: "https://i.ibb.co/KjYLPP8w/31-W9hs7w0-JL.png", 
                 animClass: "anim-watch",
                 miniAnim: "popcorn",
-                glow: "#00A8E1" // Prime Blue
+                glow: "#00A8E1" 
             },
             { 
-                name: "Wuthering Waves", type: "Gaming", 
+                name: "Playing Wuthering Waves", type: "Gaming", 
                 art: "https://i.ibb.co/rGN45QZd/e6eb7b7969a33bc9e472b0e544821937.jpg", 
                 animClass: "anim-game",
                 miniAnim: "game",
@@ -718,14 +734,14 @@
                 art: "https://i.ibb.co/hxmY9bhv/31-U0hg-Cz-Yl-L-AC-UF894-1000-QL80.jpg", 
                 animClass: "anim-watch",
                 miniAnim: "popcorn",
-                glow: "#E50914" // Hoichoi Red
+                glow: "#E50914" 
             },
             { 
-                name: "Disney+ Hotstar", type: "Streaming", 
+                name: "Watching Disney+ Hotstar", type: "Streaming", 
                 art: "https://i.ibb.co/zVppCJ7N/Screenshot-2025-02-14-065533-1739496378365-1739496389150.jpg", 
                 animClass: "anim-watch",
                 miniAnim: "popcorn",
-                glow: "#1f80e0" // Hotstar Blue
+                glow: "#1f80e0" 
             }
         ];
 
@@ -825,6 +841,10 @@
             } 
             else if (data.miniAnim === 'popcorn') {
                 miniHTML = `<div class="popcorn-box"><div class="popcorn-kernel"></div><div class="popcorn-kernel"></div><div class="popcorn-kernel"></div></div>`;
+            }
+            else if (data.miniAnim === 'screen-yt') {
+                // NEW YOUTUBE SCREEN ANIMATION
+                miniHTML = `<div class="yt-screen"><div class="yt-play"></div></div>`;
             }
             else if (data.miniAnim === 'play') {
                 miniHTML = `<div class="play-tri"></div><div class="play-wave"></div>`;
