@@ -78,7 +78,7 @@
         .verified-badge { color: #4dabf7; font-size: 22px; filter: drop-shadow(0 0 10px rgba(77, 171, 247, 0.5)); }
         .tags { font-size: 14px; color: var(--text-secondary); margin-bottom: 20px; font-weight: 500; }
 
-        /* --- STATUS WIDGET --- */
+        /* --- STATUS WIDGET (UPDATED) --- */
         .music-pill {
             background: var(--card-internal-bg); 
             border-radius: 60px; padding: 8px 12px;
@@ -90,7 +90,7 @@
         .status-img-container { width: 48px; height: 48px; border-radius: 50%; flex-shrink: 0; position: relative; box-shadow: 0 4px 10px rgba(0,0,0,0.4); }
         .music-cover { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; display: block; will-change: transform, filter, box-shadow; }
         
-        /* Main Icon Animations */
+        /* Icon Animations */
         .anim-sleep .music-cover { animation: breathe 5s ease-in-out infinite; filter: brightness(0.6) grayscale(0.4); }
         .anim-study .music-cover { animation: float-bob 3s ease-in-out infinite; filter: contrast(1.1); }
         .anim-watch .music-cover, .anim-game .music-cover { animation: dynamic-glow 3s infinite alternate; }
@@ -101,12 +101,12 @@
         .music-title { font-size: 13px; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: white; }
         .music-artist { font-size: 11px; opacity: 0.7; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
         
-        /* Status Colors */
+        /* Status Text Colors */
         .music-pill.playing .music-status { color: var(--spotify-green); }
         .music-pill.online .music-status { color: var(--online-green); }
         .music-pill.inactive .music-status { color: #ffb703; }
 
-        /* --- MINI ANIMATIONS (RIGHT SIDE) --- */
+        /* --- MINI ANIMATIONS --- */
         .mini-anim-box { width: 24px; height: 24px; display: flex; align-items: center; justify-content: center; margin-right: 10px; position: relative; }
 
         /* 1. Equalizer */
@@ -114,7 +114,7 @@
         .eq-bar { width: 3px; background: var(--spotify-green); border-radius: 2px; animation: bounce 0.6s infinite ease-in-out alternate; will-change: height; }
         .eq-bar:nth-child(2) { animation-delay: 0.1s; } .eq-bar:nth-child(3) { animation-delay: 0.2s; }
 
-        /* 2. POPCORN ANIMATION */
+        /* 2. Popcorn */
         .popcorn-box { 
             width: 14px; height: 18px; 
             background: repeating-linear-gradient(90deg, #ff4d4d 0px, #ff4d4d 3px, #fff 3px, #fff 6px);
@@ -131,21 +131,23 @@
         .popcorn-kernel:nth-child(2) { animation: pop-right 1.2s infinite ease-out; animation-delay: 0.4s; }
         .popcorn-kernel:nth-child(3) { animation: pop-center 1.2s infinite ease-out; animation-delay: 0.8s; }
 
-        /* 3. NEW YOUTUBE SCREEN ANIMATION */
-        .yt-screen {
-            width: 20px; height: 14px;
-            border: 2px solid #ff0000;
+        /* 3. NEW FIXED YOUTUBE ICON */
+        .yt-icon-anim {
+            width: 22px; height: 16px;
+            background: #FF0000;
             border-radius: 4px;
             position: relative;
             display: flex; align-items: center; justify-content: center;
-            box-shadow: 0 0 5px rgba(255,0,0,0.5);
-            animation: screen-pulse 2s infinite;
+            box-shadow: 0 0 10px rgba(255, 0, 0, 0.6);
+            animation: pulse-red 2s infinite;
         }
-        .yt-play {
+        .yt-icon-anim::after {
+            content: '';
             width: 0; height: 0;
             border-style: solid;
-            border-width: 3px 0 3px 5px;
-            border-color: transparent transparent transparent #fff;
+            border-width: 3.5px 0 3.5px 6px;
+            border-color: transparent transparent transparent #ffffff;
+            margin-left: 2px;
         }
 
         /* 4. Game Controller */
@@ -160,19 +162,12 @@
         @keyframes bounce { 0% { height: 4px; } 100% { height: 15px; } }
         @keyframes breathe { 0%, 100% { transform: scale(1); opacity: 0.8; } 50% { transform: scale(1.08); opacity: 1; } }
         @keyframes float-bob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-3px); } }
-        @keyframes dynamic-glow { 
-            0%, 100% { box-shadow: 0 0 5px rgba(255,255,255,0.1); } 
-            50% { box-shadow: 0 0 20px var(--status-glow); } 
-        }
+        @keyframes dynamic-glow { 0%, 100% { box-shadow: 0 0 5px rgba(255,255,255,0.1); } 50% { box-shadow: 0 0 20px var(--status-glow); } }
         @keyframes box-bounce { 0%, 100% { transform: scale(1) translateY(0); } 50% { transform: scale(1.1, 0.9) translateY(1px); } }
         @keyframes pop-left { 0% { transform: translate(0,0) scale(0.5); opacity: 1; } 100% { transform: translate(-8px, -12px) scale(1.2) rotate(-90deg); opacity: 0; } }
         @keyframes pop-right { 0% { transform: translate(0,0) scale(0.5); opacity: 1; } 100% { transform: translate(8px, -12px) scale(1.2) rotate(90deg); opacity: 0; } }
         @keyframes pop-center { 0% { transform: translate(0,0) scale(0.5); opacity: 1; } 100% { transform: translate(0px, -15px) scale(1.2); opacity: 0; } }
-        @keyframes screen-pulse { 
-            0% { transform: scale(1); box-shadow: 0 0 5px rgba(255,0,0,0.5); } 
-            50% { transform: scale(1.1); box-shadow: 0 0 10px rgba(255,0,0,0.8); } 
-            100% { transform: scale(1); box-shadow: 0 0 5px rgba(255,0,0,0.5); } 
-        }
+        @keyframes pulse-red { 0% { transform: scale(1); box-shadow: 0 0 5px rgba(255,0,0,0.5); } 50% { transform: scale(1.1); box-shadow: 0 0 15px rgba(255,0,0,0.9); } 100% { transform: scale(1); box-shadow: 0 0 5px rgba(255,0,0,0.5); } }
         @keyframes tilt { 0% { transform: rotate(-10deg); } 100% { transform: rotate(10deg); } }
         @keyframes zfloat { 0% { transform: translate(0, 0); opacity: 0; } 20% { opacity: 1; } 100% { transform: translate(5px, -10px); opacity: 0; } }
 
@@ -706,13 +701,13 @@
         function startFastScroll() { const duration = 1500; const stayDuration = 700; const startY = 0; const endY = document.body.scrollHeight - window.innerHeight; let startTime = null; let direction = 1; let isUserInteracting = false; const stopScroll = () => { isUserInteracting = true; }; window.addEventListener('pointerdown', stopScroll); window.addEventListener('wheel', stopScroll); window.addEventListener('touchstart', stopScroll); setTimeout(() => requestAnimationFrame(scrollStep), 1000); function scrollStep(timestamp) { if (isUserInteracting) return; if (!startTime) startTime = timestamp; const elapsed = timestamp - startTime; if (direction === 1) { if (elapsed < duration) { window.scrollTo(0, startY + (endY * (-(Math.cos(Math.PI * (elapsed / duration)) - 1) / 2))); requestAnimationFrame(scrollStep); } else if (elapsed < duration + stayDuration) { window.scrollTo(0, endY); requestAnimationFrame(scrollStep); } else { startTime = null; direction = -1; requestAnimationFrame(scrollStep); } } else { if (elapsed < duration) { window.scrollTo(0, endY - (endY * (-(Math.cos(Math.PI * (elapsed / duration)) - 1) / 2))); requestAnimationFrame(scrollStep); } else { window.scrollTo(0, 0); } } } } window.addEventListener('load', startFastScroll);
 
         // --- NEW DYNAMIC STATUS LOGIC ---
-        // UPDATED: Added prefixes ("Watching...", "Playing...") and New YouTube Animation
+        // UPDATED: Standardized Text Prefixes & Fixed YouTube Animation
         const randomActivities = [
             { 
                 name: "Watching YouTube", type: "Streaming", 
                 art: "https://upload.wikimedia.org/wikipedia/commons/thumb/0/09/YouTube_full-color_icon_%282017%29.svg/1024px-YouTube_full-color_icon_%282017%29.svg.png", 
                 animClass: "anim-watch",
-                miniAnim: "screen-yt", // NEW ANIMATION TYPE
+                miniAnim: "yt", // FIXED
                 glow: "rgba(255,0,0,0.6)" 
             },
             { 
@@ -842,9 +837,9 @@
             else if (data.miniAnim === 'popcorn') {
                 miniHTML = `<div class="popcorn-box"><div class="popcorn-kernel"></div><div class="popcorn-kernel"></div><div class="popcorn-kernel"></div></div>`;
             }
-            else if (data.miniAnim === 'screen-yt') {
-                // NEW YOUTUBE SCREEN ANIMATION
-                miniHTML = `<div class="yt-screen"><div class="yt-play"></div></div>`;
+            else if (data.miniAnim === 'yt') {
+                // FIXED YOUTUBE ANIMATION
+                miniHTML = `<div class="yt-icon-anim"></div>`;
             }
             else if (data.miniAnim === 'play') {
                 miniHTML = `<div class="play-tri"></div><div class="play-wave"></div>`;
