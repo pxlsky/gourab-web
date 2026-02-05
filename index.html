@@ -20,7 +20,7 @@
             --heart-color: #ff2e63;
             --spotify-green: #1DB954;
             --online-green: #4ade80; 
-            --status-glow: rgba(255, 255, 255, 0.5); /* Default fallback */
+            --status-glow: rgba(255, 255, 255, 0.5);
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
@@ -78,7 +78,7 @@
         .verified-badge { color: #4dabf7; font-size: 22px; filter: drop-shadow(0 0 10px rgba(77, 171, 247, 0.5)); }
         .tags { font-size: 14px; color: var(--text-secondary); margin-bottom: 20px; font-weight: 500; }
 
-        /* --- STATUS WIDGET (UPDATED) --- */
+        /* --- STATUS WIDGET --- */
         .music-pill {
             background: var(--card-internal-bg); 
             border-radius: 60px; padding: 8px 12px;
@@ -94,7 +94,7 @@
         .anim-sleep .music-cover { animation: breathe 5s ease-in-out infinite; filter: brightness(0.6) grayscale(0.4); }
         .anim-study .music-cover { animation: float-bob 3s ease-in-out infinite; filter: contrast(1.1); }
         
-        /* STRONG GLOW ANIMATION */
+        /* SUPER GLOW ANIMATION */
         .anim-watch .music-cover, .anim-game .music-cover { 
             animation: super-glow 2s infinite ease-in-out alternate; 
         }
@@ -171,7 +171,7 @@
         @keyframes breathe { 0%, 100% { transform: scale(1); opacity: 0.8; } 50% { transform: scale(1.08); opacity: 1; } }
         @keyframes float-bob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-3px); } }
         
-        /* SUPER GLOW ANIMATION (Enhanced) */
+        /* SUPER GLOW ANIMATION */
         @keyframes super-glow { 
             0% { box-shadow: 0 0 5px var(--status-glow); filter: brightness(1); } 
             100% { box-shadow: 0 0 25px var(--status-glow), 0 0 10px var(--status-glow); filter: brightness(1.2); } 
@@ -725,35 +725,35 @@
                 art: "https://upload.wikimedia.org/wikipedia/commons/thumb/0/09/YouTube_full-color_icon_%282017%29.svg/1024px-YouTube_full-color_icon_%282017%29.svg.png", 
                 animClass: "anim-watch",
                 miniAnim: "yt-stream", // NEW CONTINUOUS ANIMATION
-                glow: "rgba(255,0,0,0.9)" 
+                glow: "rgba(255, 0, 0, 0.9)" // Intense Red
             },
             { 
                 name: "Watching Prime Video", type: "Movie", 
                 art: "https://i.ibb.co/KjYLPP8w/31-W9hs7w0-JL.png", 
                 animClass: "anim-watch",
                 miniAnim: "popcorn",
-                glow: "#00A8E1" 
+                glow: "rgba(0, 168, 225, 0.9)" // Bright Cyan Blue
             },
             { 
                 name: "Playing Wuthering Waves", type: "Gaming", 
                 art: "https://i.ibb.co/rGN45QZd/e6eb7b7969a33bc9e472b0e544821937.jpg", 
                 animClass: "anim-game",
                 miniAnim: "game",
-                glow: "rgba(255,255,255,0.9)"
+                glow: "rgba(255, 255, 255, 0.8)" // White
             },
             { 
                 name: "Watching Hoichoi", type: "Bengali Content", 
                 art: "https://i.ibb.co/hxmY9bhv/31-U0hg-Cz-Yl-L-AC-UF894-1000-QL80.jpg", 
                 animClass: "anim-watch",
                 miniAnim: "popcorn",
-                glow: "#E50914" 
+                glow: "rgba(229, 9, 20, 0.9)" // Deep Red
             },
             { 
                 name: "Watching Disney+ Hotstar", type: "Streaming", 
                 art: "https://i.ibb.co/zVppCJ7N/Screenshot-2025-02-14-065533-1739496378365-1739496389150.jpg", 
                 animClass: "anim-watch",
                 miniAnim: "popcorn",
-                glow: "#1f80e0" 
+                glow: "rgba(31, 128, 224, 0.9)" // Royal Blue
             }
         ];
 
