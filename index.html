@@ -2,29 +2,23 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>Gourab Adhikary | Bio</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     
     <style>
         :root {
-            /* --- ULTRA TRANSPARENT GLASS THEME --- */
-            --glass-bg: rgba(255, 255, 255, 0.02);
+            /* --- STABLE GLASS THEME --- */
+            --glass-bg: rgba(255, 255, 255, 0.03);
             --glass-border: rgba(255, 255, 255, 0.08);
             --glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
-            
             --text-primary: #ffffff; 
             --text-secondary: rgba(255, 255, 255, 0.75);
-            
-            /* Inner Card Styling */
             --card-internal-bg: rgba(255, 255, 255, 0.06); 
             --card-internal-border: rgba(255, 255, 255, 0.1);
-            
             --heart-color: #ff2e63;
             --spotify-green: #1DB954;
-            --history-gold: #ffb703;
-            --timeline-color: rgba(255, 255, 255, 0.4);
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
@@ -33,59 +27,44 @@
             font-family: 'Inter', sans-serif;
             background-color: #050505;
             color: var(--text-primary); 
+            min-height: 100vh;
             overflow-x: hidden; 
-            padding-bottom: 120px;
+            padding-bottom: 40px;
             overscroll-behavior: none;
         }
 
-        /* Fixed Background - Optimized */
+        /* Fixed Background */
         .fixed-background {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -2;
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -5; 
             background-image: url('https://i.ibb.co/HDM9FwXj/1000199447.jpg');
             background-size: cover; background-position: center; background-repeat: no-repeat;
-            will-change: transform; /* Hardware accel hint */
-            filter: brightness(0.7);
+            transform: translateZ(0); filter: brightness(0.7);
         }
 
-        .container { max-width: 500px; margin: 0 auto; padding: 20px; position: relative; }
+        .container { max-width: 500px; margin: 0 auto; padding: 20px; position: relative; z-index: 10; }
 
-        /* --- OPTIMIZED GLASS CARD --- */
+        /* --- GLASS CARD (SCROLL ANIMATION) --- */
         .glass-card {
             background: var(--glass-bg);
-            /* Removed backdrop-filter from base class to reduce lag on scroll */
             backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
-            border-radius: 28px; 
-            border: 1px solid var(--glass-border); 
+            border-radius: 28px; border: 1px solid var(--glass-border); 
             box-shadow: var(--glass-shadow);
             padding: 24px; margin-bottom: 24px; position: relative; overflow: hidden;
-            
-            /* Initial State for Animation */
-            opacity: 0;
-            transform: translateY(30px) scale(0.98); /* Reduced movement for smoother feel */
-            transition: opacity 0.6s ease-out, transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
-            
-            /* Performance Optimization */
+            opacity: 0; transform: translateY(15px) scale(0.98); 
+            transition: opacity 0.6s ease, transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
             will-change: opacity, transform;
-            content-visibility: auto; /* Browser optimization for off-screen content */
         }
-        
         .glass-card.visible { opacity: 1; transform: translateY(0) scale(1); }
 
         /* Header */
         .status-bar { display: flex; justify-content: center; opacity: 0.8; margin-bottom: 15px; font-size: 13px; font-weight: 600; letter-spacing: 0.5px; }
         .profile-header { text-align: center; }
         .profile-img-container { position: relative; display: inline-block; margin-bottom: 18px; }
-        
-        /* PULSE ANIMATION - Optimized */
         .profile-img { 
             width: 125px; height: 125px; border-radius: 50%; object-fit: cover; 
-            border: 3px solid rgba(255,255,255,0.8); 
-            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-            /* Use a simpler animation if possible, but keeping exact look as requested */
+            border: 3px solid rgba(255,255,255,0.8); box-shadow: 0 10px 30px rgba(0,0,0,0.3);
             animation: pulse-border 3s infinite;
-            will-change: box-shadow; /* Hint to browser */
         }
-
         @keyframes pulse-border {
             0% { box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.4); }
             70% { box-shadow: 0 0 0 15px rgba(255, 255, 255, 0); }
@@ -95,203 +74,162 @@
         .name-wrapper { display: flex; align-items: center; justify-content: center; gap: 8px; margin-bottom: 6px; }
         h1 { font-size: 28px; font-weight: 800; margin: 0; color: white; letter-spacing: -0.5px; }
         .verified-badge { color: #4dabf7; font-size: 22px; filter: drop-shadow(0 0 10px rgba(77, 171, 247, 0.5)); }
-        
         .tags { font-size: 14px; color: var(--text-secondary); margin-bottom: 20px; font-weight: 500; }
 
-        /* Music Widget */
+        /* --- STATUS WIDGET --- */
         .music-pill {
             background: var(--card-internal-bg); 
-            border-radius: 50px; padding: 8px 10px;
+            border-radius: 60px; padding: 8px 12px;
             display: flex; align-items: center; gap: 15px;
             border: 1px solid var(--card-internal-border);
-            transition: background 0.3s ease; /* Only animate background */
+            transition: background 0.3s ease;
             position: relative; overflow: hidden;
         }
-        .disk-wrapper { width: 48px; height: 48px; border-radius: 50%; background: #111; padding: 2px; flex-shrink: 0; position: relative; box-shadow: 0 4px 15px rgba(0,0,0,0.3); }
-        .music-cover { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; animation: spin 4s linear infinite; animation-play-state: paused; will-change: transform; }
-        .disk-wrapper::after { content: ''; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 10px; height: 10px; background: #222; border-radius: 50%; border: 2px solid #000; z-index: 2; }
+        .status-img-container { width: 48px; height: 48px; border-radius: 50%; flex-shrink: 0; position: relative; box-shadow: 0 4px 10px rgba(0,0,0,0.4); }
+        .music-cover { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; display: block; will-change: transform, filter; }
+        .anim-sleep .music-cover { animation: breathe 5s ease-in-out infinite; filter: brightness(0.6) grayscale(0.4); }
+        .anim-study .music-cover { animation: float-bob 3s ease-in-out infinite; filter: contrast(1.1); }
+        .anim-watch .music-cover { animation: cine-glow 3s infinite; }
+        .anim-game .music-cover { animation: game-shake 0.2s ease-in-out infinite alternate; border: 2px solid rgba(255,255,255,0.8); }
+        .anim-shop .music-cover { animation: bounce-shop 1s infinite; }
+        .anim-music .music-cover { animation: spin 4s linear infinite; }
         .music-info { display: flex; flex-direction: column; overflow: hidden; flex: 1; text-align: left; }
         .music-status { font-size: 9px; font-weight: 800; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 3px; display: flex; align-items: center; gap: 5px; }
         .music-title { font-size: 13px; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: white; }
         .music-artist { font-size: 11px; opacity: 0.7; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-
-        .music-pill.playing .music-cover { animation-play-state: running; }
         .music-pill.playing .music-status { color: #1DB954; }
         .music-pill.inactive .music-status { color: #ffb703; }
-        
         .eq-bars { display: flex; gap: 3px; align-items: flex-end; height: 15px; margin-right: 12px; }
         .eq-bar { width: 3px; background: #1DB954; border-radius: 2px; animation: bounce 0.6s infinite ease-in-out alternate; will-change: height; }
         .eq-bar:nth-child(2) { animation-delay: 0.1s; } .eq-bar:nth-child(3) { animation-delay: 0.2s; }
         .inactive .eq-bars { display: none; }
-        @keyframes bounce { 0% { height: 4px; } 100% { height: 15px; } }
         @keyframes spin { 100% { transform: rotate(360deg); } }
+        @keyframes bounce { 0% { height: 4px; } 100% { height: 15px; } }
+        @keyframes breathe { 0%, 100% { transform: scale(1); opacity: 0.8; } 50% { transform: scale(1.08); opacity: 1; } }
+        @keyframes float-bob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-3px); } }
+        @keyframes cine-glow { 0%, 100% { box-shadow: 0 0 5px rgba(255,255,255,0.2); } 50% { box-shadow: 0 0 15px rgba(255, 46, 99, 0.6); } }
+        @keyframes game-shake { 0% { transform: translate(0, 0); } 25% { transform: translate(1px, 1px); } 50% { transform: translate(-1px, -1px); } 75% { transform: translate(1px, -1px); } 100% { transform: translate(0, 0); } }
+        @keyframes bounce-shop { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.1); } }
 
-        /* Grids */
         .section-title { font-size: 18px; font-weight: 700; margin-bottom: 18px; color: #fff; padding-left: 5px; border-left: 3px solid #fff; line-height: 1; padding-top: 2px; padding-bottom: 2px; }
-        .personal-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; text-align: center; }
-        .personal-item { 
-            background: var(--card-internal-bg); 
-            padding: 14px 5px; border-radius: 18px; 
-            border: 1px solid var(--card-internal-border); 
-            display: flex; flex-direction: column; align-items: center; justify-content: center; height: 95px;
-            /* Removed unnecessary transition on hover for performance */
-        }
-        .personal-icon { font-size: 20px; margin-bottom: 8px; color: rgba(255,255,255,0.9); }
-        .personal-label { font-size: 10px; opacity: 0.6; text-transform: uppercase; font-weight: 700; letter-spacing: 0.5px; }
-        .personal-value { font-size: 14px; font-weight: 700; margin-top: 4px; }
         
-        .flip-inner { transition: transform 0.8s; transform-style: preserve-3d; position: relative; width: 100%; height: 100%; will-change: transform; }
-        .flipped .flip-inner { transform: rotateY(180deg); }
-        .flip-front, .flip-back { position: absolute; width: 100%; height: 100%; backface-visibility: hidden; display: flex; flex-direction: column; align-items: center; justify-content: center; }
-        .flip-back { transform: rotateY(180deg); }
+        /* Personal Stats Grid */
+        .personal-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; text-align: center; width: 100%; }
+        .stat-card {
+            position: relative; background: rgba(255, 255, 255, 0.04); border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 20px; padding: 12px 5px; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 110px;
+            transition: all 0.3s;
+        }
+        .icon-circle { width: 38px; height: 38px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-bottom: 10px; font-size: 16px; color: white; box-shadow: 0 4px 10px rgba(0,0,0,0.3); }
+        .bday-grad { background: linear-gradient(135deg, #ff9966 0%, #ff5e62 100%); }
+        .height-grad { background: linear-gradient(135deg, #56CCF2 0%, #2F80ED 100%); }
+        .loc-grad { background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); }
+        .stat-label { font-size: 9px; text-transform: uppercase; font-weight: 800; letter-spacing: 1px; opacity: 0.5; margin-bottom: 4px; }
+        .stat-value { font-size: 15px; font-weight: 800; color: #fff; }
 
-        /* --- FIXED MUSIC LIST LAYOUT --- */
-        .music-item { 
-            background: var(--card-internal-bg); 
-            margin: 10px 0; padding: 12px; 
-            border-radius: 16px; 
-            display: flex; align-items: center; 
-            justify-content: space-between;
-            gap: 15px; 
-            border: 1px solid var(--card-internal-border); 
-            /* Removed generic 'all' transition to improve perf */
-            transition: background 0.2s ease, border-color 0.2s ease, transform 0.1s ease;
-        }
-        .music-item:active { transform: scale(0.98); background: rgba(255, 255, 255, 0.1); }
-        .music-item.playing { background: rgba(255, 255, 255, 0.12); border-color: rgba(255,255,255,0.3); }
-        
-        .thumb-img { 
-            width: 45px; height: 45px; border-radius: 10px; 
-            object-fit: cover; background: #333; flex-shrink: 0; 
-        }
-        
-        .play-btn { 
-            width: 32px; height: 32px; border-radius: 50%; 
-            background: rgba(255,255,255,0.1); 
-            display: flex; align-items: center; justify-content: center; 
-            cursor: pointer; font-size: 11px; flex-shrink: 0;
-            border: 1px solid rgba(255,255,255,0.2); 
-        }
-        
-        .track-info { 
-            flex-grow: 1;
-            min-width: 0; 
-            display: flex; flex-direction: column; justify-content: center;
-        }
-        .track-name { display: block; font-weight: 700; font-size: 14px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-        .track-artist { font-size: 11px; opacity: 0.6; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        /* Song Grid */
+        .song-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+        .song-card { display: flex; flex-direction: column; width: 100%; cursor: pointer; }
+        .song-img-box { width: 100%; aspect-ratio: 1/1; border-radius: 16px; overflow: hidden; border: 1px solid var(--card-internal-border); margin-bottom: 8px; position: relative; }
+        .song-img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.3s ease; }
+        .song-card:active .song-img { transform: scale(0.95); opacity: 0.8; }
+        .song-meta { text-align: center; width: 100%; padding: 0 2px; }
+        .song-name { display: block; font-size: 11px; font-weight: 700; color: #fff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-bottom: 2px; }
+        .song-artist { display: block; font-size: 10px; opacity: 0.6; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 
-        .track-eq { 
-            display: flex; gap: 3px; height: 14px; align-items: flex-end; 
-            opacity: 0; transition: opacity 0.3s; width: 20px; flex-shrink: 0; justify-content: center;
-        }
-        .playing .track-eq { opacity: 1; }
-        
-        .t-bar { width: 3px; background: var(--eq-color, white); border-radius: 2px; animation: tBounce 0.5s infinite alternate; will-change: height; }
-        .t-bar:nth-child(1) { animation-delay: 0s; } .t-bar:nth-child(2) { animation-delay: 0.2s; } .t-bar:nth-child(3) { animation-delay: 0.4s; }
-        @keyframes tBounce { 0% { height: 3px; } 100% { height: 14px; } }
-
-        /* --- AUTO-EXPAND FAVORITES (With Delay) --- */
+        /* Favorites */
         .fav-row-container { display: flex; flex-direction: column; gap: 10px; }
-        
-        .fav-row {
-            background: var(--card-internal-bg);
-            border: 1px solid var(--card-internal-border);
-            border-radius: 18px; 
-            overflow: hidden;
-            /* Removed generic transition to reduce paint load */
-            position: relative;
-        }
-        
-        /* Header part of row */
-        .fav-header {
-            padding: 14px 16px;
-            display: flex; align-items: center; gap: 15px;
-            position: relative; z-index: 2;
-        }
-
-        .fav-icon-box {
-            width: 40px; height: 40px; border-radius: 12px;
-            background: rgba(255,255,255,0.08);
-            display: flex; align-items: center; justify-content: center;
-            font-size: 18px; flex-shrink: 0;
-        }
-        
+        .fav-row { background: var(--card-internal-bg); border: 1px solid var(--card-internal-border); border-radius: 18px; overflow: visible; position: relative; }
+        .fav-header { padding: 14px 16px 8px 16px; display: flex; align-items: center; gap: 15px; position: relative; z-index: 2; }
+        .fav-icon-box { width: 40px; height: 40px; border-radius: 12px; background: rgba(255,255,255,0.08); display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0; }
         .fav-content { flex: 1; min-width: 0; }
         .fav-label { display: block; font-size: 10px; text-transform: uppercase; font-weight: 700; opacity: 0.5; margin-bottom: 3px; letter-spacing: 0.5px; }
         .fav-value { display: block; font-size: 14px; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: #fff; }
-        
-        /* Expanded Content - Lag Free with Delay */
-        .fav-expanded {
-            max-height: 0;
-            overflow: hidden;
-            opacity: 0;
-            padding: 0 16px;
-            display: flex; gap: 15px;
-            
-            /* Hardware Acceleration - CRITICAL for smoothness */
-            will-change: max-height, opacity, padding;
-            
-            /* Physics-based Easing + Delay */
-            transition: 
-                max-height 0.8s cubic-bezier(0.25, 1, 0.5, 1) 0.4s, 
-                padding 0.8s cubic-bezier(0.25, 1, 0.5, 1) 0.4s, 
-                opacity 0.6s ease 0.5s; 
-        }
-        
-        /* Active class added via JS Scroll Observer */
-        .fav-row.active .fav-expanded {
-            max-height: 150px; 
-            opacity: 1;
-            padding-bottom: 18px;
-        }
-        
-        /* LARGER ICONS */
-        .fav-avatar {
-            width: 65px; height: 65px;
-            border-radius: 50%;
-            object-fit: cover;
-            border: 2px solid rgba(255,255,255,0.15);
-            box-shadow: 0 5px 15px rgba(0,0,0,0.4);
-            /* Simple transform only */
-            transition: transform 0.3s ease;
-        }
+        .fav-expanded { display: flex; gap: 15px; padding: 0 16px 18px 16px; opacity: 1; }
+        .fav-avatar { width: 65px; height: 65px; border-radius: 50%; object-fit: cover; border: 2px solid rgba(255,255,255,0.15); box-shadow: 0 5px 15px rgba(0,0,0,0.4); transition: transform 0.3s ease; }
         .fav-avatar:hover { transform: scale(1.1) rotate(3deg); border-color: #fff; }
+        .fav-avatar.fix-crop { object-position: top; }
 
-        /* Creativity */
+        /* Movie/Game Grid */
+        .movies-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+        .movie-card { background: var(--card-internal-bg); border: 1px solid var(--card-internal-border); border-radius: 16px; overflow: hidden; display: flex; flex-direction: column; transition: transform 0.2s ease; }
+        .movie-card:active { transform: scale(0.98); }
+        .movie-poster { width: 100%; aspect-ratio: 2/3; object-fit: cover; display: block; }
+        .movie-details { padding: 12px; }
+        .movie-title { font-size: 13px; font-weight: 700; color: #fff; margin-bottom: 6px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .movie-meta-row { display: flex; align-items: center; gap: 6px; margin-bottom: 4px; }
+        .cbfc-badge { font-size: 9px; font-weight: 800; background: rgba(255,255,255,0.15); padding: 2px 5px; border-radius: 4px; color: var(--text-primary); }
+        .movie-year { font-size: 10px; opacity: 0.7; font-weight: 600; }
+        .movie-sub { font-size: 10px; opacity: 0.5; display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+        .game-wrapper { background: var(--card-internal-bg); border: 1px solid var(--card-internal-border); border-radius: 20px; overflow: hidden; display: flex; align-items: center; gap: 15px; padding: 12px; }
+        .game-poster-img { width: 100px; height: 150px; border-radius: 12px; object-fit: cover; flex-shrink: 0; border: 1px solid rgba(255,255,255,0.1); }
+        .game-details { flex: 1; min-width: 0; display: flex; flex-direction: column; justify-content: center; }
+        .game-title-text { font-size: 18px; font-weight: 800; color: white; margin-bottom: 8px; letter-spacing: -0.5px; }
+        .game-meta-row { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; font-size: 10px; opacity: 0.7; flex-wrap: wrap; }
+        .game-meta-row span { display: flex; align-items: center; gap: 4px; background: rgba(255,255,255,0.05); padding: 3px 8px; border-radius: 6px; }
+        .uid-pill { background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); padding: 8px 12px; border-radius: 8px; font-size: 12px; font-weight: 700; display: inline-flex; align-items: center; justify-content: space-between; gap: 10px; cursor: pointer; width: fit-content; transition: background 0.2s; margin-bottom: 10px; }
+        .uid-pill:active { background: rgba(255,255,255,0.2); }
+        .uid-pill i { font-size: 12px; opacity: 0.7; }
+        .storage-text { font-size: 10px; opacity: 0.5; margin-bottom: 8px; display: flex; align-items: center; gap: 5px; }
+        .platform-row { display: flex; gap: 8px; font-size: 14px; opacity: 0.6; }
+
+        /* Footer */
+        .footer-sig-container { text-align: center; margin-top: -90px; margin-bottom: 20px; opacity: 0; transform: translateY(20px); animation: fadeUp 1s ease forwards 1s; position: relative; z-index: 1; pointer-events: none; }
+        .footer-sig-img { height: 400px; width: auto; max-width: 95%; filter: invert(1) grayscale(1) brightness(20) contrast(2) drop-shadow(0 0 20px rgba(255,255,255,0.95)); mix-blend-mode: screen; opacity: 1; margin-bottom: 5px; }
+        .footer-sig-text { font-size: 13px; text-transform: uppercase; letter-spacing: 6px; margin-top: -45px; opacity: 0.8; color: white; font-weight: 700; text-shadow: 0 0 15px rgba(255,255,255,0.5); }
+        @keyframes fadeUp { to { opacity: 1; transform: translateY(0); } }
+
+        /* Chips & Timeline */
         .creativity-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 25px; }
         .chip { background: var(--card-internal-bg); padding: 16px; border-radius: 18px; text-align: center; font-size: 12px; font-weight: 600; border: 1px solid var(--card-internal-border); display: flex; flex-direction: column; align-items: center; justify-content: center; }
         .chip i { font-size: 22px; margin-bottom: 8px; opacity: 0.9; }
-
-        /* --- JOURNEY TIMELINE --- */
-        .timeline { position: relative; padding-left: 20px; margin-top: 10px; }
-        .timeline::before {
-            content: ''; position: absolute; left: 0; top: 15px; width: 2px;
-            background: linear-gradient(to bottom, rgba(255,255,255,0) 0%, var(--timeline-color) 15%, var(--timeline-color) 85%, rgba(255,255,255,0) 100%);
-            height: 0; 
-            transition: height 1.5s ease-out; /* Simpler transition */
+        
+        /* UPDATED TIMELINE - NO LINE, CIRCULAR ICONS */
+        .timeline { margin-top: 15px; display: flex; flex-direction: column; gap: 15px; }
+        
+        .timeline-item { 
+            opacity: 0; transform: translateX(-10px); 
+            transition: opacity 0.5s ease, transform 0.5s ease; 
         }
-        .timeline.lines-visible::before { height: calc(100% - 30px); }
-        .timeline-item { position: relative; margin-bottom: 20px; padding-left: 25px; opacity: 0; transform: translateX(-10px); transition: opacity 0.5s ease, transform 0.5s ease; }
-        .timeline.lines-visible .timeline-item { opacity: 1; transform: translateX(0); }
-        .timeline.lines-visible .timeline-item:nth-child(1) { transition-delay: 0.1s; }
-        .timeline.lines-visible .timeline-item:nth-child(2) { transition-delay: 0.3s; }
-        .timeline.lines-visible .timeline-item:nth-child(3) { transition-delay: 0.5s; }
-        .timeline.lines-visible .timeline-item:nth-child(4) { transition-delay: 0.7s; }
-        .timeline-item:last-child { margin-bottom: 0; }
-        .timeline-dot { position: absolute; left: -24px; top: 18px; width: 10px; height: 10px; background: #fff; border-radius: 50%; box-shadow: 0 0 10px rgba(255,255,255,0.5); border: 2px solid #000; }
+        
+        /* Simple Fade In */
+        .timeline-item.visible { opacity: 1; transform: translateX(0); }
+        .timeline-item:nth-child(1) { transition-delay: 0.1s; }
+        .timeline-item:nth-child(2) { transition-delay: 0.2s; }
+        .timeline-item:nth-child(3) { transition-delay: 0.3s; }
+        .timeline-item:nth-child(4) { transition-delay: 0.4s; }
+
         .timeline-card { background: var(--card-internal-bg); padding: 14px; border-radius: 16px; border: 1px solid var(--card-internal-border); display: flex; align-items: center; transition: transform 0.1s ease; }
         .timeline-card:active { transform: scale(0.98); background: rgba(255,255,255,0.1); }
-        .t-icon { width: 36px; height: 36px; border-radius: 10px; background: rgba(255,255,255,0.1); display: flex; align-items: center; justify-content: center; margin-right: 12px; font-size: 14px; flex-shrink: 0; }
+        
+        .t-icon { 
+            width: 45px; height: 45px; 
+            border-radius: 50%; /* CIRCLE */
+            display: flex; align-items: center; justify-content: center; 
+            margin-right: 15px; flex-shrink: 0; overflow: hidden;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+        
+        .t-img { width: 100%; height: 100%; object-fit: cover; border-radius: 50%; }
+        
         .t-content { display: flex; flex-direction: column; }
         .t-title { font-size: 13px; font-weight: 700; margin-bottom: 2px; }
         .t-desc { font-size: 10px; opacity: 0.7; text-transform: uppercase; letter-spacing: 0.5px; line-height: 1.4; }
 
         /* Socials */
         .social-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 10px; }
-        .social-btn { display: flex; flex-direction: column; align-items: center; justify-content: center; background: var(--card-internal-bg); color: var(--text-primary); text-decoration: none; padding: 18px 5px; border-radius: 20px; font-weight: 600; font-size: 12px; border: 1px solid var(--card-internal-border); transition: transform 0.2s ease, background 0.2s ease; position: relative; overflow: hidden; cursor: pointer; }
+        .social-btn { display: flex; flex-direction: column; align-items: center; justify-content: center; background: var(--card-internal-bg); color: var(--text-primary); text-decoration: none; padding: 20px 5px; border-radius: 22px; font-weight: 600; font-size: 12px; border: 1px solid var(--card-internal-border); transition: transform 0.2s ease, background 0.2s ease; position: relative; overflow: hidden; cursor: pointer; }
         .social-btn:active { transform: scale(0.96); background: rgba(255,255,255,0.15); }
-        .social-btn i { font-size: 24px; margin-bottom: 8px; color: #fff; filter: drop-shadow(0 2px 5px rgba(0,0,0,0.3)); }
+        .social-btn i { font-size: 32px; margin-bottom: 10px; filter: drop-shadow(0 2px 5px rgba(0,0,0,0.3)); }
+        .fa-instagram { background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .fa-facebook-f { color: #1877F2; }
+        .fa-envelope { color: #EA4335; }
+        .fa-pinterest-p { color: #E60023; }
+        .fa-telegram-plane { color: #24A1DE; }
+        .fa-spotify { color: #1DB954; }
+        .fa-qrcode { color: #fff; }
 
         .morph-out-fwd { animation: btnFlipOut 0.4s forwards ease-in; pointer-events: none; }
         .morph-in-fwd { animation: cardFlipIn 0.5s forwards cubic-bezier(0.175, 0.885, 0.32, 1.85); animation-delay: 0.1s; }
@@ -302,33 +240,10 @@
         @keyframes cardFlipOut { 0% { transform: perspective(600px) rotateY(0deg) scale(1); opacity: 1; } 100% { transform: perspective(600px) rotateY(90deg) scale(0.8); opacity: 0; } }
         @keyframes btnFlipIn { 0% { transform: perspective(600px) rotateY(-90deg) scale(0.8); opacity: 0; } 100% { transform: perspective(600px) rotateY(0deg) scale(1); opacity: 1; } }
 
-        /* --- UPDATED COMPACT CIRCLE LIKE BUTTON --- */
-        .like-float {
-            position: fixed; bottom: 25px; right: 25px;
-            width: 52px; height: 52px; /* Perfect Circle */
-            border-radius: 50%; 
-            background: rgba(255, 255, 255, 0.1); 
-            backdrop-filter: blur(15px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            display: flex; align-items: center; justify-content: center;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-            z-index: 1000; cursor: pointer; 
-            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            color: white; font-size: 20px;
-        }
+        /* Like Button */
+        .like-float { position: fixed; bottom: 25px; right: 25px; width: 52px; height: 52px; border-radius: 50%; background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(15px); border: 1px solid rgba(255, 255, 255, 0.2); display: flex; align-items: center; justify-content: center; box-shadow: 0 5px 15px rgba(0,0,0,0.2); z-index: 1000; cursor: pointer; transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); color: white; font-size: 20px; }
         .like-float:active { transform: scale(0.9); }
-        
-        /* NEON GLOW STATE */
-        .like-float.liked { 
-            background: #ff2e63; 
-            border-color: #ff2e63;
-            color: white; 
-            box-shadow: 
-                0 0 15px rgba(255, 46, 99, 0.6),
-                0 0 30px rgba(255, 46, 99, 0.4),
-                inset 0 0 10px rgba(255, 255, 255, 0.3);
-            transform: scale(1.1);
-        }
+        .like-float.liked { background: #ff2e63; border-color: #ff2e63; color: white; box-shadow: 0 0 15px rgba(255, 46, 99, 0.6), 0 0 30px rgba(255, 46, 99, 0.4), inset 0 0 10px rgba(255, 255, 255, 0.3); transform: scale(1.1); }
         .jelly { animation: jelly 0.6s; }
         @keyframes jelly { 0% { transform: scale(1); } 25% { transform: scale(0.9, 1.1); } 50% { transform: scale(1.1, 0.9); } 75% { transform: scale(0.95, 1.05); } 100% { transform: scale(1); } }
 
@@ -377,7 +292,7 @@
             </div>
             
             <div class="profile-img-container">
-                <img src="https://i.ibb.co/6c1vbdSr/1000168284-2.jpg" class="profile-img">
+                <img src="https://i.ibb.co/6c1vbdSr/1000168284-2.jpg" class="profile-img" loading="lazy">
             </div>
             
             <div class="name-wrapper">
@@ -390,13 +305,13 @@
             </div>
 
             <div class="music-pill inactive" id="music-widget">
-                <div class="disk-wrapper">
-                    <img id="music-art" src="https://i.scdn.co/image/ab67616d0000b273577395562725d223594b2377" class="music-cover">
+                <div class="status-img-container">
+                    <img id="music-art" src="https://i.ibb.co/2N04h7k/sleep-moon.jpg" class="music-cover" loading="lazy">
                 </div>
                 <div class="music-info">
-                    <span id="music-status" class="music-status"><i class="fas fa-clock"></i>  <span id="status-text">OFFLINE</span></span>
-                    <span id="music-song" class="music-title">Not Playing</span>
-                    <span id="music-artist" class="music-artist">Spotify</span>
+                    <span id="music-status" class="music-status"><i class="fas fa-moon"></i>  <span id="status-text">OFFLINE</span></span>
+                    <span id="music-song" class="music-title">Sleeping</span>
+                    <span id="music-artist" class="music-artist">Do Not Disturb</span>
                 </div>
                 <div class="eq-bars"><div class="eq-bar"></div><div class="eq-bar"></div><div class="eq-bar"></div></div>
             </div>
@@ -405,88 +320,88 @@
         <div class="glass-card">
             <h2 class="section-title">Personal</h2>
             <div class="personal-grid">
-                <div class="personal-item" id="bday-card">
-                    <div class="flip-inner">
-                        <div class="flip-front">
-                            <i class="fas fa-cake-candles personal-icon" style="color:#ff9f1c;"></i>
-                            <div class="personal-label">Birthday</div>
-                            <div class="personal-value">09 Aug</div>
-                        </div>
-                        <div class="flip-back">
-                            <div class="personal-value" style="color:#ff9f1c; font-size:16px;" id="bday-count">--</div>
-                            <div class="personal-label">Days Left</div>
-                        </div>
-                    </div>
+                <div class="stat-card">
+                    <div class="icon-circle bday-grad"><i class="fas fa-cake-candles"></i></div>
+                    <div class="stat-label">Birthday</div>
+                    <div class="stat-value">09 Aug</div>
                 </div>
-                <div class="personal-item">
-                    <i class="fas fa-ruler-vertical personal-icon" style="color:#4dabf7;"></i>
-                    <div class="personal-label">Height</div>
-                    <div class="personal-value">5'8"</div>
+                <div class="stat-card">
+                    <div class="icon-circle height-grad"><i class="fas fa-ruler-vertical"></i></div>
+                    <div class="stat-label">Height</div>
+                    <div class="stat-value">5'8"</div>
                 </div>
-                <div class="personal-item">
-                    <i class="fas fa-map-pin personal-icon" style="color:#ff2e63;"></i>
-                    <div class="personal-label">Location</div>
-                    <div class="personal-value">Nadia</div>
+                <div class="stat-card">
+                    <div class="icon-circle loc-grad"><i class="fas fa-map-pin"></i></div>
+                    <div class="stat-label">Location</div>
+                    <div class="stat-value">Nadia</div>
                 </div>
             </div>
         </div>
 
         <div class="glass-card">
             <h2 class="section-title">Top Tracks</h2>
-            
-            <div class="music-item" id="track1" style="--eq-color: linear-gradient(180deg, #ffffff, #ff69b4);">
-                <img src="https://cdn.discordapp.com/attachments/1345025532659503115/1468532136096174234/Srikanto-Bengali-2022-20220323213204-500x500.jpg?ex=69845ca1&is=69830b21&hm=9bc1bb90974b7643c99258123a4580c56846cff53d48a32484bc9057f37c9966&" class="thumb-img">
-                <div class="play-btn" onclick="togglePlay(1)"><i class="fas fa-play"></i></div>
-                <div class="track-info">
-                    <span class="track-name">Amake Nao</span>
-                    <span class="track-artist">Debayan Banerjee</span>
+            <div class="song-grid">
+                
+                <div class="song-card">
+                    <div class="song-img-box">
+                        <img src="https://cdn.discordapp.com/attachments/1345025532659503115/1468532134980616192/Premer-Kahini-Original-Motion-Picture-Soundtrack-Bengali-2008-20251216013004-500x500.jpg?ex=69845ca0&is=69830b20&hm=a6f74bdf3489dc8f52902de9a10b36bad7a4b81880729b7c56ab74072b1357d7&" class="song-img" loading="lazy">
+                    </div>
+                    <div class="song-meta">
+                        <span class="song-name">Rimjhim e Dharate</span>
+                        <span class="song-artist">Shaan</span>
+                    </div>
                 </div>
-                <div class="track-eq"><div class="t-bar"></div><div class="t-bar"></div><div class="t-bar"></div></div>
-                <audio id="audio1" src="song1.mp3"></audio>
-            </div>
 
-            <div class="music-item" id="track2" style="--eq-color: #1effc6;">
-                <img src="https://cdn.discordapp.com/attachments/1345025532659503115/1468532134464720978/Finding-Her-Hindi-2025-20250104190643-500x500.jpg?ex=69845ca0&is=69830b20&hm=a83475a43e6b0dc0e7b0be3ab37970efb9c34dba44b038a1fb514e195d1c9786&" class="thumb-img">
-                <div class="play-btn" onclick="togglePlay(2)"><i class="fas fa-play"></i></div>
-                <div class="track-info">
-                    <span class="track-name">Finding Her</span>
-                    <span class="track-artist">Kushagra</span>
+                <div class="song-card">
+                    <div class="song-img-box">
+                        <img src="https://cdn.discordapp.com/attachments/1345025532659503115/1468532136096174234/Srikanto-Bengali-2022-20220323213204-500x500.jpg?ex=69845ca1&is=69830b21&hm=9bc1bb90974b7643c99258123a4580c56846cff53d48a32484bc9057f37c9966&" class="song-img" loading="lazy">
+                    </div>
+                    <div class="song-meta">
+                        <span class="song-name">Amake Nao</span>
+                        <span class="song-artist">Debayan</span>
+                    </div>
                 </div>
-                <div class="track-eq"><div class="t-bar"></div><div class="t-bar"></div><div class="t-bar"></div></div>
-                <audio id="audio2" src="song2.mp3"></audio>
-            </div>
 
-            <div class="music-item" id="track3" style="--eq-color: #ff2e63;">
-                <img src="https://cdn.discordapp.com/attachments/1345025532659503115/1468532135374618634/Bolo-Dugga-Maiki-Original-Motion-Picture-Soundtrack-Bengali-2017-20251216020802-500x500.jpg?ex=69845ca1&is=69830b21&hm=cf01850efceba5a76cf8a1171aa7a38dd631c500751ae182159cc905c1b96845&" class="thumb-img">
-                <div class="play-btn" onclick="togglePlay(3)"><i class="fas fa-play"></i></div>
-                <div class="track-info">
-                    <span class="track-name">Hote Pare Na</span>
-                    <span class="track-artist">Arindom & Prashmita Paul</span>
+                <div class="song-card">
+                    <div class="song-img-box">
+                        <img src="https://cdn.discordapp.com/attachments/1345025532659503115/1468532134464720978/Finding-Her-Hindi-2025-20250104190643-500x500.jpg?ex=69845ca0&is=69830b20&hm=a83475a43e6b0dc0e7b0be3ab37970efb9c34dba44b038a1fb514e195d1c9786&" class="song-img" loading="lazy">
+                    </div>
+                    <div class="song-meta">
+                        <span class="song-name">Finding Her</span>
+                        <span class="song-artist">Kushagra</span>
+                    </div>
                 </div>
-                <div class="track-eq"><div class="t-bar"></div><div class="t-bar"></div><div class="t-bar"></div></div>
-                <audio id="audio3" src="song3.mp3"></audio>
-            </div>
 
-            <div class="music-item" id="track4" style="--eq-color: #ff9f1c;">
-                <img src="https://cdn.discordapp.com/attachments/1345025532659503115/1468532134980616192/Premer-Kahini-Original-Motion-Picture-Soundtrack-Bengali-2008-20251216013004-500x500.jpg?ex=69845ca0&is=69830b20&hm=a6f74bdf3489dc8f52902de9a10b36bad7a4b81880729b7c56ab74072b1357d7&" class="thumb-img">
-                <div class="play-btn" onclick="togglePlay(4)"><i class="fas fa-play"></i></div>
-                <div class="track-info">
-                    <span class="track-name">Rimjhim E Dhara Te</span>
-                    <span class="track-artist">Shaan, Jeet Gannguli</span>
+                <div class="song-card">
+                    <div class="song-img-box">
+                        <img src="https://cdn.discordapp.com/attachments/1345025532659503115/1468532135374618634/Bolo-Dugga-Maiki-Original-Motion-Picture-Soundtrack-Bengali-2017-20251216020802-500x500.jpg?ex=69845ca1&is=69830b21&hm=cf01850efceba5a76cf8a1171aa7a38dd631c500751ae182159cc905c1b96845&" class="song-img" loading="lazy">
+                    </div>
+                    <div class="song-meta">
+                        <span class="song-name">Hote Pare Na</span>
+                        <span class="song-artist">Arindom</span>
+                    </div>
                 </div>
-                <div class="track-eq"><div class="t-bar"></div><div class="t-bar"></div><div class="t-bar"></div></div>
-                <audio id="audio4" src="song4.mp3"></audio>
-            </div>
 
-            <div class="music-item" id="track5" style="--eq-color: #4dabf7;">
-                <img src="https://cdn.discordapp.com/attachments/1345025532659503115/1468532133613142198/Zero-Hindi-2018-20200902134005-500x500.jpg?ex=69845ca0&is=69830b20&hm=4f77e723fcfd3ae2eaa9ca2f94d271a0025a3fa3aad62083b32e6f5ba1f53063&" class="thumb-img">
-                <div class="play-btn" onclick="togglePlay(5)"><i class="fas fa-play"></i></div>
-                <div class="track-info">
-                    <span class="track-name">Mere Naam Tu</span>
-                    <span class="track-artist">Abhay Jodhpurkar</span>
+                <div class="song-card">
+                    <div class="song-img-box">
+                        <img src="https://cdn.discordapp.com/attachments/1345025532659503115/1468532133613142198/Zero-Hindi-2018-20200902134005-500x500.jpg?ex=69845ca0&is=69830b20&hm=4f77e723fcfd3ae2eaa9ca2f94d271a0025a3fa3aad62083b32e6f5ba1f53063&" class="song-img" loading="lazy">
+                    </div>
+                    <div class="song-meta">
+                        <span class="song-name">Mere Naam Tu</span>
+                        <span class="song-artist">Abhay</span>
+                    </div>
                 </div>
-                <div class="track-eq"><div class="t-bar"></div><div class="t-bar"></div><div class="t-bar"></div></div>
-                <audio id="audio5" src="song5.mp3"></audio>
+
+                <div class="song-card">
+                    <div class="song-img-box">
+                        <img src="https://i.ibb.co/B5vTzTnL/Cover-of-Tomake-Female-by-Shreya-Ghoshal-Arko.jpg" class="song-img" loading="lazy">
+                    </div>
+                    <div class="song-meta">
+                        <span class="song-name">Tomake</span>
+                        <span class="song-artist">Shreya</span>
+                    </div>
+                </div>
+
             </div>
         </div>
 
@@ -494,7 +409,7 @@
             <h2 class="section-title">Favorites</h2>
             <div class="fav-row-container">
                 
-                <div class="fav-row auto-expand">
+                <div class="fav-row">
                     <div class="fav-header">
                         <div class="fav-icon-box" style="color: #4dabf7;"><i class="fas fa-microphone-lines"></i></div>
                         <div class="fav-content">
@@ -503,13 +418,13 @@
                         </div>
                     </div>
                     <div class="fav-expanded">
-                        <img src="https://i.ibb.co/7tN2787C/sonu-nigam-house-0-1200-jpg.webp" class="fav-avatar" alt="Sonu Nigam">
-                        <img src="https://i.ibb.co/8thndzz/arjit-singh-680x680.png" class="fav-avatar" alt="Arijit Singh">
-                        <img src="https://i.ibb.co/s9p9VgrX/Shreya-Ghoshal.webp" class="fav-avatar" alt="Shreya Ghoshal">
+                        <img src="https://i.ibb.co/7tN2787C/sonu-nigam-house-0-1200-jpg.webp" class="fav-avatar" alt="Sonu Nigam" loading="lazy">
+                        <img src="https://i.ibb.co/8thndzz/arjit-singh-680x680.png" class="fav-avatar" alt="Arijit Singh" loading="lazy">
+                        <img src="https://i.ibb.co/s9p9VgrX/Shreya-Ghoshal.webp" class="fav-avatar fix-crop" alt="Shreya Ghoshal" loading="lazy">
                     </div>
                 </div>
 
-                <div class="fav-row auto-expand">
+                <div class="fav-row">
                     <div class="fav-header">
                         <div class="fav-icon-box" style="color: #ff2e63;"><i class="fas fa-film"></i></div>
                         <div class="fav-content">
@@ -518,8 +433,21 @@
                         </div>
                     </div>
                     <div class="fav-expanded">
-                        <img src="https://i.ibb.co/7t6CzHx9/278715828-881090322615196-1544420575469782926-n-819x1024.jpg" class="fav-avatar" alt="Dev">
-                        <img src="https://i.ibb.co/b5SWKFY9/250px-Varun-Dhawan-at-Mehboob-Studios-in-2025-cropped.jpg" class="fav-avatar" alt="Varun">
+                        <img src="https://i.ibb.co/7t6CzHx9/278715828-881090322615196-1544420575469782926-n-819x1024.jpg" class="fav-avatar" alt="Dev" loading="lazy">
+                        <img src="https://i.ibb.co/b5SWKFY9/250px-Varun-Dhawan-at-Mehboob-Studios-in-2025-cropped.jpg" class="fav-avatar" alt="Varun" loading="lazy">
+                    </div>
+                </div>
+
+                <div class="fav-row">
+                    <div class="fav-header">
+                        <div class="fav-icon-box" style="color: #69db7c;"><i class="fas fa-running"></i></div>
+                        <div class="fav-content">
+                            <span class="fav-label">Favorite Player</span>
+                            <span class="fav-value">MS Dhoni</span>
+                        </div>
+                    </div>
+                    <div class="fav-expanded">
+                        <img src="https://i.ibb.co/WvxhgYxC/F1-JHn-OYak-AA-UCL.jpg" class="fav-avatar" alt="Dhoni" loading="lazy">
                     </div>
                 </div>
 
@@ -530,19 +458,6 @@
                             <span class="fav-label">Favorite Color</span>
                             <span class="fav-value">Black & White</span>
                         </div>
-                    </div>
-                </div>
-
-                <div class="fav-row auto-expand">
-                    <div class="fav-header">
-                        <div class="fav-icon-box" style="color: #69db7c;"><i class="fas fa-running"></i></div>
-                        <div class="fav-content">
-                            <span class="fav-label">Favorite Player</span>
-                            <span class="fav-value">MS Dhoni</span>
-                        </div>
-                    </div>
-                    <div class="fav-expanded">
-                        <img src="https://i.ibb.co/WvxhgYxC/F1-JHn-OYak-AA-UCL.jpg" class="fav-avatar" alt="Dhoni">
                     </div>
                 </div>
 
@@ -560,6 +475,95 @@
         </div>
 
         <div class="glass-card">
+            <h2 class="section-title">Favorite Movies</h2>
+            <div class="movies-grid">
+                
+                <div class="movie-card">
+                    <img src="https://i.ibb.co/7xgkBFqV/MV5-BYTc5-ODdj-Zj-Ut-OTZk-Yy00-YWE1-LWE5-ZDUt-NTg4-Nzg5-YTdl-Ym-Vl-Xk-Ey-Xk-Fqc-Gc-V1-FMjpg-UX1000.jpg" class="movie-poster" loading="lazy">
+                    <div class="movie-details">
+                        <div class="movie-title">Premer Kahini</div>
+                        <div class="movie-meta-row">
+                            <span class="cbfc-badge">U</span>
+                            <span class="movie-year">2008</span>
+                        </div>
+                        <span class="movie-sub">Romance/Drama • 2h 30m</span>
+                    </div>
+                </div>
+
+                <div class="movie-card">
+                    <img src="https://i.ibb.co/JwRt26VS/MV5-BODQ4-Mz-Q3-Yz-At-ZTBh-MS00-Mzg3-LWFh-MDAt-OTMz-NGYx-Mj-Uz-Nm-Zi-Xk-Ey-Xk-Fqc-Gc-V1.jpg" class="movie-poster" loading="lazy">
+                    <div class="movie-details">
+                        <div class="movie-title">Main Tera Hero</div>
+                        <div class="movie-meta-row">
+                            <span class="cbfc-badge">U/A</span>
+                            <span class="movie-year">2014</span>
+                        </div>
+                        <span class="movie-sub">Comedy/Action • 2h 8m</span>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="glass-card">
+            <h2 class="section-title">Favorite Web Series</h2>
+            <div class="movies-grid">
+                
+                <div class="movie-card">
+                    <img src="https://i.ibb.co/Nc7zyYH/29588364ee52e33cd3ca58852bdb88f2.jpg" class="movie-poster" loading="lazy">
+                    <div class="movie-details">
+                        <div class="movie-title">Stranger Things</div>
+                        <div class="movie-meta-row">
+                            <span class="cbfc-badge">16+</span>
+                            <span class="movie-year">2016</span>
+                        </div>
+                        <span class="movie-sub">Horror • 5 Seasons</span>
+                    </div>
+                </div>
+
+                <div class="movie-card">
+                    <img src="https://i.ibb.co/nNw6twgb/071252ac4197a572ebbfab8a28b7886d.jpg" class="movie-poster" loading="lazy">
+                    <div class="movie-details">
+                        <div class="movie-title">Lucifer</div>
+                        <div class="movie-meta-row">
+                            <span class="cbfc-badge">A</span>
+                            <span class="movie-year">2016</span>
+                        </div>
+                        <span class="movie-sub">Drama • 6 Seasons</span>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="glass-card">
+            <h2 class="section-title">Favorite Game</h2>
+            <div class="game-wrapper">
+                <img src="https://i.ibb.co/kszjNwyv/MV5-BMDU5-Mz-Rk-YWQt-Nj-Rm-MS00-MWYy-LWI2-Mj-At-Zm-Rk-MWVk-NDA2-OGU3-Xk-Ey-Xk-Fqc-Gc-V1-FMjpg-UX1000.jpg" class="game-poster-img" loading="lazy">
+                <div class="game-details">
+                    <div class="game-title-text">Wuthering Waves</div>
+                    <div class="game-meta-row">
+                        <span><i class="fas fa-calendar"></i> 2024</span>
+                        <span><i class="fas fa-code"></i> Kuro Games</span>
+                        <span><i class="fas fa-gamepad"></i> RPG</span>
+                    </div>
+                    <div class="storage-text">
+                        <i class="fas fa-hdd"></i> Android/iOS: 52-75GB | Win: 125-150GB
+                    </div>
+                    <div class="uid-pill" onclick="copyUID('906068944')">
+                        <span id="uid-text">UID: 906068944</span>
+                        <i class="fas fa-copy"></i>
+                    </div>
+                    <div class="platform-row">
+                        <i class="fab fa-windows"></i>
+                        <i class="fab fa-apple"></i>
+                        <i class="fab fa-android"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="glass-card">
             <h2 class="section-title">Creativity</h2>
             <div class="creativity-grid">
                 <div class="chip"><i class="fas fa-palette"></i>Gfx Artist</div>
@@ -570,10 +574,55 @@
 
             <h2 class="section-title" style="margin-top:25px;">My Journey</h2>
             <div class="timeline">
-                <div class="timeline-item"><div class="timeline-dot"></div><div class="timeline-card"><div class="t-icon"><i class="fas fa-school"></i></div><div class="t-content"><span class="t-title">High School</span><span class="t-desc">Majdia Rail Bazar High School</span></div></div></div>
-                <div class="timeline-item"><div class="timeline-dot"></div><div class="timeline-card"><div class="t-icon"><i class="fas fa-university"></i></div><div class="t-content"><span class="t-title">Graduation</span><span class="t-desc">Sudhiranjan Lahiri Mahavidyalaya</span></div></div></div>
-                <div class="timeline-item"><div class="timeline-dot"></div><div class="timeline-card"><div class="t-icon"><i class="fas fa-bolt"></i></div><div class="t-content"><span class="t-title">ITI Certified</span><span class="t-desc">Industrial Training Institute</span></div></div></div>
-                <div class="timeline-item"><div class="timeline-dot"></div><div class="timeline-card"><div class="t-icon"><i class="fas fa-laptop-code"></i></div><div class="t-content"><span class="t-title">MDT Course</span><span class="t-desc">National Board of Computer Education</span></div></div></div>
+                
+                <div class="timeline-item">
+                    <div class="timeline-card">
+                        <div class="t-icon">
+                            <img src="https://i.ibb.co/0yDtCbM7/20260205-151227.jpg" class="t-img">
+                        </div>
+                        <div class="t-content">
+                            <span class="t-title">High School</span>
+                            <span class="t-desc">Majdia Rail Bazar High School</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-card">
+                        <div class="t-icon">
+                            <img src="https://i.ibb.co/v6RCsW77/20260205-151038.jpg" class="t-img">
+                        </div>
+                        <div class="t-content">
+                            <span class="t-title">Graduation</span>
+                            <span class="t-desc">Sudhiranjan Lahiri Mahavidyalaya</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-card">
+                        <div class="t-icon">
+                            <img src="https://i.ibb.co/5hKwdNC2/20260205-150942.jpg" class="t-img">
+                        </div>
+                        <div class="t-content">
+                            <span class="t-title">ITI Certified</span>
+                            <span class="t-desc">Industrial Training Institute</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-card">
+                        <div class="t-icon">
+                            <img src="https://i.ibb.co/3mPymL3J/20260205-151125.jpg" class="t-img">
+                        </div>
+                        <div class="t-content">
+                            <span class="t-title">MDT Course</span>
+                            <span class="t-desc">National Board of Computer Education</span>
+                        </div>
+                    </div>
+                </div>
+
             </div>
         </div>
 
@@ -590,202 +639,162 @@
             </div>
         </div>
 
+        <div class="footer-sig-container">
+            <img src="https://i.ibb.co/nsVBKrKv/image.png" class="footer-sig-img" alt="Footer Signature" loading="lazy">
+            <div class="footer-sig-text">Dev Adhikari</div>
+        </div>
+
     </div>
 
-    <div class="like-float" id="like-btn" onclick="triggerLike()">
-        <i class="fas fa-heart"></i>
-    </div>
+    <div class="like-float" id="like-btn" onclick="triggerLike()"><i class="fas fa-heart"></i></div>
 
     <script>
         const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-        function playBloop() {
-            if (audioCtx.state === 'suspended') audioCtx.resume();
-            const osc = audioCtx.createOscillator(); const gain = audioCtx.createGain();
-            osc.connect(gain); gain.connect(audioCtx.destination);
-            osc.type = 'sine'; osc.frequency.setValueAtTime(600, audioCtx.currentTime); osc.frequency.exponentialRampToValueAtTime(150, audioCtx.currentTime + 0.15);
-            gain.gain.setValueAtTime(0.5, audioCtx.currentTime); gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.15);
-            osc.start(); osc.stop(audioCtx.currentTime + 0.2);
-        }
-
-        // Like Logic
+        function playBloop() { if (audioCtx.state === 'suspended') audioCtx.resume(); const osc = audioCtx.createOscillator(); const gain = audioCtx.createGain(); osc.connect(gain); gain.connect(audioCtx.destination); osc.type = 'sine'; osc.frequency.setValueAtTime(600, audioCtx.currentTime); osc.frequency.exponentialRampToValueAtTime(150, audioCtx.currentTime + 0.15); gain.gain.setValueAtTime(0.5, audioCtx.currentTime); gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.15); osc.start(); osc.stop(audioCtx.currentTime + 0.2); }
+        
         const likeBtn = document.getElementById('like-btn');
         const popup = document.getElementById('thumbsUpPopup');
+        if (localStorage.getItem('liked_visual_final') === 'true') { likeBtn.classList.add('liked'); }
+        function triggerLike() { playBloop(); likeBtn.classList.add('liked'); likeBtn.classList.remove('jelly'); void likeBtn.offsetWidth; likeBtn.classList.add('jelly'); popup.style.animation = 'none'; void popup.offsetWidth; popup.style.animation = 'fbLikePop 0.8s ease-out forwards'; localStorage.setItem('liked_visual_final', 'true'); }
+        function copyUID(uid) { navigator.clipboard.writeText(uid); playBloop(); const btn = document.querySelector('.uid-pill'); const originalHTML = btn.innerHTML; btn.innerHTML = `<span style="color:#4ade80">Copied!</span> <i class="fas fa-check" style="color:#4ade80"></i>`; setTimeout(() => { btn.innerHTML = originalHTML; }, 2000); }
+        function startFastScroll() { const duration = 1500; const stayDuration = 700; const startY = 0; const endY = document.body.scrollHeight - window.innerHeight; let startTime = null; let direction = 1; let isUserInteracting = false; const stopScroll = () => { isUserInteracting = true; }; window.addEventListener('pointerdown', stopScroll); window.addEventListener('wheel', stopScroll); window.addEventListener('touchstart', stopScroll); setTimeout(() => requestAnimationFrame(scrollStep), 1000); function scrollStep(timestamp) { if (isUserInteracting) return; if (!startTime) startTime = timestamp; const elapsed = timestamp - startTime; if (direction === 1) { if (elapsed < duration) { window.scrollTo(0, startY + (endY * (-(Math.cos(Math.PI * (elapsed / duration)) - 1) / 2))); requestAnimationFrame(scrollStep); } else if (elapsed < duration + stayDuration) { window.scrollTo(0, endY); requestAnimationFrame(scrollStep); } else { startTime = null; direction = -1; requestAnimationFrame(scrollStep); } } else { if (elapsed < duration) { window.scrollTo(0, endY - (endY * (-(Math.cos(Math.PI * (elapsed / duration)) - 1) / 2))); requestAnimationFrame(scrollStep); } else { window.scrollTo(0, 0); } } } } window.addEventListener('load', startFastScroll);
 
-        if (localStorage.getItem('liked_visual_final') === 'true') {
-            likeBtn.classList.add('liked'); 
-        }
+        // --- NEW DYNAMIC STATUS LOGIC ---
+        const randomActivities = [
+            { name: "Watching YouTube", type: "Streaming", art: "https://upload.wikimedia.org/wikipedia/commons/thumb/7/72/YouTube_social_white_square_%282017%29.svg/1200px-YouTube_social_white_square_%282017%29.svg.png", animClass: "anim-watch" },
+            { name: "Watching Netflix", type: "Movie", art: "https://upload.wikimedia.org/wikipedia/commons/7/75/Netflix_icon.svg", animClass: "anim-watch" },
+            { name: "JioCinema", type: "Live Sports", art: "https://v3img.voot.com/v3Storage/assets/jc_logo_stack-1683713023877.jpg", animClass: "anim-watch" },
+            { name: "Wuthering Waves", type: "Gaming", art: "https://i.ibb.co/kszjNwyv/MV5-BMDU5-Mz-Rk-YWQt-Nj-Rm-MS00-MWYy-LWI2-Mj-At-Zm-Rk-MWVk-NDA2-OGU3-Xk-Ey-Xk-Fqc-Gc-V1-FMjpg-UX1000.jpg", animClass: "anim-game" },
+            { name: "Watching Hoichoi", type: "Bengali Content", art: "https://play-lh.googleusercontent.com/l2Uq-M9J-X-iXNykgyX4X5U7X9K7x_J_X_X_X_X_X_X.png", animClass: "anim-watch" },
+            { name: "E-Shopping", type: "Browsing", art: "https://img.icons8.com/color/480/shopping-bag.png", animClass: "anim-shop" }
+        ];
 
-        function triggerLike() {
-            playBloop();
-            likeBtn.classList.add('liked'); 
-            likeBtn.classList.remove('jelly'); void likeBtn.offsetWidth; likeBtn.classList.add('jelly');
-            popup.style.animation = 'none'; void popup.offsetWidth; popup.style.animation = 'fbLikePop 0.8s ease-out forwards';
-            localStorage.setItem('liked_visual_final', 'true');
-        }
-
-        // Auto Scroll (Reduced frequency for performance)
-        function startFastScroll() {
-            const duration = 1500; const stayDuration = 700;
-            const startY = 0; const endY = document.body.scrollHeight - window.innerHeight;
-            let startTime = null; let direction = 1; let isUserInteracting = false;
-            const stopScroll = () => { isUserInteracting = true; };
-            window.addEventListener('pointerdown', stopScroll); window.addEventListener('wheel', stopScroll); window.addEventListener('touchstart', stopScroll);
+        function getOfflineStatus() {
+            const now = new Date();
+            const hour = now.getHours();
             
-            setTimeout(() => requestAnimationFrame(scrollStep), 1000);
-            
-            function scrollStep(timestamp) {
-                if (isUserInteracting) return;
-                if (!startTime) startTime = timestamp;
-                const elapsed = timestamp - startTime;
-                if (direction === 1) {
-                    if (elapsed < duration) { window.scrollTo(0, startY + (endY * (-(Math.cos(Math.PI * (elapsed / duration)) - 1) / 2))); requestAnimationFrame(scrollStep); }
-                    else if (elapsed < duration + stayDuration) { window.scrollTo(0, endY); requestAnimationFrame(scrollStep); }
-                    else { startTime = null; direction = -1; requestAnimationFrame(scrollStep); }
-                } else {
-                    if (elapsed < duration) { window.scrollTo(0, endY - (endY * (-(Math.cos(Math.PI * (elapsed / duration)) - 1) / 2))); requestAnimationFrame(scrollStep); }
-                    else { window.scrollTo(0, 0); }
-                }
+            // 1. Sleeping (12 AM - 8 AM)
+            if (hour >= 0 && hour < 8) {
+                return {
+                    title: "Sleeping",
+                    artist: "Do Not Disturb",
+                    art: "https://img.icons8.com/fluency/240/moon.png",
+                    status: "Zzz...",
+                    icon: "fas fa-moon",
+                    animClass: "anim-sleep"
+                };
             }
-        }
-        window.addEventListener('load', startFastScroll);
+            
+            // 2. Studying (1 PM - 4 PM)
+            if (hour >= 13 && hour < 16) {
+                const target = new Date(); target.setHours(16, 0, 0, 0);
+                const diffMs = target - now;
+                const diffMins = Math.ceil(diffMs / 60000);
+                return {
+                    title: "Studying",
+                    artist: "Focus Mode",
+                    art: "https://img.icons8.com/fluency/240/books.png",
+                    status: `${diffMins}m Remaining`,
+                    icon: "fas fa-book-open",
+                    animClass: "anim-study"
+                };
+            }
 
-        // Music Logic
+            // 3. Random Activity
+            let storedActivity = JSON.parse(localStorage.getItem('random_status'));
+            const currentTimestamp = Math.floor(Date.now() / 1000);
+            if (!storedActivity || currentTimestamp > storedActivity.expiry) {
+                const randomPick = randomActivities[Math.floor(Math.random() * randomActivities.length)];
+                storedActivity = { data: randomPick, expiry: currentTimestamp + 3600 };
+                localStorage.setItem('random_status', JSON.stringify(storedActivity));
+            }
+            return {
+                title: storedActivity.data.name,
+                artist: storedActivity.data.type,
+                art: storedActivity.data.art,
+                status: "ONLINE",
+                icon: "fas fa-bolt",
+                animClass: storedActivity.data.animClass
+            };
+        }
+
         const DISCORD_ID = '1363474188161122472';
-        
-        // Initial Cache Load
-        function loadCachedSong() {
+        let statusInterval; 
+
+        function updateUI(data) {
             const widget = document.getElementById('music-widget');
             const img = document.getElementById('music-art');
             const statusIcon = document.querySelector('.music-status i');
             const statusText = document.getElementById('status-text');
             const title = document.getElementById('music-song');
             const artist = document.getElementById('music-artist');
-            
-            const cachedSong = localStorage.getItem('last_song_data');
-            if (cachedSong) {
-                const data = JSON.parse(cachedSong);
-                img.src = data.art;
-                title.innerText = data.title;
-                artist.innerText = data.artist;
-                statusText.innerText = "RECENTLY PLAYED";
-                statusIcon.className = "fas fa-history";
-                widget.classList.remove('playing');
-                widget.classList.add('inactive');
-            }
+
+            widget.classList.remove('playing', 'inactive', 'anim-sleep', 'anim-study', 'anim-watch', 'anim-game', 'anim-shop', 'anim-music');
+            img.src = data.art; title.innerText = data.title; artist.innerText = data.artist; statusText.innerText = data.status; statusIcon.className = data.icon;
+            widget.classList.add(data.animClass);
+            if (data.animClass === 'anim-music') { widget.classList.add('playing'); } else { widget.classList.add('inactive'); }
         }
-        loadCachedSong(); // Run immediately
 
         function connectLanyard() {
             const ws = new WebSocket("wss://api.lanyard.rest/socket");
             ws.onopen = () => ws.send(JSON.stringify({ op: 2, d: { subscribe_to_id: DISCORD_ID } }));
             ws.onmessage = (e) => {
                 const d = JSON.parse(e.data);
-                if(d.t === "INIT_STATE" || d.t === "PRESENCE_UPDATE") updateMusic(d.d);
+                if(d.t === "INIT_STATE" || d.t === "PRESENCE_UPDATE") {
+                    const data = d.d;
+                    if (data.spotify) {
+                        clearInterval(statusInterval);
+                        updateUI({
+                            title: data.spotify.song,
+                            artist: data.spotify.artist,
+                            art: data.spotify.album_art_url,
+                            status: "LISTENING NOW",
+                            icon: "fab fa-spotify",
+                            animClass: "anim-music"
+                        });
+                    } else {
+                        updateUI(getOfflineStatus());
+                        clearInterval(statusInterval);
+                        statusInterval = setInterval(() => { updateUI(getOfflineStatus()); }, 60000); 
+                    }
+                }
             };
             ws.onclose = () => setTimeout(connectLanyard, 5000);
         }
-        function updateMusic(d) {
-            const widget = document.getElementById('music-widget');
-            const img = document.getElementById('music-art');
-            const statusIcon = document.querySelector('.music-status i');
-            const statusText = document.getElementById('status-text');
-            const title = document.getElementById('music-song');
-            const artist = document.getElementById('music-artist');
-            
-            if (d.spotify) {
-                const s = d.spotify;
-                img.src = s.album_art_url;
-                title.innerText = s.song;
-                artist.innerText = s.artist;
-                statusText.innerText = "LISTENING NOW";
-                statusIcon.className = "fab fa-spotify";
-                widget.classList.remove('inactive');
-                widget.classList.add('playing');
-                
-                // Save to cache
-                localStorage.setItem('last_song_data', JSON.stringify({
-                    title: s.song,
-                    artist: s.artist,
-                    art: s.album_art_url
-                }));
-            } else {
-                // Fallback to cache if not listening
-                loadCachedSong();
-            }
-        }
+        
+        updateUI(getOfflineStatus());
         connectLanyard();
 
         function copyLink() { playSound(); navigator.clipboard.writeText(window.location.href); showToast("Link Copied!"); }
         function showToast(msg) { const t = document.getElementById('dynamic-toast'); t.innerText=msg; t.classList.add('show'); setTimeout(()=>t.classList.remove('show'),2000); }
         function verifyClick() { playSound(); }
         function playSound() {}
-
-        function morphShareButton() {
-            playBloop(); const btn = document.getElementById('shareBtn'); const card = document.getElementById('activeQrCard'); const modal = document.getElementById('qrModal');
-            document.getElementById('qrImage').src = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(window.location.href)}`;
-            document.getElementById('share-url').innerText = window.location.href;
-            btn.classList.remove('morph-in-rev'); btn.classList.add('morph-out-fwd');
-            setTimeout(() => { modal.classList.add('active'); card.style.display='block'; card.classList.remove('morph-out-rev'); card.classList.add('morph-in-fwd'); }, 300);
-        }
-        function closeQR() {
-            playBloop(); const modal = document.getElementById('qrModal'); const card = document.getElementById('activeQrCard'); const btn = document.getElementById('shareBtn');
-            card.classList.remove('morph-in-fwd'); card.classList.add('morph-out-rev');
-            setTimeout(() => { modal.classList.remove('active'); btn.classList.remove('morph-out-fwd'); btn.classList.add('morph-in-rev'); }, 300);
-        }
-
-        let currentAudio = null;
-        function togglePlay(id) {
-            playBloop();
-            const audio = document.getElementById(`audio${id}`);
-            const btnIcon = document.querySelector(`#track${id} .play-btn i`);
-            const container = document.getElementById(`track${id}`);
-            if (currentAudio === audio && !audio.paused) {
-                audio.pause(); btnIcon.classList.remove('fa-pause'); btnIcon.classList.add('fa-play'); container.classList.remove('playing'); currentAudio = null; return;
-            }
-            if (currentAudio) {
-                currentAudio.pause(); currentAudio.currentTime = 0;
-                document.querySelectorAll('.music-item').forEach(el => el.classList.remove('playing'));
-                document.querySelectorAll('.play-btn i').forEach(el => { el.classList.remove('fa-pause'); el.classList.add('fa-play'); });
-            }
-            audio.play(); btnIcon.classList.remove('fa-play'); btnIcon.classList.add('fa-pause'); container.classList.add('playing'); currentAudio = audio;
-        }
-
+        function morphShareButton() { playBloop(); const btn = document.getElementById('shareBtn'); const card = document.getElementById('activeQrCard'); const modal = document.getElementById('qrModal'); document.getElementById('qrImage').src = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(window.location.href)}`; document.getElementById('share-url').innerText = window.location.href; btn.classList.remove('morph-in-rev'); btn.classList.add('morph-out-fwd'); setTimeout(() => { modal.classList.add('active'); card.style.display='block'; card.classList.remove('morph-out-rev'); card.classList.add('morph-in-fwd'); }, 300); }
+        function closeQR() { playBloop(); const modal = document.getElementById('qrModal'); const card = document.getElementById('activeQrCard'); const btn = document.getElementById('shareBtn'); card.classList.remove('morph-in-fwd'); card.classList.add('morph-out-rev'); setTimeout(() => { modal.classList.remove('active'); btn.classList.remove('morph-out-fwd'); btn.classList.add('morph-in-rev'); }, 300); }
         setInterval(() => { document.getElementById('time').innerText = new Date().toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'}); }, 1000);
-        const now = new Date(); const bday = new Date(now.getFullYear(), 7, 9);
-        if(now > bday) bday.setFullYear(now.getFullYear()+1);
-        document.getElementById('bday-count').innerText = Math.ceil((bday-now)/(1000*60*60*24));
-        setInterval(() => document.getElementById('bday-card').classList.toggle('flipped'), 4000);
-
-        // --- SCROLL ANIMATION OBSERVER ---
+        
+        // Fixed Timeline & Scroll
         const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => { 
-                if(entry.isIntersecting) {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
                     entry.target.classList.add('visible');
                 } else {
                     entry.target.classList.remove('visible');
                 }
             });
-        }, { threshold: 0.1 });
+        }, { threshold: 0.1, rootMargin: "0px 0px -50px 0px" });
         document.querySelectorAll('.glass-card').forEach(el => observer.observe(el));
 
-        // --- AUTO-EXPAND FAVORITES OBSERVER (WITH DELAY LOGIC) ---
-        const favObserver = new IntersectionObserver((entries) => {
+        // TIMELINE ITEMS VISIBILITY (Standard Fade In)
+        const timelineObserver = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
-                if(entry.isIntersecting) {
-                    // Triggers when 70% visible
-                    entry.target.classList.add('active');
-                } else {
-                    entry.target.classList.remove('active');
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
                 }
             });
-        }, { threshold: 0.7 }); // High threshold for perfect timing
-        document.querySelectorAll('.auto-expand').forEach(el => favObserver.observe(el));
-
-        const timelineObserver = new IntersectionObserver((entries) => {
-            entries.forEach(entry => { if(entry.isIntersecting) entry.target.classList.add('lines-visible'); else entry.target.classList.remove('lines-visible'); });
-        }, { threshold: 0.3 });
-        document.querySelectorAll('.timeline').forEach(el => timelineObserver.observe(el));
-
+        }, { threshold: 0.1 });
+        document.querySelectorAll('.timeline-item').forEach(el => timelineObserver.observe(el));
+        
         fetch('https://api.counterapi.dev/v1/gourab-bio/views/up').then(r=>r.json()).then(d => document.getElementById('views').innerText = (10000+d.count).toLocaleString() + " Views");
     </script>
 </body>
