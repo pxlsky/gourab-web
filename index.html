@@ -78,7 +78,7 @@
         .verified-badge { color: #4dabf7; font-size: 22px; filter: drop-shadow(0 0 10px rgba(77, 171, 247, 0.5)); }
         .tags { font-size: 14px; color: var(--text-secondary); margin-bottom: 20px; font-weight: 500; }
 
-        /* --- STATUS WIDGET (UPDATED) --- */
+        /* --- STATUS WIDGET --- */
         .music-pill {
             background: var(--card-internal-bg); 
             border-radius: 60px; padding: 8px 12px;
@@ -131,24 +131,27 @@
         .popcorn-kernel:nth-child(2) { animation: pop-right 1.2s infinite ease-out; animation-delay: 0.4s; }
         .popcorn-kernel:nth-child(3) { animation: pop-center 1.2s infinite ease-out; animation-delay: 0.8s; }
 
-        /* 3. NEW FIXED YOUTUBE ICON */
-        .yt-icon-anim {
-            width: 22px; height: 16px;
-            background: #FF0000;
+        /* 3. NEW CONTINUOUS YOUTUBE ANIMATION (Flying Play Buttons) */
+        .yt-stream-base {
+            width: 18px; height: 12px;
+            border: 2px solid #FF0000;
             border-radius: 4px;
-            position: relative;
-            display: flex; align-items: center; justify-content: center;
-            box-shadow: 0 0 10px rgba(255, 0, 0, 0.6);
-            animation: pulse-red 2s infinite;
+            position: absolute; bottom: 0px;
+            left: 3px;
+            box-shadow: 0 0 5px rgba(255,0,0,0.3);
         }
-        .yt-icon-anim::after {
-            content: '';
+        .yt-particle {
+            position: absolute;
             width: 0; height: 0;
             border-style: solid;
-            border-width: 3.5px 0 3.5px 6px;
-            border-color: transparent transparent transparent #ffffff;
-            margin-left: 2px;
+            border-width: 3px 0 3px 5px;
+            border-color: transparent transparent transparent #fff;
+            opacity: 0;
+            bottom: 5px; left: 8px;
         }
+        .yt-particle:nth-child(1) { animation: yt-float 1.8s infinite ease-out; animation-delay: 0s; }
+        .yt-particle:nth-child(2) { animation: yt-float 1.8s infinite ease-out; animation-delay: 0.6s; margin-left: -4px; }
+        .yt-particle:nth-child(3) { animation: yt-float 1.8s infinite ease-out; animation-delay: 1.2s; margin-left: 4px; }
 
         /* 4. Game Controller */
         .game-icon { font-size: 16px; color: #fff; animation: tilt 1s infinite alternate ease-in-out; }
@@ -167,7 +170,10 @@
         @keyframes pop-left { 0% { transform: translate(0,0) scale(0.5); opacity: 1; } 100% { transform: translate(-8px, -12px) scale(1.2) rotate(-90deg); opacity: 0; } }
         @keyframes pop-right { 0% { transform: translate(0,0) scale(0.5); opacity: 1; } 100% { transform: translate(8px, -12px) scale(1.2) rotate(90deg); opacity: 0; } }
         @keyframes pop-center { 0% { transform: translate(0,0) scale(0.5); opacity: 1; } 100% { transform: translate(0px, -15px) scale(1.2); opacity: 0; } }
-        @keyframes pulse-red { 0% { transform: scale(1); box-shadow: 0 0 5px rgba(255,0,0,0.5); } 50% { transform: scale(1.1); box-shadow: 0 0 15px rgba(255,0,0,0.9); } 100% { transform: scale(1); box-shadow: 0 0 5px rgba(255,0,0,0.5); } }
+        @keyframes yt-float { 
+            0% { transform: translateY(0) scale(0.5); opacity: 1; } 
+            100% { transform: translateY(-15px) scale(1.2) rotate(-20deg); opacity: 0; } 
+        }
         @keyframes tilt { 0% { transform: rotate(-10deg); } 100% { transform: rotate(10deg); } }
         @keyframes zfloat { 0% { transform: translate(0, 0); opacity: 0; } 20% { opacity: 1; } 100% { transform: translate(5px, -10px); opacity: 0; } }
 
@@ -701,13 +707,13 @@
         function startFastScroll() { const duration = 1500; const stayDuration = 700; const startY = 0; const endY = document.body.scrollHeight - window.innerHeight; let startTime = null; let direction = 1; let isUserInteracting = false; const stopScroll = () => { isUserInteracting = true; }; window.addEventListener('pointerdown', stopScroll); window.addEventListener('wheel', stopScroll); window.addEventListener('touchstart', stopScroll); setTimeout(() => requestAnimationFrame(scrollStep), 1000); function scrollStep(timestamp) { if (isUserInteracting) return; if (!startTime) startTime = timestamp; const elapsed = timestamp - startTime; if (direction === 1) { if (elapsed < duration) { window.scrollTo(0, startY + (endY * (-(Math.cos(Math.PI * (elapsed / duration)) - 1) / 2))); requestAnimationFrame(scrollStep); } else if (elapsed < duration + stayDuration) { window.scrollTo(0, endY); requestAnimationFrame(scrollStep); } else { startTime = null; direction = -1; requestAnimationFrame(scrollStep); } } else { if (elapsed < duration) { window.scrollTo(0, endY - (endY * (-(Math.cos(Math.PI * (elapsed / duration)) - 1) / 2))); requestAnimationFrame(scrollStep); } else { window.scrollTo(0, 0); } } } } window.addEventListener('load', startFastScroll);
 
         // --- NEW DYNAMIC STATUS LOGIC ---
-        // UPDATED: Standardized Text Prefixes & Fixed YouTube Animation
+        // UPDATED: Standardized Text Prefixes & NEW Continuous YouTube Animation
         const randomActivities = [
             { 
                 name: "Watching YouTube", type: "Streaming", 
                 art: "https://upload.wikimedia.org/wikipedia/commons/thumb/0/09/YouTube_full-color_icon_%282017%29.svg/1024px-YouTube_full-color_icon_%282017%29.svg.png", 
                 animClass: "anim-watch",
-                miniAnim: "yt", // FIXED
+                miniAnim: "yt-stream", // NEW CONTINUOUS ANIMATION
                 glow: "rgba(255,0,0,0.6)" 
             },
             { 
@@ -837,9 +843,9 @@
             else if (data.miniAnim === 'popcorn') {
                 miniHTML = `<div class="popcorn-box"><div class="popcorn-kernel"></div><div class="popcorn-kernel"></div><div class="popcorn-kernel"></div></div>`;
             }
-            else if (data.miniAnim === 'yt') {
-                // FIXED YOUTUBE ANIMATION
-                miniHTML = `<div class="yt-icon-anim"></div>`;
+            else if (data.miniAnim === 'yt-stream') {
+                // CONTINUOUS FLOATING PLAY BUTTONS
+                miniHTML = `<div class="yt-stream-base"><div class="yt-particle"></div><div class="yt-particle"></div><div class="yt-particle"></div></div>`;
             }
             else if (data.miniAnim === 'play') {
                 miniHTML = `<div class="play-tri"></div><div class="play-wave"></div>`;
