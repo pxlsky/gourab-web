@@ -4,6 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     
+    <meta name="theme-color" content="#050505">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="manifest" href="manifest.json">
+    <link rel="apple-touch-icon" href="https://i.ibb.co/6c1vbdSr/1000168284-2.jpg">
+    
     <title>Gourab Adhikary</title>
     <link rel="icon" href="https://i.ibb.co/nMvjnD6S/1000202990.jpg" type="image/jpeg">
 
@@ -20,8 +26,6 @@
             --heart-color: #ff2e63;
             --spotify-green: #1DB954;
             --online-green: #4ade80; 
-            
-            /* DYNAMIC PARTICLE COLORS */
             --status-glow: rgba(255, 255, 255, 0.5);
             --pc1: #ffffff; --pc2: #ffffff; --pc3: #ffffff;
         }
@@ -142,7 +146,7 @@
             display: flex; align-items: center; justify-content: center; 
             margin-right: 10px; 
             position: relative; 
-            overflow: visible; /* FIXED: Allow particles to go OUT OF BOX */
+            overflow: visible; 
         }
         
         .eq-bars { display: flex; gap: 3px; align-items: flex-end; height: 15px; }
@@ -174,7 +178,7 @@
         /* --- MAGICAL RANDOM MATH PARTICLES --- */
         .math-particle {
             position: absolute;
-            bottom: -30px; /* Start further down so they float UP into view */
+            bottom: -30px; 
             color: rgba(255, 255, 255, 0.95);
             font-weight: 700;
             font-family: 'Inter', sans-serif;
@@ -183,7 +187,7 @@
             white-space: nowrap;
             text-shadow: 0 0 8px rgba(255,255,255,0.6);
             animation: magicalFloat 4s linear infinite;
-            z-index: 20; /* Float ABOVE the border */
+            z-index: 20; 
         }
 
         @keyframes magicalFloat {
@@ -1007,6 +1011,15 @@
         
         updateUI(getOfflineStatus());
         connectLanyard();
+
+        // SERVICE WORKER REGISTRATION
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('sw.js')
+                    .then(reg => console.log('SW Registered!', reg))
+                    .catch(err => console.log('SW Failed', err));
+            });
+        }
 
         function copyLink() { playSound(); navigator.clipboard.writeText(window.location.href); showToast("Link Copied!"); }
         function showToast(msg) { const t = document.getElementById('dynamic-toast'); t.innerText=msg; t.classList.add('show'); setTimeout(()=>t.classList.remove('show'),2000); }
