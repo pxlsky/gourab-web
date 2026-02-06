@@ -3,7 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>Gourab Adhikary | Bio</title>
+    
+    <title>Gourab Adhikary</title>
+    <link rel="icon" href="https://i.ibb.co/nMvjnD6S/1000202990.jpg" type="image/jpeg">
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     
@@ -862,7 +865,7 @@
                 animClass: "anim-watch",
                 miniAnim: "yt-stream", 
                 glow: "rgba(255, 0, 0, 0.9)",
-                pColors: ["#FF0000", "#FFFFFF"] // Red & White
+                pColors: ["#FF0000", "#FFFFFF", "#FF5555"] // Red, White, Light Red
             },
             { 
                 name: "Watching Prime Video", type: "Movie", 
@@ -870,7 +873,7 @@
                 animClass: "anim-watch",
                 miniAnim: "popcorn",
                 glow: "rgba(0, 168, 225, 0.9)",
-                pColors: ["#00A8E1", "#46D2F7"] // Blue & Cyan
+                pColors: ["#00A8E1", "#46D2F7", "#FFFFFF"] // Blue, Cyan, White
             },
             { 
                 name: "Playing Wuthering Waves", type: "Gaming", 
@@ -878,7 +881,7 @@
                 animClass: "anim-game",
                 miniAnim: "game",
                 glow: "rgba(255, 255, 255, 0.8)",
-                pColors: ["#FFFFFF", "#A5F3FC"] // White & Pale Blue
+                pColors: ["#A5F3FC", "#FFFFFF", "#38BDF8"] // Cyan, White, Blue
             },
             { 
                 name: "Watching Hoichoi", type: "Bengali Content", 
@@ -886,7 +889,7 @@
                 animClass: "anim-watch",
                 miniAnim: "popcorn",
                 glow: "rgba(229, 9, 20, 0.9)",
-                pColors: ["#E50914", "#FF5F5F"] // Red & Light Red
+                pColors: ["#E50914", "#FF5F5F", "#FFFFFF"] // Red, Light Red, White
             },
             { 
                 name: "Watching Disney+ Hotstar", type: "Streaming", 
@@ -894,7 +897,7 @@
                 animClass: "anim-watch",
                 miniAnim: "popcorn",
                 glow: "rgba(31, 128, 224, 0.9)",
-                pColors: ["#1F80E0", "#FFFFFF"] // Blue & White
+                pColors: ["#1F80E0", "#FFFFFF", "#60A5FA"] // Blue, White, Light Blue
             }
         ];
 
@@ -913,7 +916,7 @@
                     animClass: "anim-sleep",
                     miniAnim: "zzz",
                     glow: "rgba(253, 224, 71, 0.6)",
-                    pColors: ["#FDE047", "#FFFFFF"] // Yellow & White Stars
+                    pColors: ["#FDE047", "#FFFFFF", "#FEF08A"] // Yellow, White, Light Yellow
                 };
             }
             
@@ -930,7 +933,7 @@
                     icon: "fas fa-book-open",
                     animClass: "anim-study",
                     miniAnim: "eq",
-                    pColors: ["#FFFFFF", "#D1D5DB"] // White & Grey
+                    pColors: ["#FFFFFF", "#D1D5DB", "#9CA3AF"] // White, Light Grey, Grey
                 };
             }
 
@@ -972,7 +975,7 @@
             if (data.pColors) {
                 document.documentElement.style.setProperty('--pc1', data.pColors[0]);
                 document.documentElement.style.setProperty('--pc2', data.pColors[1]);
-                document.documentElement.style.setProperty('--pc3', data.pColors[0]); // fallback
+                document.documentElement.style.setProperty('--pc3', data.pColors[2]);
             } else {
                 document.documentElement.style.setProperty('--pc1', '#fff');
                 document.documentElement.style.setProperty('--pc2', '#fff');
@@ -1042,7 +1045,7 @@
                             animClass: "anim-music",
                             miniAnim: "eq",
                             glow: "#1DB954",
-                            pColors: ["#1DB954", "#FFFFFF"]
+                            pColors: ["#1DB954", "#FFFFFF", "#1ED760"]
                         });
                     } else {
                         updateUI(getOfflineStatus());
