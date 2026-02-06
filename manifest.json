@@ -1,21 +1,20 @@
 {
   "name": "Gourab Adhikary",
   "short_name": "Gourab",
-  "start_url": "./index.html",
+  "start_url": ".",
   "display": "standalone",
   "background_color": "#050505",
   "theme_color": "#050505",
-  "description": "Personal Portfolio of Gourab Adhikary",
   "orientation": "portrait",
   "icons": [
     {
-      "src": "icon.png",
+      "src": "https://i.ibb.co/23R7rgKT/20260206-153152.png",
       "sizes": "192x192",
       "type": "image/png",
       "purpose": "any maskable"
     },
     {
-      "src": "icon.png",
+      "src": "https://i.ibb.co/23R7rgKT/20260206-153152.png",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "any maskable"

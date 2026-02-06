@@ -4,14 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     
-       <meta name="theme-color" content="#050505">
+    <meta name="theme-color" content="#050505">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <link rel="manifest" href="manifest.json">
-    <link rel="apple-touch-icon" href="icon.png"> 
+    <link rel="apple-touch-icon" href="https://i.ibb.co/23R7rgKT/20260206-153152.png">
     
     <title>Gourab Adhikary</title>
-    <link rel="icon" href="https://i.ibb.co/nMvjnD6S/1000202990.jpg" type="image/jpeg">
+    <link rel="icon" href="https://i.ibb.co/23R7rgKT/20260206-153152.png" type="image/png">
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
@@ -26,6 +26,8 @@
             --heart-color: #ff2e63;
             --spotify-green: #1DB954;
             --online-green: #4ade80; 
+            
+            /* DYNAMIC PARTICLE COLORS */
             --status-glow: rgba(255, 255, 255, 0.5);
             --pc1: #ffffff; --pc2: #ffffff; --pc3: #ffffff;
         }
@@ -146,7 +148,7 @@
             display: flex; align-items: center; justify-content: center; 
             margin-right: 10px; 
             position: relative; 
-            overflow: visible; 
+            overflow: visible; /* FIXED: Allow particles to go OUT OF BOX */
         }
         
         .eq-bars { display: flex; gap: 3px; align-items: flex-end; height: 15px; }
@@ -1012,12 +1014,12 @@
         updateUI(getOfflineStatus());
         connectLanyard();
 
-        // SERVICE WORKER REGISTRATION
+        // SERVICE WORKER REGISTRATION (RENAMED TO app.js)
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
-                navigator.serviceWorker.register('sw.js')
-                    .then(reg => console.log('SW Registered!', reg))
-                    .catch(err => console.log('SW Failed', err));
+                navigator.serviceWorker.register('app.js')
+                    .then(reg => console.log('✅ New SW Registered!'))
+                    .catch(err => console.log('❌ SW Failed:', err));
             });
         }
 
