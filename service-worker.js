@@ -1,4 +1,4 @@
-const CACHE_NAME = 'gourab-v3';
+const CACHE_NAME = 'gourab-v4-icon-update';
 const ASSETS = [
   '/',
   '/index.html',
