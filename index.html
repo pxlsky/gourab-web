@@ -20,7 +20,12 @@
             --heart-color: #ff2e63;
             --spotify-green: #1DB954;
             --online-green: #4ade80; 
+            
+            /* DYNAMIC PARTICLE COLORS */
             --status-glow: rgba(255, 255, 255, 0.5);
+            --pc1: #ffffff; /* Particle Color 1 */
+            --pc2: #ffffff; /* Particle Color 2 */
+            --pc3: #ffffff; /* Particle Color 3 */
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
@@ -38,9 +43,9 @@
         /* Fixed Background */
         .fixed-background {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -5; 
-            background-image: url('https://i.ibb.co/HDM9FwXj/1000199447.jpg');
+            background-image: url('https://i.ibb.co/99zVrPtW/c5e8f942813087b809dffbbb977aec16.jpg');
             background-size: cover; background-position: center; background-repeat: no-repeat;
-            transform: translateZ(0); filter: brightness(0.7);
+            transform: translateZ(0); filter: brightness(0.6);
         }
 
         .container { max-width: 500px; margin: 0 auto; padding: 20px; position: relative; z-index: 10; }
@@ -85,28 +90,107 @@
             display: flex; align-items: center; gap: 15px;
             border: 1px solid var(--card-internal-border);
             transition: background 0.3s ease;
-            position: relative; overflow: hidden;
+            position: relative; overflow: visible; /* Changed to visible for particles */
         }
-        .status-img-container { width: 48px; height: 48px; border-radius: 50%; flex-shrink: 0; position: relative; box-shadow: 0 4px 10px rgba(0,0,0,0.4); }
-        .music-cover { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; display: block; will-change: transform, filter, box-shadow; }
         
+        /* IMAGE CONTAINER */
+        .status-img-container { 
+            width: 48px; height: 48px; 
+            border-radius: 50%; flex-shrink: 0; 
+            position: relative; 
+            box-shadow: 0 4px 10px rgba(0,0,0,0.4);
+            z-index: 5;
+        }
+
+        .music-cover { 
+            width: 100%; height: 100%; border-radius: 50%; 
+            object-fit: cover; display: block; 
+            position: relative; z-index: 10;
+            will-change: transform, filter; 
+        }
+        
+        /* --- 🎇 MAGICAL FIREFLY SYSTEM (CSS ONLY) --- */
+        .firefly-layer {
+            position: absolute;
+            top: 50%; left: 50%;
+            width: 100%; height: 100%;
+            transform: translate(-50%, -50%);
+            z-index: 1; /* Behind image */
+            pointer-events: none;
+        }
+
+        .firefly {
+            position: absolute;
+            border-radius: 50%;
+            opacity: 0;
+            filter: blur(1px);
+        }
+
+        /* Define 12 unique particles */
+        /* Random sizes, starting positions, colors, and speeds */
+        .f1 { width: 5px; height: 5px; background: var(--pc1); top: 50%; left: 50%; animation: fly-up-1 2s infinite ease-out; animation-delay: 0s; }
+        .f2 { width: 3px; height: 3px; background: var(--pc2); top: 60%; left: 40%; animation: fly-up-2 2.5s infinite ease-out; animation-delay: 0.5s; }
+        .f3 { width: 6px; height: 6px; background: var(--pc3); top: 40%; left: 60%; animation: fly-up-3 3s infinite ease-out; animation-delay: 1s; }
+        .f4 { width: 4px; height: 4px; background: var(--pc1); top: 55%; left: 30%; animation: fly-up-1 2.2s infinite ease-out; animation-delay: 0.2s; }
+        .f5 { width: 3px; height: 3px; background: var(--pc2); top: 45%; left: 70%; animation: fly-up-2 2.8s infinite ease-out; animation-delay: 0.7s; }
+        .f6 { width: 5px; height: 5px; background: var(--pc3); top: 70%; left: 50%; animation: fly-up-3 2.4s infinite ease-out; animation-delay: 1.5s; }
+        
+        /* Outer glow particles */
+        .f7 { width: 2px; height: 2px; background: var(--pc1); top: 30%; left: 20%; animation: fly-side 4s infinite linear; animation-delay: 0s; }
+        .f8 { width: 3px; height: 3px; background: var(--pc2); top: 80%; left: 80%; animation: fly-side-rev 3.5s infinite linear; animation-delay: 1s; }
+        
+        /* Keyframe Variations for Chaos */
+        @keyframes fly-up-1 {
+            0% { transform: translate(0, 0) scale(0); opacity: 0; }
+            30% { opacity: 1; transform: translate(-5px, -15px) scale(1.2); box-shadow: 0 0 8px var(--pc1); }
+            100% { opacity: 0; transform: translate(-10px, -40px) scale(0); }
+        }
+        @keyframes fly-up-2 {
+            0% { transform: translate(0, 0) scale(0); opacity: 0; }
+            40% { opacity: 0.8; transform: translate(5px, -20px) scale(1); box-shadow: 0 0 6px var(--pc2); }
+            100% { opacity: 0; transform: translate(15px, -50px) scale(0); }
+        }
+        @keyframes fly-up-3 {
+            0% { transform: translate(0, 0) scale(0); opacity: 0; }
+            50% { opacity: 0.9; transform: translate(0px, -25px) scale(1.3); box-shadow: 0 0 10px var(--pc3); }
+            100% { opacity: 0; transform: translate(-5px, -60px) scale(0); }
+        }
+        @keyframes fly-side {
+            0% { transform: rotate(0deg) translateX(25px) rotate(0deg) scale(0); opacity: 0; }
+            50% { opacity: 0.6; transform: rotate(180deg) translateX(30px) rotate(-180deg) scale(1); }
+            100% { transform: rotate(360deg) translateX(25px) rotate(-360deg) scale(0); opacity: 0; }
+        }
+        @keyframes fly-side-rev {
+            0% { transform: rotate(360deg) translateX(25px) rotate(-360deg) scale(0); opacity: 0; }
+            50% { opacity: 0.6; transform: rotate(180deg) translateX(30px) rotate(-180deg) scale(1); }
+            100% { transform: rotate(0deg) translateX(25px) rotate(0deg) scale(0); opacity: 0; }
+        }
+
         /* Icon Animations */
-        .anim-sleep .music-cover { animation: breathe 5s ease-in-out infinite; filter: brightness(0.6) grayscale(0.4); }
-        .anim-study .music-cover { animation: float-bob 3s ease-in-out infinite; filter: contrast(1.1); }
-        
-        /* SUPER GLOW ANIMATION */
-        .anim-watch .music-cover, .anim-game .music-cover { 
-            animation: super-glow 2s infinite ease-in-out alternate; 
+        .anim-sleep .music-cover { 
+            animation: rotate-moon 20s linear infinite; 
+            filter: drop-shadow(0 0 8px rgba(253, 224, 71, 0.6)); 
         }
         
+        .anim-study .music-cover { animation: float-bob 3s ease-in-out infinite; filter: contrast(1.1); }
+        .anim-watch .music-cover, .anim-game .music-cover { animation: super-glow 2s infinite ease-in-out alternate; }
         .anim-music .music-cover { animation: spin 4s linear infinite; }
         
+        /* Keyframes */
+        @keyframes rotate-moon { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        @keyframes spin { 100% { transform: rotate(360deg); } }
+        @keyframes breathe { 0%, 100% { transform: scale(1); opacity: 0.8; } 50% { transform: scale(1.08); opacity: 1; } }
+        @keyframes float-bob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-3px); } }
+        @keyframes super-glow { 
+            0% { box-shadow: 0 0 5px var(--status-glow); filter: brightness(1); } 
+            100% { box-shadow: 0 0 25px var(--status-glow), 0 0 10px var(--status-glow); filter: brightness(1.2); } 
+        }
+
         .music-info { display: flex; flex-direction: column; overflow: hidden; flex: 1; text-align: left; }
         .music-status { font-size: 9px; font-weight: 800; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 3px; display: flex; align-items: center; gap: 5px; }
         .music-title { font-size: 13px; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: white; }
         .music-artist { font-size: 11px; opacity: 0.7; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
         
-        /* Status Text Colors */
         .music-pill.playing .music-status { color: var(--spotify-green); }
         .music-pill.online .music-status { color: var(--online-green); }
         .music-pill.inactive .music-status { color: #ffb703; }
@@ -114,12 +198,10 @@
         /* --- MINI ANIMATIONS --- */
         .mini-anim-box { width: 24px; height: 24px; display: flex; align-items: center; justify-content: center; margin-right: 10px; position: relative; }
 
-        /* 1. Equalizer */
         .eq-bars { display: flex; gap: 3px; align-items: flex-end; height: 15px; }
         .eq-bar { width: 3px; background: var(--spotify-green); border-radius: 2px; animation: bounce 0.6s infinite ease-in-out alternate; will-change: height; }
         .eq-bar:nth-child(2) { animation-delay: 0.1s; } .eq-bar:nth-child(3) { animation-delay: 0.2s; }
 
-        /* 2. Popcorn */
         .popcorn-box { 
             width: 14px; height: 18px; 
             background: repeating-linear-gradient(90deg, #ff4d4d 0px, #ff4d4d 3px, #fff 3px, #fff 6px);
@@ -136,47 +218,24 @@
         .popcorn-kernel:nth-child(2) { animation: pop-right 1.2s infinite ease-out; animation-delay: 0.4s; }
         .popcorn-kernel:nth-child(3) { animation: pop-center 1.2s infinite ease-out; animation-delay: 0.8s; }
 
-        /* 3. YouTube Flying Stream */
         .yt-stream-base {
-            width: 18px; height: 12px;
-            border: 2px solid #FF0000;
-            border-radius: 4px;
-            position: absolute; bottom: 0px;
-            left: 3px;
-            box-shadow: 0 0 5px rgba(255,0,0,0.3);
+            width: 18px; height: 12px; border: 2px solid #FF0000; border-radius: 4px;
+            position: absolute; bottom: 0px; left: 3px; box-shadow: 0 0 5px rgba(255,0,0,0.3);
         }
         .yt-particle {
-            position: absolute;
-            width: 0; height: 0;
-            border-style: solid;
-            border-width: 3px 0 3px 5px;
-            border-color: transparent transparent transparent #fff;
-            opacity: 0;
-            bottom: 5px; left: 8px;
+            position: absolute; width: 0; height: 0;
+            border-style: solid; border-width: 3px 0 3px 5px; border-color: transparent transparent transparent #fff;
+            opacity: 0; bottom: 5px; left: 8px;
         }
         .yt-particle:nth-child(1) { animation: yt-float 1.8s infinite ease-out; animation-delay: 0s; }
         .yt-particle:nth-child(2) { animation: yt-float 1.8s infinite ease-out; animation-delay: 0.6s; margin-left: -4px; }
         .yt-particle:nth-child(3) { animation: yt-float 1.8s infinite ease-out; animation-delay: 1.2s; margin-left: 4px; }
 
-        /* 4. Game Controller */
         .game-icon { font-size: 16px; color: #fff; animation: tilt 1s infinite alternate ease-in-out; }
-
-        /* 5. Zzz */
         .zzz-text { font-size: 10px; font-weight: 800; color: #a5b4fc; animation: zfloat 2s infinite linear; position: absolute; }
         .zzz-text:nth-child(2) { animation-delay: 1s; font-size: 8px; left: -5px; }
 
-        /* Keyframes */
-        @keyframes spin { 100% { transform: rotate(360deg); } }
         @keyframes bounce { 0% { height: 4px; } 100% { height: 15px; } }
-        @keyframes breathe { 0%, 100% { transform: scale(1); opacity: 0.8; } 50% { transform: scale(1.08); opacity: 1; } }
-        @keyframes float-bob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-3px); } }
-        
-        /* SUPER GLOW ANIMATION */
-        @keyframes super-glow { 
-            0% { box-shadow: 0 0 5px var(--status-glow); filter: brightness(1); } 
-            100% { box-shadow: 0 0 25px var(--status-glow), 0 0 10px var(--status-glow); filter: brightness(1.2); } 
-        }
-
         @keyframes box-bounce { 0%, 100% { transform: scale(1) translateY(0); } 50% { transform: scale(1.1, 0.9) translateY(1px); } }
         @keyframes pop-left { 0% { transform: translate(0,0) scale(0.5); opacity: 1; } 100% { transform: translate(-8px, -12px) scale(1.2) rotate(-90deg); opacity: 0; } }
         @keyframes pop-right { 0% { transform: translate(0,0) scale(0.5); opacity: 1; } 100% { transform: translate(8px, -12px) scale(1.2) rotate(90deg); opacity: 0; } }
@@ -276,16 +335,48 @@
 
         /* Socials */
         .social-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 10px; }
-        .social-btn { display: flex; flex-direction: column; align-items: center; justify-content: center; background: var(--card-internal-bg); color: var(--text-primary); text-decoration: none; padding: 20px 5px; border-radius: 22px; font-weight: 600; font-size: 12px; border: 1px solid var(--card-internal-border); transition: transform 0.2s ease, background 0.2s ease; position: relative; overflow: hidden; cursor: pointer; }
-        .social-btn:active { transform: scale(0.96); background: rgba(255,255,255,0.15); }
-        .social-btn i { font-size: 32px; margin-bottom: 10px; filter: drop-shadow(0 2px 5px rgba(0,0,0,0.3)); }
-        .fa-instagram { background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-        .fa-facebook-f { color: #1877F2; }
-        .fa-envelope { color: #EA4335; }
-        .fa-pinterest-p { color: #E60023; }
-        .fa-telegram-plane { color: #24A1DE; }
-        .fa-spotify { color: #1DB954; }
-        .fa-qrcode { color: #fff; }
+        
+        /* PREMIUM SOCIAL BUTTONS */
+        .social-btn {
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            background: rgba(255, 255, 255, 0.05); /* Brighter glass */
+            backdrop-filter: blur(10px);
+            color: #fff; text-decoration: none;
+            padding: 18px 5px; border-radius: 24px;
+            font-weight: 600; font-size: 11px; letter-spacing: 0.5px;
+            border: 1px solid rgba(255, 255, 255, 0.15); /* Premium border */
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2), inset 0 0 20px rgba(255,255,255,0.02);
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            position: relative; overflow: hidden; cursor: pointer;
+        }
+        .social-btn::before {
+            content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(135deg, rgba(255,255,255,0.15) 0%, rgba(255,255,255,0) 100%);
+            opacity: 0; transition: opacity 0.3s;
+        }
+        .social-btn:active { transform: scale(0.95); }
+        .social-btn:hover::before { opacity: 1; }
+        .social-btn:hover { border-color: rgba(255,255,255,0.3); transform: translateY(-3px); }
+        
+        .social-btn i {
+            font-size: 28px; margin-bottom: 8px;
+            transition: transform 0.3s ease;
+            filter: drop-shadow(0 0 8px rgba(255,255,255,0.1));
+        }
+        .social-btn:hover i { transform: scale(1.15); }
+
+        /* Specific Colors & Glows */
+        .btn-insta i {
+            background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            filter: drop-shadow(0 4px 12px rgba(220, 39, 67, 0.5));
+        }
+        .btn-fb i { color: #1877F2; filter: drop-shadow(0 0 12px rgba(24, 119, 242, 0.6)); }
+        .btn-mail i { color: #EA4335; filter: drop-shadow(0 0 12px rgba(234, 67, 53, 0.6)); } /* GMAIL */
+        .btn-pin i { color: #E60023; filter: drop-shadow(0 0 12px rgba(230, 0, 35, 0.6)); }
+        .btn-tg i { color: #24A1DE; filter: drop-shadow(0 0 12px rgba(36, 161, 222, 0.6)); }
+        .btn-spot i { color: #1DB954; filter: drop-shadow(0 0 12px rgba(29, 185, 84, 0.6)); }
+        .btn-share i { color: #fff; filter: drop-shadow(0 0 12px rgba(255, 255, 255, 0.4)); }
 
         .morph-out-fwd { animation: btnFlipOut 0.4s forwards ease-in; pointer-events: none; }
         .morph-in-fwd { animation: cardFlipIn 0.5s forwards cubic-bezier(0.175, 0.885, 0.32, 1.85); animation-delay: 0.1s; }
@@ -363,6 +454,16 @@
             <div class="music-pill inactive" id="music-widget">
                 <div class="status-img-container">
                     <img id="music-art" src="https://i.ibb.co/2N04h7k/sleep-moon.jpg" class="music-cover" loading="lazy">
+                    <div class="firefly-layer">
+                        <div class="firefly f1"></div>
+                        <div class="firefly f2"></div>
+                        <div class="firefly f3"></div>
+                        <div class="firefly f4"></div>
+                        <div class="firefly f5"></div>
+                        <div class="firefly f6"></div>
+                        <div class="firefly f7"></div>
+                        <div class="firefly f8"></div>
+                    </div>
                 </div>
                 <div class="music-info">
                     <span id="music-status" class="music-status"><i class="fas fa-moon"></i>  <span id="status-text">OFFLINE</span></span>
@@ -687,13 +788,13 @@
         <div class="glass-card">
             <h2 class="section-title">Connect</h2>
             <div class="social-grid">
-                <a href="https://www.instagram.com/gourab_adhikary_" class="social-btn"><i class="fab fa-instagram"></i>Instagram</a>
-                <a href="https://www.facebook.com/share/16j5Yo2LnZ/" class="social-btn"><i class="fab fa-facebook-f"></i>Facebook</a>
-                <a href="mailto:linkgourab@gmail.com" class="social-btn"><i class="fas fa-envelope"></i>Email</a>
-                <a href="https://pin.it/5LefalJSQ" class="social-btn"><i class="fab fa-pinterest-p"></i>Pinterest</a>
-                <a href="https://t.me/pixelated_sky" class="social-btn"><i class="fab fa-telegram-plane"></i>Telegram</a>
-                <a href="https://open.spotify.com/user/31ytmu3ev7fgrvf7sd5rts6ta3qi" class="social-btn"><i class="fab fa-spotify"></i>Spotify</a>
-                <div id="shareBtn" class="social-btn" onclick="morphShareButton()" style="grid-column: span 3; background: var(--card-internal-bg);"><i class="fas fa-qrcode"></i> Share Profile</div>
+                <a href="https://www.instagram.com/gourab_adhikary_" class="social-btn btn-insta"><i class="fab fa-instagram"></i>Instagram</a>
+                <a href="https://www.facebook.com/share/16j5Yo2LnZ/" class="social-btn btn-fb"><i class="fab fa-facebook-f"></i>Facebook</a>
+                <a href="mailto:linkgourab@gmail.com" class="social-btn btn-mail"><i class="fas fa-envelope"></i>Email</a>
+                <a href="https://pin.it/5LefalJSQ" class="social-btn btn-pin"><i class="fab fa-pinterest-p"></i>Pinterest</a>
+                <a href="https://t.me/pixelated_sky" class="social-btn btn-tg"><i class="fab fa-telegram-plane"></i>Telegram</a>
+                <a href="https://open.spotify.com/user/31ytmu3ev7fgrvf7sd5rts6ta3qi" class="social-btn btn-spot"><i class="fab fa-spotify"></i>Spotify</a>
+                <div id="shareBtn" class="social-btn btn-share" onclick="morphShareButton()" style="grid-column: span 3;"><i class="fas fa-qrcode"></i> Share Profile</div>
             </div>
         </div>
 
@@ -760,35 +861,40 @@
                 art: "https://upload.wikimedia.org/wikipedia/commons/thumb/0/09/YouTube_full-color_icon_%282017%29.svg/1024px-YouTube_full-color_icon_%282017%29.svg.png", 
                 animClass: "anim-watch",
                 miniAnim: "yt-stream", 
-                glow: "rgba(255, 0, 0, 0.9)" 
+                glow: "rgba(255, 0, 0, 0.9)",
+                pColors: ["#FF0000", "#FFFFFF"] // Red & White
             },
             { 
                 name: "Watching Prime Video", type: "Movie", 
                 art: "https://i.ibb.co/KjYLPP8w/31-W9hs7w0-JL.png", 
                 animClass: "anim-watch",
                 miniAnim: "popcorn",
-                glow: "rgba(0, 168, 225, 0.9)" 
+                glow: "rgba(0, 168, 225, 0.9)",
+                pColors: ["#00A8E1", "#46D2F7"] // Blue & Cyan
             },
             { 
                 name: "Playing Wuthering Waves", type: "Gaming", 
                 art: "https://i.ibb.co/rGN45QZd/e6eb7b7969a33bc9e472b0e544821937.jpg", 
                 animClass: "anim-game",
                 miniAnim: "game",
-                glow: "rgba(255, 255, 255, 0.8)" 
+                glow: "rgba(255, 255, 255, 0.8)",
+                pColors: ["#FFFFFF", "#A5F3FC"] // White & Pale Blue
             },
             { 
                 name: "Watching Hoichoi", type: "Bengali Content", 
                 art: "https://i.ibb.co/hxmY9bhv/31-U0hg-Cz-Yl-L-AC-UF894-1000-QL80.jpg", 
                 animClass: "anim-watch",
                 miniAnim: "popcorn",
-                glow: "rgba(229, 9, 20, 0.9)" 
+                glow: "rgba(229, 9, 20, 0.9)",
+                pColors: ["#E50914", "#FF5F5F"] // Red & Light Red
             },
             { 
                 name: "Watching Disney+ Hotstar", type: "Streaming", 
                 art: "https://i.ibb.co/zVppCJ7N/Screenshot-2025-02-14-065533-1739496378365-1739496389150.jpg", 
                 animClass: "anim-watch",
                 miniAnim: "popcorn",
-                glow: "rgba(31, 128, 224, 0.9)" 
+                glow: "rgba(31, 128, 224, 0.9)",
+                pColors: ["#1F80E0", "#FFFFFF"] // Blue & White
             }
         ];
 
@@ -801,11 +907,13 @@
                 return {
                     title: "Sleeping",
                     artist: "Do Not Disturb",
-                    art: "https://img.icons8.com/fluency/240/moon.png",
+                    art: "https://cdn-icons-png.flaticon.com/512/1823/1823324.png", // Yellow Crescent Moon
                     status: "Zzz...",
                     icon: "fas fa-moon",
                     animClass: "anim-sleep",
-                    miniAnim: "zzz"
+                    miniAnim: "zzz",
+                    glow: "rgba(253, 224, 71, 0.6)",
+                    pColors: ["#FDE047", "#FFFFFF"] // Yellow & White Stars
                 };
             }
             
@@ -821,7 +929,8 @@
                     status: `${diffMins}m Remaining`,
                     icon: "fas fa-book-open",
                     animClass: "anim-study",
-                    miniAnim: "eq"
+                    miniAnim: "eq",
+                    pColors: ["#FFFFFF", "#D1D5DB"] // White & Grey
                 };
             }
 
@@ -840,7 +949,8 @@
                 icon: "fas fa-bolt",
                 animClass: syncedData.animClass,
                 miniAnim: syncedData.miniAnim,
-                glow: syncedData.glow
+                glow: syncedData.glow,
+                pColors: syncedData.pColors
             };
         }
 
@@ -856,8 +966,18 @@
             const artist = document.getElementById('music-artist');
             const miniAnimBox = document.getElementById('mini-anim');
 
-            // Set Glow Color Variable
+            // Set Glow Color Variable & Particle Colors
             document.documentElement.style.setProperty('--status-glow', data.glow || 'rgba(255, 255, 255, 0.3)');
+            
+            if (data.pColors) {
+                document.documentElement.style.setProperty('--pc1', data.pColors[0]);
+                document.documentElement.style.setProperty('--pc2', data.pColors[1]);
+                document.documentElement.style.setProperty('--pc3', data.pColors[0]); // fallback
+            } else {
+                document.documentElement.style.setProperty('--pc1', '#fff');
+                document.documentElement.style.setProperty('--pc2', '#fff');
+                document.documentElement.style.setProperty('--pc3', '#fff');
+            }
 
             // Reset classes
             widget.classList.remove('playing', 'inactive', 'online', 'anim-sleep', 'anim-study', 'anim-watch', 'anim-game', 'anim-shop', 'anim-music');
@@ -921,7 +1041,8 @@
                             icon: "fab fa-spotify",
                             animClass: "anim-music",
                             miniAnim: "eq",
-                            glow: "#1DB954"
+                            glow: "#1DB954",
+                            pColors: ["#1DB954", "#FFFFFF"]
                         });
                     } else {
                         updateUI(getOfflineStatus());
