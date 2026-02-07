@@ -1,5 +1,5 @@
 // NEW VERSION TO FORCE UPDATE
-const CACHE_NAME = 'gourab-v6-new-icon'; 
+const CACHE_NAME = 'gourab-v7-icon-update'; 
 
 const ASSETS = [
   '/',
