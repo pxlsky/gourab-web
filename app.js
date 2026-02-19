@@ -1,5 +1,5 @@
 // NEW VERSION TO FORCE UPDATE
-const CACHE_NAME = 'gourab-v10-layout-update'; 
+const CACHE_NAME = 'gourab-v12-cleanup'; 
 
 const ASSETS = [
   '/',
